@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>M³ - Maths </title>
-<meta name="description" content="Showing kids, and adults, that they really can do maths, in 5-minute bites, so confidence grows in small wins.">
+<title>M³ - maths practice</title>
+<meta name="description" content="Short, exam-style maths practice for Year 9. Made by a mum of 3.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Nunito:wght@400;500;600;700;800&family=Spline+Sans+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -1233,10 +1233,12 @@ const NONLINEAR = [
         answer:"a", correctNote:"Vertex form shows it directly.",
         slips:[{ifTheyType:"b", say:"(x − 4) means the vertex x is +4, not −4. Vertex (4, 1)."}],
         working:["y = (x − h)² + k has vertex (h, k).","(x − 4)² + 1 → vertex (4, 1)."] },
-      { ask:"The cubic $y = (x − 1)(x + 2)(x − 4)$ crosses the x-axis how many times?",
-        answer:"3", correctNote:"Three brackets, three x-intercepts.",
-        slips:[{ifTheyType:"1", say:"Each bracket gives a crossing: x = 1, −2, 4. That's three."}],
-        working:["Set each bracket to 0: x = 1, −2, 4.","Three crossings."] },
+      { ask:"Which factorised equation matches this curve?",
+        diagram:"cubicRoots2",
+        options:[{label:"$y = x(x + 3)(x − 2)$",key:"a"},{label:"$y = x(x − 3)(x + 2)$",key:"b"},{label:"$y = (x + 3)(x − 2)$",key:"c"}],
+        answer:"a", correctNote:"The curve passes through 0, −3 and 2.",
+        slips:[{ifTheyType:"b", say:"Those brackets give roots 0, 3, −2. This curve crosses at 0, −3 and 2, so x(x + 3)(x − 2)."},{ifTheyType:"c", say:"That one has only two brackets, so only two crossings. This curve passes through the origin and crosses three times."}],
+        working:["Read the crossings: x = −3, 0 and 2 (one passes through the origin).","Brackets with those roots: x(x + 3)(x − 2)."] },
       { ask:"Which equation is a circle?",
         options:[{label:"$x^2 + y^2 = 9$",key:"a"},{label:"$y = x^2 + 9$",key:"b"},{label:"$y = [9/x]$",key:"c"}],
         answer:"a", correctNote:"Both x² and y² together, equal to a number.",
@@ -1413,6 +1415,8 @@ function dgm(name){
     case "cubicNeg":    return DG(CVp(x=>-0.25*x*x*x));
     case "cubicFactor": return DG(CVp(x=>0.14*x*(x+2)*(x-3))+DOTd(-2,0)+DOTd(0,0)+DOTd(3,0)+
                             TXp(-2,0,"−2",null,0,18)+TXp(0,0,"0",null,-12,16)+TXp(3,0,"3",null,0,18));
+    case "cubicRoots2": return DG(CVp(x=>0.12*x*(x+3)*(x-2))+DOTd(-3,0)+DOTd(0,0)+DOTd(2,0)+
+                            TXp(-3,0,"−3",null,0,18)+TXp(0,0,"0",null,-12,16)+TXp(2,0,"2",null,0,18));
     default: return "";
   }
 }
@@ -1552,11 +1556,11 @@ function staticPlot(spec){
 let calcExpr="";
 const CALC_KEYS=[
   ["sin","fn"],["cos","fn"],["tan","fn"],["ln","fn"],["log","fn"],
-  ["(",""],[")",""],["√","fn"],["x²","fn"],["^","fn"],
+  ["(",""],[")",""],["√","fn"],["x²","fn"],["π","fn"],
   ["7",""],["8",""],["9",""],["÷","op"],["C","op"],
   ["4",""],["5",""],["6",""],["×","op"],["⌫","op"],
-  ["1",""],["2",""],["3",""],["−","op"],["π","fn"],
-  ["0","",2],[".",""],["=","eq",2]
+  ["1",""],["2",""],["3",""],["−","op"],["+","op"],
+  ["0","",2],[".",""],["^","fn"],["=","eq"]
 ];
 function buildCalc(){
   const g=el("calcGrid"); if(!g)return; g.innerHTML="";
