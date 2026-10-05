@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>M³ - maths practice</title>
-<meta name="description" content="Showing kids, and adults, that they really can do maths, in 5-minute bites, so confidence grows in small wins.">
+<meta name="description" content="Short, exam-style maths practice for Year 9. Made by a mum of 3.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Nunito:wght@400;500;600;700;800&family=Spline+Sans+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -68,6 +68,8 @@ body{background:var(--paper);color:var(--ink);
 .topic:focus-visible{outline:3px solid var(--plum);outline-offset:2px}
 .topic .emoji{font-size:24px;width:46px;height:46px;flex:0 0 46px;border-radius:13px;
   background:#E3ECF8;display:grid;place-items:center}
+.topic .p-ic{width:46px;height:46px;flex:0 0 46px;display:grid;place-items:center}
+.topic .p-ic svg{width:46px;height:46px}
 .topic .t-name{font-weight:800;font-size:18px;letter-spacing:-.01em}
 .topic .t-sum{color:var(--ink-soft);font-size:14px;margin-top:2px}
 .topic .t-go{margin-left:auto;color:var(--ink-soft);font-size:22px}
@@ -89,6 +91,59 @@ body{background:var(--paper);color:var(--ink);
   box-shadow:0 4px 12px rgba(74,101,131,.25);transition:background .15s}
 .kofi:hover{background:#5f84b5}
 .foot .share{font-size:12.5px;color:var(--ink-soft);margin:15px 0 0}
+/* interactive graph explorer */
+.explorer{margin:8px auto 2px;max-width:320px}
+.exp-eq{font-family:'Spline Sans Mono',monospace;font-size:16px;font-weight:600;color:var(--plum);margin:0 0 8px;min-height:22px}
+.exp-svg{display:block;margin:0 auto;background:#fff;border:1px solid var(--line);border-radius:14px;max-width:100%;height:auto}
+.exp-sliders{display:grid;gap:9px;margin:12px 2px 0}
+.exp-row{margin-bottom:9px}
+.exp-hint{font-size:13px;color:var(--ink-soft);margin:10px 2px 0;text-align:center}
+.q-plot{display:block;margin:2px auto;background:#fff;border:1px solid var(--line);border-radius:12px;max-width:100%;height:auto}
+.eqn{display:block;text-align:center;font-family:'Spline Sans Mono',monospace;font-size:19px;font-weight:600;color:var(--plum);background:#F2F6FC;border:1px solid #DBE6F5;border-radius:12px;padding:11px 16px;margin:14px auto;width:max-content;max-width:100%;white-space:nowrap;overflow-x:auto}
+.eqn i,.mi i,.q-ask i,.lc-plain i,.exp-eq i,.match-opt i,.match-q i{font-family:Georgia,'Times New Roman',serif;font-style:italic;font-weight:700}
+.mi{font-family:'Spline Sans Mono',monospace;color:var(--plum);font-weight:600;white-space:nowrap}
+.frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 2px;line-height:1.05}
+.frac .num{border-bottom:2px solid currentColor;padding:0 5px}
+.frac .den{padding:0 5px}
+.dgm{display:block;margin:10px auto;background:#fff;border:1px solid var(--line);border-radius:14px;max-width:250px;width:100%;height:auto}
+.dgm-pair{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:12px auto}
+.dgm-pair figure{margin:0;max-width:150px}
+.dgm-pair figcaption{font-size:13px;font-weight:700;color:var(--ink-soft);text-align:center;margin-top:3px}
+.dgm-pair .dgm{margin:0 auto;max-width:150px}
+.sup-btn{flex:0 0 auto;font-family:'Spline Sans Mono',monospace;font-size:17px;font-weight:700;color:var(--plum);background:#F2F6FC;border:1px solid #DBE6F5;border-radius:14px;padding:0 15px;cursor:pointer}
+.sup-btn:active{transform:translateY(1px)}
+.exp-lab{font-size:13px;font-weight:800;color:var(--plum);margin-bottom:3px}
+.exp-ctl{display:flex;align-items:center;gap:10px}
+.exp-ctl input[type=range]{flex:1;accent-color:var(--plum);height:22px}
+.exp-ctl .val{width:46px;text-align:right;font-family:'Spline Sans Mono',monospace;font-size:13px;color:var(--ink-soft)}
+.lc-ex-h{font-size:12px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--plum);text-align:center;margin:18px 0 2px}
+.ic{margin:12px auto 2px;max-width:340px;text-align:left}
+.match-q{font-size:15px;font-weight:700;color:var(--ink);text-align:center;margin:0 0 6px}
+.match-opts{display:grid;gap:8px;margin-top:8px}
+.match-opt{font-family:'Spline Sans Mono',monospace;font-size:15px;padding:10px 12px;border:1.5px solid var(--line);border-radius:12px;background:#fff;cursor:pointer;color:var(--ink);text-align:left}
+.match-opt:hover:not(:disabled){border-color:var(--plum)}
+.match-opt.correct{border-color:#3FA06B;background:#EAF7F0;color:#2E7D50}
+.match-opt.wrong{border-color:#E0876F;background:#FBEDE8;color:#B55038}
+.match-note{font-size:13.5px;color:var(--ink-soft);text-align:center;margin-top:8px;min-height:16px}
+/* scientific calculator */
+.calc-toggle{position:fixed;left:18px;bottom:18px;z-index:30;background:var(--plum);color:#fff;border:none;
+  border-radius:999px;padding:13px 16px;font-weight:800;font-size:15px;cursor:pointer;font-family:'Nunito',sans-serif;
+  box-shadow:0 6px 20px rgba(109,76,125,.28);display:inline-flex;gap:7px;align-items:center}
+.calc{position:fixed;inset:0;z-index:40;background:rgba(41,50,63,.45);display:none;align-items:flex-end;justify-content:center}
+.calc.is-on{display:flex}
+.calc-panel{background:var(--card);width:100%;max-width:360px;border-radius:22px 22px 0 0;padding:16px;animation:rise .3s ease}
+.calc-bar{display:flex;align-items:center;margin-bottom:10px}
+.calc-bar h3{font-family:'Fraunces',serif;font-weight:500;font-size:20px;margin:0}
+.calc-bar .sb-btn{margin-left:auto}
+.calc-disp{width:100%;font-family:'Spline Sans Mono',monospace;font-size:22px;text-align:right;padding:12px 14px;
+  border:1px solid var(--line);border-radius:12px;background:#F7FAFD;min-height:50px;margin-bottom:12px;overflow-x:auto;white-space:nowrap;color:var(--ink)}
+.calc-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:7px}
+.calc-key{padding:13px 0;border:1px solid var(--line);border-radius:12px;background:var(--card);
+  font-family:'Nunito',sans-serif;font-weight:700;font-size:16px;cursor:pointer;color:var(--ink)}
+.calc-key:active{transform:scale(.95)}
+.calc-key.op{background:#EAF0FA;color:var(--plum)}
+.calc-key.fn{background:#F2F6FC;color:var(--blue-deep);font-size:14px}
+.calc-key.eq{background:var(--plum);color:#fff}
 
 /* shared head */
 .p-head{display:flex;align-items:center;gap:14px;margin:6px 0 20px}
@@ -268,13 +323,12 @@ body{background:var(--paper);color:var(--ink);
   <!-- ================= HOME ================= -->
   <section id="home" class="screen is-on">
     <h1 class="hello">Let's do <em>just five</em>.</h1>
-    <p class="sub">Short, exam-style maths practice. When you slip, M³ tells you exactly <em>why</em>, not just "wrong". About five minutes a go.</p>
+    <p class="sub">Showing kids, and adults, that they really can do maths, in <em>5-minute bites</em>, so confidence grows in small wins.</p>
     <div class="streak">🔥 <span><b id="streakNum">0</b>-day streak · one session keeps it alive</span></div>
     <p class="pick-label">Pick a topic</p>
     <div id="topicList"></div>
 
-    <!-- KO-FI: once your Ko-fi is set up, replace REPLACE_ME below with your handle,
-         e.g. https://ko-fi.com/cherylmah -->
+    <!-- KO-FI: your support link. To change it later, edit the href below. -->
     <footer class="foot">
       <p class="made">M³, made by <b>Cheryl Mah</b></p>
       <a class="kofi" href="https://ko-fi.com/pegachez" target="_blank" rel="noopener">☕ Buy me a coffee</a>
@@ -329,6 +383,7 @@ body{background:var(--paper);color:var(--ink);
     <div class="answer-row" id="answerRow">
       <input id="answer" autocomplete="off" autocapitalize="off" spellcheck="false"
              placeholder="Type your answer…" aria-label="Your answer">
+      <button type="button" class="sup-btn" id="supBtn" onclick="insSup()" title="Add a squared ²" aria-label="Insert squared">x²</button>
       <button class="btn btn-go" id="goBtn" onclick="submitAnswer()">Check</button>
     </div>
     <div class="q-opts" id="qOpts" style="display:none"></div>
@@ -361,6 +416,15 @@ body{background:var(--paper);color:var(--ink);
       <div class="sb-r"><button class="sb-btn" onclick="clearPad()">Clear</button>
         <button class="sb-btn" onclick="closeScratch()">Done</button></div></div>
     <canvas id="pad"></canvas>
+  </div>
+</div>
+
+<button class="calc-toggle" onclick="openCalc()">🧮 Calculator</button>
+<div class="calc" id="calc">
+  <div class="calc-panel">
+    <div class="calc-bar"><h3>Calculator</h3><button class="sb-btn" onclick="closeCalc()">Done</button></div>
+    <div class="calc-disp" id="calcDisp">0</div>
+    <div class="calc-grid" id="calcGrid"></div>
   </div>
 </div>
 
@@ -749,16 +813,457 @@ const LESSONS = [
    A topic with NO `parts` shows as "Soon". Change `group` to file it under a
    year (e.g. "Year 10", "Year 12 · Extension 1"); groups appear in this order.
    ============================================================================ */
+const NONLINEAR = [
+
+  /* ========================= PARABOLAS ========================= */
+  { id:"parabolas", name:"Parabolas", emoji:"📈", icon:["parab","blue"], summary:"The U-shaped curve", sessionSize:6,
+    learn:[
+      {m:["parab","blue"], term:"The parabola",
+       def:"A parabola is the smooth U-shaped curve you get from a quadratic equation.",
+       plain:"Its equation is $y = ax^2 + bx + c$. Three sliders reshape it. Slide each one and watch what moves.",
+       graph:"parabola",
+       checksHead:"Match it up",
+       checks:[
+         { q:"One is shifted up, one left, one is narrower. Which curve is $y = (x + 2)^2$ ?",
+           curves:[{kind:"parabola",p:{a:1,h:0,c:2}},{kind:"parabola",p:{a:1,h:-2,c:0}},{kind:"parabola",p:{a:2,h:0,c:0}}],
+           options:["Blue (shifted up)","Orange (shifted left)","Green (narrower)"], answer:1,
+           why:"(x + 2)² means h = −2, which slides it 2 steps left: the orange curve." }
+       ]},
+      {m:["parab","peach"], term:"Concave up or down",
+       def:"Concave up opens upward like a smile; concave down opens downward like a frown.",
+       plain:"The sign of $a$ decides. If $a$ is positive it smiles. If $a$ is negative it frowns.",
+       eq:"y = x^2 + 3x + 2",
+       pair:[{d:"concaveUp",cap:"a > 0 · concave up"},{d:"concaveDown",cap:"a < 0 · concave down"}],
+       checksHead:"Your turn",
+       checks:[
+         { q:"$y = −x^2 + x + 12$ is…",
+           options:["Concave down 🙁","Concave up 🙂"], answer:0,
+           why:"a = −1 is negative, so it opens downward." }
+       ]},
+      {m:["parabaxes","mint"], term:"Where it crosses the axes",
+       def:"The y-intercept is where the curve cuts the y-axis; the x-intercepts are where it cuts the x-axis.",
+       plain:"Cross the y-axis at $x = 0$, so put 0 in and only $c$ is left. Cross the x-axis at $y = 0$, so factor and solve.",
+       eq:"y = x^2 + 3x + 2",
+       example:"At $x = 0$: $y = 2$, so the y-intercept is 2. For the x-intercepts, factor $(x + 1)(x + 2) = 0$, giving $x = −1$ and $x = −2$.",
+       checksHead:"Your turn",
+       checks:[
+         { q:"The y-intercept of $y = x^2 − 5x + 6$ is…",
+           options:["6","−5","0"], answer:0,
+           why:"Put x = 0: only c is left, so y = 6." }
+       ]},
+      {m:["axis","lilac"], term:"Axis of symmetry",
+       def:"The axis of symmetry is the vertical line that folds the parabola into two mirror halves.",
+       plain:"You find it with a short formula:",
+       eq:"x = [-b/2a]",
+       diagram:"axisSym",
+       example:"The parabola above is $y = x^2 − 2x − 3$: here $a = 1$ and $b = −2$, so $x = −b ÷ 2a = 2 ÷ 2 = 1$, the dashed line.",
+       checksHead:"Your turn",
+       checks:[
+         { q:"Axis of symmetry of $y = x^2 − 4x + 1$ ?",
+           options:["x = 2","x = −2","x = 4"], answer:0,
+           why:"x = −b ÷ 2a = −(−4) ÷ 2 = 2." }
+       ]},
+      {m:["vertex","blue"], term:"The vertex",
+       def:"The vertex is the turning point of the parabola, and it always sits on the axis of symmetry.",
+       plain:"So find the axis with $x = [-b/2a]$ first, then put that $x$ back in to get the $y$.",
+       diagram:"vertex",
+       example:"For the parabola above, $y = x^2 − 2x − 3$: axis is $x = 1$; put it in, $y = 1 − 2 − 3 = −4$. The vertex is $(1, −4)$.",
+       checksHead:"Your turn",
+       checks:[
+         { q:"The vertex of $y = x^2 − 4x + 1$ is…",
+           options:["(2, −3)","(−2, 13)","(2, 1)"], answer:0,
+           why:"Axis x = 2, then y = 2² − 4(2) + 1 = −3." }
+       ]}
+    ],
+    questions:[
+      { ask:"Which curve is $y = (x + 2)^2$ ?",
+        curves:[{kind:"parabola",p:{a:1,h:0,c:0}},{kind:"parabola",p:{a:1,h:-2,c:0}},{kind:"parabola",p:{a:1,h:0,c:2}}],
+        options:[{label:"Blue",key:"blue"},{label:"Orange",key:"orange"},{label:"Green",key:"green"}],
+        answer:"orange", correctNote:"h = −2 slides it 2 steps left.",
+        slips:[{ifTheyType:"green", say:"Green is shifted up, not sideways. (x + 2)² slides left 2, which is the orange curve."}],
+        working:["(x + 2)² means h = −2.","A negative h slides the parabola left, to the orange curve."] },
+      { ask:"Is $y = −2x^2 + 5x − 1$ concave up or down?",
+        options:[{label:"Concave down 🙁",key:"down"},{label:"Concave up 🙂",key:"up"}],
+        answer:"down", correctNote:"a = −2 is negative.",
+        slips:[{ifTheyType:"up", say:"Check the sign of a. Here a = −2 is negative, so it frowns."}],
+        working:["Look at a, the number in front of x².","a = −2 < 0, so concave down."] },
+      { ask:"Find the axis of symmetry of $y = x^2 + 8x + 3$.",
+        answer:"-4", alsoAccept:["x=-4"], correctNote:"x = −b ÷ 2a.",
+        slips:[{ifTheyType:"4", say:"Watch the sign: x = −b ÷ 2a = −8 ÷ 2 = −4."}],
+        working:["x = −b ÷ 2a.","= −8 ÷ (2 × 1) = −4."] },
+      { ask:"The vertex of $y = x^2 − 6x + 5$ lies on which line?",
+        answer:"x=3", alsoAccept:["3"], correctNote:"x = −b ÷ 2a.",
+        slips:[{ifTheyType:"x=-3", say:"Mind the double negative: x = −(−6) ÷ 2 = 3."}],
+        working:["x = −b ÷ 2a = −(−6) ÷ 2.","= 6 ÷ 2 = 3."] },
+      { ask:"What is the y-intercept of $y = 2x^2 − 7x + 4$?",
+        answer:"4", correctNote:"Put x = 0; only c is left.",
+        slips:[{ifTheyType:"-7", say:"That's the number in front of x. The y-intercept is c, on its own: at x = 0, y = 4."}],
+        working:["Set x = 0.","y = 0 − 0 + 4 = 4."] },
+      { ask:"This parabola's vertex is at which point?",
+        plot:{kind:"parabola", p:{a:1,h:-1,c:-4}},
+        options:[{label:"(−1, −4)",key:"a"},{label:"(1, −4)",key:"b"},{label:"(−1, 4)",key:"c"}],
+        answer:"a", correctNote:"The lowest point sits at (−1, −4).",
+        slips:[{ifTheyType:"b", say:"Check the sign of x. The turning point is to the left of the y-axis, at (−1, −4)."}],
+        working:["The turning point is the lowest point of the U.","Read it off: (−1, −4)."] }
+    ]
+  },
+
+  /* ========================= CIRCLES ========================= */
+  { id:"circles", name:"Circles", emoji:"⭕", icon:["ring","mint"], summary:"Centre, radius & Pythagoras", sessionSize:6,
+    learn:[
+      {m:["ring","mint"], term:"Building a circle",
+       def:"A circle is every point that sits the same distance, the radius, from a centre.",
+       plain:"Take a point $(x, y)$ on a circle centred at the origin, and drop a right-angled triangle down to the axes.",
+       diagram:"circleOrigin",
+       eq:"x^2 + y^2 = r^2",
+       checksHead:"Three quick checks",
+       checks:[
+         { q:"The legs are $x$ and $y$, the hypotenuse is $r$. What does Pythagoras give?",
+           options:["$x^2 + y^2 = r^2$","$x + y = r$","$x^2 − y^2 = r^2$"], answer:0,
+           why:"Pythagoras: leg² + leg² = hypotenuse², so x² + y² = r²." },
+         { q:"So a circle centred at the origin with radius 6 is…",
+           options:["$x^2 + y^2 = 36$","$x^2 + y^2 = 6$","$x^2 + y^2 = 12$"], answer:0,
+           why:"Use r²: 6² = 36." },
+         { q:"What is the radius of $x^2 + y^2 = 49$ ?",
+           options:["7","49","24.5"], answer:0,
+           why:"r² = 49, so r = √49 = 7." }
+       ]},
+      {m:["ring","blue"], term:"Moving the centre",
+       def:"Sliding a circle away from the origin moves its centre to a point called $(h, k)$.",
+       plain:"Try the explorer. The first slider changes the radius; the next two slide the centre left/right and up/down.",
+       graph:"circle",
+       checksHead:"Three quick checks",
+       checks:[
+         { q:"Which slider makes the circle bigger or smaller?",
+           options:["Radius","Left / right","Up / down"], answer:0,
+           why:"The radius slider sets the size." },
+         { q:"Sliding 'left / right' changes which value?",
+           options:["h","k","r"], answer:0,
+           why:"h is the across (x) position of the centre." },
+         { q:"Sliding 'up / down' changes which value?",
+           options:["k","h","r"], answer:0,
+           why:"k is the up (y) position of the centre." }
+       ]},
+      {m:["ring","lilac"], term:"The off-centre circle",
+       def:"For a circle with centre $(h, k)$, the triangle legs become $x − h$ and $y − k$.",
+       plain:"Same Pythagoras, just measured from the new centre instead of the origin.",
+       diagram:"circleShift",
+       eq:"(x − h)^2 + (y − k)^2 = r^2",
+       example:"Watch the signs: a centre of $(−4, 2)$ gives $(x + 4)^2 + (y − 2)^2$. They flip.",
+       checksHead:"Three quick checks",
+       checks:[
+         { q:"The centre of $(x − 3)^2 + (y + 1)^2 = 16$ is…",
+           options:["(3, −1)","(−3, 1)","(3, 1)"], answer:0,
+           why:"Flip the signs inside the brackets: centre (3, −1)." },
+         { q:"The radius of $(x − 3)^2 + (y + 1)^2 = 16$ is…",
+           options:["4","16","8"], answer:0,
+           why:"r² = 16, so r = 4." },
+         { q:"A circle with centre $(−4, 2)$ and radius 6 is…",
+           options:["$(x + 4)^2 + (y − 2)^2 = 36$","$(x − 4)^2 + (y + 2)^2 = 36$","$(x + 4)^2 + (y − 2)^2 = 6$"], answer:0,
+           why:"Signs flip, and r² = 36." }
+       ]}
+    ],
+    questions:[
+      { ask:"What is the radius of $x^2 + y^2 = 36$?",
+        answer:"6", correctNote:"r = √(r²).",
+        slips:[{ifTheyType:"36", say:"That's r², not r. Take the square root: r = √36 = 6."},{ifTheyType:"18", say:"Don't halve it. r² = 36, so r = √36 = 6."}],
+        working:["r² = 36.","r = √36 = 6."] },
+      { ask:"What is the centre of $x^2 + y^2 = 25$?",
+        answer:"(0,0)", alsoAccept:["0,0","origin"], correctNote:"This form is always centred at the origin.",
+        slips:[{ifTheyType:"(5,5)", say:"The 25 is r², not the centre. x² + y² = r² always has centre (0, 0)."}],
+        working:["x² + y² = r² has centre (0, 0)."] },
+      { ask:"Write the equation of the circle with centre $(0, 0)$ and radius 8.",
+        answer:"x^2+y^2=64", alsoAccept:["x²+y²=64","y^2+x^2=64"], correctNote:"Use r², so 8² = 64.",
+        slips:[{ifTheyType:"x^2+y^2=8", say:"Use r², not r. 8² = 64, so x² + y² = 64."}],
+        working:["x² + y² = r².","r = 8, so r² = 64.","x² + y² = 64."],
+        examTip:"Tap the x² button to type the power quickly." },
+      { ask:"What is the centre of $(x + 4)^2 + (y − 2)^2 = 36$?",
+        answer:"(-4,2)", alsoAccept:["-4,2","(−4,2)"], correctNote:"Flip the signs inside the brackets.",
+        slips:[{ifTheyType:"(4,-2)", say:"Flip the signs: (x + 4) gives h = −4, (y − 2) gives k = 2. Centre (−4, 2)."}],
+        working:["(x − h)² + (y − k)² = r².","(x + 4) → h = −4; (y − 2) → k = 2.","Centre (−4, 2)."] },
+      { ask:"Write the equation of the circle with centre $(−4, 9)$ and radius 5.",
+        answer:"(x+4)^2+(y-9)^2=25", alsoAccept:["(x+4)²+(y-9)²=25"], correctNote:"Signs flip, and r² = 25.",
+        slips:[{ifTheyType:"(x-4)^2+(y+9)^2=25", say:"Flip the signs: centre (−4, 9) gives (x + 4)² + (y − 9)². And r² = 25."}],
+        working:["(x − h)² + (y − k)² = r².","h = −4 → (x + 4); k = 9 → (y − 9); r² = 25.","(x + 4)² + (y − 9)² = 25."] },
+      { ask:"What is the radius of $(x + 4)^2 + (y − 2)^2 = 36$?",
+        answer:"6", correctNote:"r = √(r²).",
+        slips:[{ifTheyType:"36", say:"That's r². Take the root: r = √36 = 6."}],
+        working:["r² = 36, so r = 6."] }
+    ]
+  },
+
+  /* ========================= HYPERBOLAS ========================= */
+  { id:"hyperbolas", name:"Hyperbolas", emoji:"🌀", icon:["hyper","lilac"], summary:"Two branches that never touch", sessionSize:5,
+    learn:[
+      {m:["hyper","lilac"], term:"The hyperbola",
+       def:"A hyperbola is the curve of $y = [k/x]$ : two separate branches that never touch the axes.",
+       plain:"It can also be written $xy = k$. Drag $k$ to watch it grow and flip sides.",
+       graph:"hyperbola",
+       checksHead:"Your turn",
+       checks:[
+         { q:"Which is another way to write $y = [k/x]$ ?",
+           options:["$xy = k$","$x + y = k$","$y = kx$"], answer:0,
+           why:"Multiply both sides by x: xy = k." }
+       ]},
+      {m:["plusminus","blue"], term:"Positive or negative",
+       def:"The sign of $k$ decides which two corners the branches sit in.",
+       plain:"Positive $k$ sits in these two corners; negative $k$ flips to the other two. Compare them:",
+       pair:[{d:"hyperPos",cap:"k > 0"},{d:"hyperNeg",cap:"k < 0"}],
+       checksHead:"Your turn",
+       checks:[
+         { q:"Which sign of $k$ gives this graph?",
+           diagram:"hyperNegPlain",
+           options:["$k < 0$ (negative)","$k > 0$ (positive)"], answer:0,
+           why:"The branches sit in the top-left and bottom-right, so k is negative." }
+       ]},
+      {m:["asymptote","mint"], term:"Asymptotes",
+       def:"An asymptote is a line the curve gets closer and closer to but never actually reaches.",
+       plain:"For $y = [k/x]$ the two axes are the asymptotes. As $x$ grows huge, $y$ creeps toward 0 but never lands on it.",
+       diagram:"asymptote",
+       example:"For $y = [1/x]$: at $x = 100$, $y = 0.01$. Bigger $x$ gives a tinier $y$, but never exactly 0.",
+       checksHead:"Your turn",
+       checks:[
+         { q:"As $x$ gets very large, $y = [1/x]$ heads toward…",
+           options:["0","1","x"], answer:0,
+           why:"1 ÷ a huge number shrinks toward 0." }
+       ]}
+    ],
+    questions:[
+      { ask:"Which equation could give this graph?",
+        diagram:"hyperPosPlain",
+        options:[{label:"$y = [3/x]$",key:"a"},{label:"$y = [-3/x]$",key:"b"},{label:"$y = x^2$",key:"c"}],
+        answer:"a", correctNote:"Branches in the top-right and bottom-left mean positive k.",
+        slips:[{ifTheyType:"b", say:"A negative k would flip the branches to the other corners. This one is positive."}],
+        working:["Branches top-right and bottom-left → k > 0.","That is y = 3/x."] },
+      { ask:"For this graph, is $k$ positive or negative?",
+        diagram:"hyperNegPlain",
+        options:[{label:"Negative",key:"neg"},{label:"Positive",key:"pos"}],
+        answer:"neg", correctNote:"Top-left and bottom-right means k < 0.",
+        slips:[{ifTheyType:"pos", say:"Positive k sits in the other two corners. These branches mean k is negative."}],
+        working:["Branches top-left and bottom-right → k < 0."] },
+      { ask:"Which of these is a hyperbola?",
+        options:[{label:"$y = [6/x]$",key:"a"},{label:"$y = x^2 + 1$",key:"b"},{label:"$y = 2x$",key:"c"}],
+        answer:"a", correctNote:"A variable in the denominator makes a hyperbola.",
+        slips:[{ifTheyType:"b", say:"x² + 1 is a parabola. A hyperbola has x on the bottom, like 6/x."}],
+        working:["y = k/x is the hyperbola form.","y = 6/x fits."] },
+      { ask:"Which colour shows $y = [3/x]$ ?",
+        curves:[{kind:"hyperbola",p:{k:3}},{kind:"hyperbola",p:{k:-3}}],
+        options:[{label:"Blue",key:"blue"},{label:"Orange",key:"orange"}],
+        answer:"blue", correctNote:"Positive k is the blue curve (top-right, bottom-left).",
+        slips:[{ifTheyType:"orange", say:"Orange is y = −3/x. The positive one, y = 3/x, is blue."}],
+        working:["k = 3 > 0 → top-right and bottom-left → blue."] },
+      { ask:"A hyperbola gets closer and closer to, but never touches, its…",
+        options:[{label:"Asymptotes",key:"a"},{label:"Vertex",key:"b"},{label:"Intercepts",key:"c"}],
+        answer:"a", correctNote:"The axes it approaches are its asymptotes.",
+        slips:[{ifTheyType:"b", say:"A hyperbola has no single turning point. The lines it approaches are asymptotes."}],
+        working:["The line a curve approaches but never meets is an asymptote."] }
+    ]
+  },
+
+  /* ========================= EXPONENTIALS ========================= */
+  { id:"exponentials", name:"Exponentials", emoji:"🚀", icon:["expo","peach"], summary:"The variable in the power", sessionSize:5,
+    learn:[
+      {m:["expo","peach"], term:"The exponential",
+       def:"In an exponential the variable sits up in the power: $y = a^x$.",
+       plain:"It starts slow, then climbs fast. One slider makes it steeper, the other shifts it up and down.",
+       graph:"exp",
+       checksHead:"Your turn",
+       checks:[
+         { q:"What makes a curve exponential?",
+           options:["The variable is in the power","The variable is squared","The variable is under a root"], answer:0,
+           why:"Exponentials have x in the exponent, like 2 to the power x." }
+       ]},
+      {m:["expo","blue"], term:"It always crosses at 1",
+       def:"Every $y = a^x$ passes through the point $(0, 1)$, because anything to the power 0 is 1.",
+       plain:"So whatever the base, the curve meets the y-axis at 1.",
+       diagram:"expCross",
+       example:"$y = 2^x$ at $x = 0$ is $2^0 = 1$.",
+       checksHead:"Your turn",
+       checks:[
+         { q:"The y-intercept of $y = 5^x$ is…",
+           options:["1","5","0"], answer:0,
+           why:"5 to the power 0 is 1." }
+       ]},
+      {m:["grow","peach"], term:"Growth or decay",
+       def:"Growth climbs as $x$ increases; decay falls toward 0 as $x$ increases.",
+       plain:"$y = a^x$ grows. $y = a^(-x)$, with a negative power, decays. Compare them:",
+       pair:[{d:"expGrowth",cap:"$y = 2^x$ · growth"},{d:"expDecay",cap:"$y = 2^(-x)$ · decay"}],
+       checksHead:"Your turn",
+       checks:[
+         { q:"Is this curve growth or decay?",
+           diagram:"expDecayPlain",
+           options:["Decay","Growth"], answer:0,
+           why:"It falls toward 0 as x increases, so it is decay." }
+       ]}
+    ],
+    questions:[
+      { ask:"Which equation matches this curve?",
+        diagram:"expGrowthPlain",
+        options:[{label:"$y = 2^x$",key:"a"},{label:"$y = 2^(-x)$",key:"b"},{label:"$y = x^2$",key:"c"}],
+        answer:"a", correctNote:"It climbs as x increases, so positive power.",
+        slips:[{ifTheyType:"b", say:"A negative power decays. This one climbs, so y = 2 to the power x."}],
+        working:["The curve rises as x increases → growth → y = 2^x."] },
+      { ask:"Is this curve growth or decay?",
+        diagram:"expDecayPlain",
+        options:[{label:"Decay",key:"decay"},{label:"Growth",key:"growth"}],
+        answer:"decay", correctNote:"It heads down toward 0.",
+        slips:[{ifTheyType:"growth", say:"Growth climbs. This one falls toward 0, so it is decay."}],
+        working:["Falls toward 0 as x increases → decay."] },
+      { ask:"The y-intercept of any $y = a^x$ is…",
+        options:[{label:"1",key:"a"},{label:"0",key:"b"},{label:"a",key:"c"}],
+        answer:"a", correctNote:"Anything to the power 0 is 1.",
+        slips:[{ifTheyType:"b", say:"At x = 0 the value is a⁰ = 1, not 0."}],
+        working:["At x = 0, a⁰ = 1.","So every a^x crosses at (0, 1)."] },
+      { ask:"Which colour climbs faster (the 'narrower' curve)?",
+        curves:[{kind:"exp",p:{a:2,c:0}},{kind:"exp",p:{a:4,c:0}}],
+        options:[{label:"Blue",key:"blue"},{label:"Orange",key:"orange"}],
+        answer:"orange", correctNote:"A bigger base climbs more steeply.",
+        slips:[{ifTheyType:"blue", say:"Blue is y = 2 to the power x. Orange has the bigger base, so it climbs faster."}],
+        working:["Bigger base → steeper climb.","Orange (base 4) beats blue (base 2)."] },
+      { ask:"Which of these is exponential?",
+        options:[{label:"$y = 3^x$",key:"a"},{label:"$y = 3x$",key:"b"},{label:"$y = x^3$",key:"c"}],
+        answer:"a", correctNote:"The x is in the power.",
+        slips:[{ifTheyType:"c", say:"x³ is a cubic. Exponential has x in the power, like 3 to the power x."}],
+        working:["Exponential = variable in the exponent.","y = 3^x fits."] }
+    ]
+  },
+
+  /* ========================= CUBICS ========================= */
+  { id:"cubics", name:"Cubics", emoji:"〰️", icon:["cubic","pink"], summary:"The S-shaped curve", sessionSize:5,
+    learn:[
+      {m:["cubic","pink"], term:"The cubic",
+       def:"A cubic has $x^3$ as its highest power and draws a stretched S-shape.",
+       plain:"One slider makes the curve steeper or flatter, the other shifts it up and down.",
+       graph:"cubic",
+       checksHead:"Your turn",
+       checks:[
+         { q:"The highest power in a cubic is…",
+           options:["3","2","1"], answer:0,
+           why:"Cubic means the x³ term is the highest." }
+       ]},
+      {m:["cubic","blue"], term:"Positive or negative",
+       def:"A positive cubic rises from bottom-left to top-right; a negative one falls from top-left to bottom-right.",
+       plain:"The sign of the number in front of $x^3$ flips the whole S. Compare them:",
+       pair:[{d:"cubicPos",cap:"a > 0 · positive"},{d:"cubicNeg",cap:"a < 0 · negative"}],
+       checksHead:"Your turn",
+       checks:[
+         { q:"Is this a positive or negative cubic?",
+           diagram:"cubicNeg",
+           options:["Negative","Positive"], answer:0,
+           why:"It falls from top-left to bottom-right, so a is negative." }
+       ]},
+      {m:["cubic","mint"], term:"Factorised form",
+       def:"When a cubic is written as a product of brackets, each bracket gives an x-intercept.",
+       plain:"Set each bracket to 0 and solve for $x$.",
+       eq:"y = x(x + 2)(x − 3)",
+       diagram:"cubicFactor",
+       example:"$y = x(x + 2)(x − 3)$ cuts the x-axis at $0, −2$ and $3$.",
+       checksHead:"Your turn",
+       checks:[
+         { q:"The x-intercepts of $y = x(x − 1)(x + 4)$ are…",
+           options:["0, 1, −4","0, −1, 4","1, −4"], answer:0,
+           why:"Set each bracket to 0: x = 0, 1, −4." }
+       ]}
+    ],
+    questions:[
+      { ask:"Is this a positive or negative cubic?",
+        diagram:"cubicPos",
+        options:[{label:"Positive",key:"pos"},{label:"Negative",key:"neg"}],
+        answer:"pos", correctNote:"It rises from bottom-left to top-right.",
+        slips:[{ifTheyType:"neg", say:"Negative cubics fall. This one rises left-to-right, so it is positive."}],
+        working:["Rises from bottom-left to top-right → positive."] },
+      { ask:"Which of these is a cubic?",
+        options:[{label:"$y = x^3$",key:"a"},{label:"$y = x^2$",key:"b"},{label:"$y = [3/x]$",key:"c"}],
+        answer:"a", correctNote:"The highest power is 3.",
+        slips:[{ifTheyType:"b", say:"x² is a parabola. A cubic's highest power is 3, like x³."}],
+        working:["Cubic = highest power 3.","y = x³ fits."] },
+      { ask:"The x-intercepts of $y = x(x + 2)(x − 3)$ are…",
+        options:[{label:"0, −2, 3",key:"a"},{label:"0, 2, −3",key:"b"},{label:"−2, 3",key:"c"}],
+        answer:"a", correctNote:"Set each bracket to 0.",
+        slips:[{ifTheyType:"b", say:"Flip the signs inside: (x + 2) → −2 and (x − 3) → 3. So 0, −2, 3."}],
+        working:["x = 0, or x + 2 = 0 → −2, or x − 3 = 0 → 3.","x-intercepts: 0, −2, 3."] },
+      { ask:"Which factorised equation matches this curve?",
+        diagram:"cubicFactor",
+        options:[{label:"$y = x(x + 2)(x − 3)$",key:"a"},{label:"$y = x(x − 2)(x + 3)$",key:"b"},{label:"$y = (x + 2)(x − 3)$",key:"c"}],
+        answer:"a", correctNote:"Its roots 0, −2 and 3 match the crossings.",
+        slips:[{ifTheyType:"b", say:"Those brackets give roots 0, 2, −3. This curve crosses at 0, −2 and 3, so x(x + 2)(x − 3)."},{ifTheyType:"c", say:"That one has only two brackets, so only two crossings. The curve crosses three times: x(x + 2)(x − 3)."}],
+        working:["Read the crossings off the graph: x = 0, −2 and 3.","Brackets with those roots: x(x + 2)(x − 3)."] },
+      { ask:"$y = −x^3$ is a…",
+        options:[{label:"Negative cubic",key:"a"},{label:"Positive cubic",key:"b"},{label:"Parabola",key:"c"}],
+        answer:"a", correctNote:"The −1 in front flips it.",
+        slips:[{ifTheyType:"b", say:"The minus sign makes it a negative cubic."}],
+        working:["a = −1 < 0 → negative cubic."] }
+    ]
+  },
+
+  /* ========================= REVISION ========================= */
+  { id:"revision", name:"Revision", emoji:"📝", summary:"Exam-style mix, a little trickier", sessionSize:10,
+    questions:[
+      { ask:"A parabola has x-intercepts at $−3$ and $5$. What is its axis of symmetry?",
+        answer:"x=1", alsoAccept:["1"], correctNote:"The axis is halfway between the intercepts.",
+        slips:[{ifTheyType:"x=4", say:"Take the midpoint, not the gap: (−3 + 5) ÷ 2 = 1."}],
+        working:["Axis = midpoint of the x-intercepts.","(−3 + 5) ÷ 2 = 1."] },
+      { ask:"Find the vertex of $y = x^2 − 6x + 5$.",
+        answer:"(3,-4)", alsoAccept:["3,-4","(3, -4)"], correctNote:"Axis first, then substitute.",
+        slips:[{ifTheyType:"(3,5)", say:"You found the axis but not the y. Put x = 3 in: y = 9 − 18 + 5 = −4."}],
+        working:["Axis: x = −(−6) ÷ 2 = 3.","y = 3² − 6(3) + 5 = −4.","Vertex (3, −4)."] },
+      { ask:"Write the equation of a circle with centre $(2, −3)$ and radius 7.",
+        answer:"(x-2)^2+(y+3)^2=49", alsoAccept:["(x−2)²+(y+3)²=49"], correctNote:"Signs flip, and r² = 49.",
+        slips:[{ifTheyType:"(x+2)^2+(y-3)^2=49", say:"Flip the signs from the centre: (x − 2)² + (y + 3)². And r² = 49."}],
+        working:["(x − h)² + (y − k)² = r².","h = 2 → (x − 2); k = −3 → (y + 3); r² = 49."],
+        examTip:"Tap the x² button to add the powers quickly." },
+      { ask:"A circle has equation $x^2 + y^2 = 20$. What is its exact radius?",
+        options:[{label:"$2√5$",key:"a"},{label:"$√10$",key:"b"},{label:"10",key:"c"}],
+        answer:"a", correctNote:"√20 simplifies to 2√5.",
+        slips:[{ifTheyType:"c", say:"20 is r², not r. r = √20 = 2√5."}],
+        working:["r = √20.","√20 = √(4 × 5) = 2√5."] },
+      { ask:"This hyperbola could be…",
+        diagram:"hyperNegPlain",
+        options:[{label:"$y = [-4/x]$",key:"a"},{label:"$y = [4/x]$",key:"b"},{label:"$y = x^2$",key:"c"}],
+        answer:"a", correctNote:"Top-left and bottom-right means negative k.",
+        slips:[{ifTheyType:"b", say:"Positive k sits in the other corners. These branches need a negative k, like −4/x."}],
+        working:["Branches top-left and bottom-right → k < 0 → y = −4/x."] },
+      { ask:"Is $y = 0.5^x$ growth or decay?",
+        options:[{label:"Decay",key:"decay"},{label:"Growth",key:"growth"}],
+        answer:"decay", correctNote:"A base below 1 shrinks as x grows.",
+        slips:[{ifTheyType:"growth", say:"Half of a half of a half... a base under 1 shrinks, so it decays."}],
+        working:["Base 0.5 is less than 1.","Each step multiplies by 0.5, so it falls: decay."] },
+      { ask:"The graph of $y = (x − 4)^2 + 1$ has its vertex at…",
+        options:[{label:"(4, 1)",key:"a"},{label:"(−4, 1)",key:"b"},{label:"(4, −1)",key:"c"}],
+        answer:"a", correctNote:"Vertex form shows it directly.",
+        slips:[{ifTheyType:"b", say:"(x − 4) means the vertex x is +4, not −4. Vertex (4, 1)."}],
+        working:["y = (x − h)² + k has vertex (h, k).","(x − 4)² + 1 → vertex (4, 1)."] },
+      { ask:"The cubic $y = (x − 1)(x + 2)(x − 4)$ crosses the x-axis how many times?",
+        answer:"3", correctNote:"Three brackets, three x-intercepts.",
+        slips:[{ifTheyType:"1", say:"Each bracket gives a crossing: x = 1, −2, 4. That's three."}],
+        working:["Set each bracket to 0: x = 1, −2, 4.","Three crossings."] },
+      { ask:"Which equation is a circle?",
+        options:[{label:"$x^2 + y^2 = 9$",key:"a"},{label:"$y = x^2 + 9$",key:"b"},{label:"$y = [9/x]$",key:"c"}],
+        answer:"a", correctNote:"Both x² and y² together, equal to a number.",
+        slips:[{ifTheyType:"b", say:"y = x² + 9 is a parabola. A circle has x² and y² together: x² + y² = 9."}],
+        working:["A circle has x² + y² = r².","x² + y² = 9 fits."] },
+      { ask:"The parabola $y = −3x^2 + 2x + 1$ is concave…",
+        options:[{label:"Down 🙁",key:"down"},{label:"Up 🙂",key:"up"}],
+        answer:"down", correctNote:"a = −3 is negative.",
+        slips:[{ifTheyType:"up", say:"a = −3 is negative, so it opens downward: concave down."}],
+        working:["Look at a = −3.","Negative a → concave down."] }
+    ]
+  }
+
+];
+
+
 const TOPICS = [
-  { id:"consumer", group:"Year 9", name:"Consumer Arithmetic", emoji:"💵",
+  { id:"consumer", group:"Year 9 & 10", name:"Consumer Arithmetic", emoji:"💵",
     blurb:"Earning, spending, tax & best value",
     note:"throughout: 1 year = 52 weeks = 26 fortnights = 12 months",
     parts: LESSONS },
-  { id:"nonlinear", group:"Year 9", name:"Non-linear graphs", emoji:"📈", blurb:"Parabolas, circles & cubics" },
-  { id:"indices9",  group:"Year 9", name:"Indices & surds",   emoji:"🔢", blurb:"Powers, roots & surd rules" },
-  { id:"trig9",     group:"Year 9", name:"Pythagoras & trig", emoji:"📐", blurb:"Right-angled triangles" },
-
-  { id:"y10", group:"Year 10", name:"More topics", emoji:"🧮", blurb:"Added as we go" },
+  { id:"nonlinear", group:"Year 9 & 10", name:"Non-linear relationships", emoji:"📈",
+    blurb:"Parabolas, circles, hyperbolas, exponentials & cubics",
+    note:"tip: use the sliders in each Learn card to see the curves move",
+    parts: NONLINEAR },
+  { id:"indices9",  group:"Year 9 & 10", name:"Indices & surds",   emoji:"🔢", blurb:"Powers, roots & surd rules" },
+  { id:"trig9",     group:"Year 9 & 10", name:"Pythagoras & trig", emoji:"📐", blurb:"Right-angled triangles" },
 
   { id:"y11", group:"Year 11", name:"More topics", emoji:"🧮", blurb:"Added as we go" },
 
@@ -796,7 +1301,20 @@ const ICONS={
   deposit:`<circle cx="48" cy="35" r="6"/><line x1="48" y1="41" x2="48" y2="45"/><rect x="33" y="46" width="30" height="18" rx="3"/><line x1="43" y1="52" x2="53" y2="52"/>`,
   card:`<rect x="30" y="38" width="36" height="22" rx="4"/><line x1="30" y1="46" x2="66" y2="46"/><line x1="36" y1="54" x2="46" y2="54"/>`,
   search:`<circle cx="44" cy="44" r="12"/><line x1="53" y1="53" x2="62" y2="62"/>`,
-  steps:`<path d="M30 64 H40 V55 H50 V46 H60 V37 H66"/>`
+  steps:`<path d="M30 64 H40 V55 H50 V46 H60 V37 H66"/>`,
+  parab:`<path d="M30 64 Q48 22 66 64"/>`,
+  parabaxes:`<line x1="26" y1="58" x2="70" y2="58"/><line x1="44" y1="30" x2="44" y2="70"/><path d="M30 62 Q46 26 62 62"/>`,
+  axis:`<path d="M32 64 Q48 26 64 64"/><line x1="48" y1="28" x2="48" y2="66" stroke-dasharray="4 3"/>`,
+  vertex:`<path d="M32 62 Q48 26 64 62"/><circle cx="48" cy="44" r="3.6" fill="currentColor"/>`,
+  ring:`<circle cx="48" cy="48" r="18"/>`,
+  ringxy:`<circle cx="52" cy="44" r="15"/><path d="M37 59 h10 v-10"/><line x1="37" y1="59" x2="47" y2="49"/>`,
+  hyper:`<path d="M34 34 C34 46 46 48 48 48"/><path d="M62 62 C62 50 50 48 48 48"/>`,
+  plusminus:`<line x1="33" y1="41" x2="49" y2="41"/><line x1="41" y1="33" x2="41" y2="49"/><line x1="33" y1="60" x2="49" y2="60"/>`,
+  asymptote:`<line x1="30" y1="62" x2="66" y2="62" stroke-dasharray="4 3"/><line x1="62" y1="30" x2="62" y2="66" stroke-dasharray="4 3"/><path d="M34 34 C34 50 50 58 58 58"/>`,
+  expo:`<path d="M32 62 C50 62 54 36 64 32"/>`,
+  grow:`<path d="M32 62 C50 62 54 38 62 30"/><path d="M55 30 H63 V38"/>`,
+  decay:`<path d="M34 32 C42 32 46 56 64 62"/>`,
+  cubic:`<path d="M32 60 C40 60 42 50 48 48 C54 46 56 36 64 36"/>`
 };
 function icon(spec){
   const name=(spec&&spec[0])||"calendar", t=(spec&&spec[1])||"pink";
@@ -822,9 +1340,246 @@ function same(a,b){
   const x=numVal(a),y=numVal(b);
   return x!==null&&y!==null&&Math.abs(x-y)<0.005;
 }
-function fmt(s){
-  return String(s).replace(/\^(-?\d+)/g,"<sup>$1</sup>");
+/* ---- equation typesetting: italic variables, superscripts, nice fractions ---- */
+function italicVars(s){
+  const FN=/^(sin|cos|tan|sec|cosec|cot|log|ln|sqrt|lim|exp)$/i;
+  return s.split(/(<[^>]*>)/).map(part=>
+    part.charAt(0)==="<" ? part
+      : part.replace(/[A-Za-z]+/g, run => FN.test(run) ? run : "<i>"+run+"</i>")
+  ).join("");
 }
+function eqHTML(s){
+  s=String(s).replace(/\^\(([^)]+)\)/g,"<sup>$1</sup>").replace(/\^(-?[0-9a-zA-Z]+)/g,"<sup>$1</sup>");
+  s=s.replace(/\[([^\]\/]+)\/([^\]]+)\]/g,'<span class="frac"><span class="num">$1</span><span class="den">$2</span></span>');
+  return italicVars(s);
+}
+function EQ(s){ return '<div class="eqn">'+eqHTML(s)+'</div>'; }
+function fmt(s){
+  return String(s)
+    .replace(/\$([^$]+)\$/g,(m,g)=>'<span class="mi">'+eqHTML(g)+'</span>')
+    .replace(/\^(-?\d+)/g,"<sup>$1</sup>");
+}
+/* insert a superscript ² at the cursor in the answer box */
+function insSup(){
+  const i=el("answer"); if(!i)return;
+  const s=i.selectionStart||0,e=i.selectionEnd||0,v=i.value;
+  i.value=v.slice(0,s)+"²"+v.slice(e); i.focus();
+  i.selectionStart=i.selectionEnd=s+1;
+}
+
+/* ---- concept diagrams (small, static SVG) ---- */
+function CVp(f,col){return `<path d="${curveD(f)}" fill="none" stroke="${col||'#2F6FB5'}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>`;}
+function DOTd(x,y,col){return `<circle cx="${GX(x).toFixed(1)}" cy="${GY(y).toFixed(1)}" r="4.8" fill="${col||'#E8765A'}"/>`;}
+function TXi(x,y,s,col,dx,dy){return `<text x="${(GX(x)+(dx||0)).toFixed(1)}" y="${(GY(y)+(dy||0)).toFixed(1)}" font-size="16" font-family="Georgia,serif" font-style="italic" fill="${col||'#51607A'}" text-anchor="middle">${s}</text>`;}
+function TXp(x,y,s,col,dx,dy){return `<text x="${(GX(x)+(dx||0)).toFixed(1)}" y="${(GY(y)+(dy||0)).toFixed(1)}" font-size="13" font-family="Nunito,sans-serif" font-weight="700" fill="${col||'#51607A'}" text-anchor="middle">${s}</text>`;}
+function DV(x,col){return `<line x1="${GX(x).toFixed(1)}" y1="${GV.pad}" x2="${GX(x).toFixed(1)}" y2="${GV.S-GV.pad}" stroke="${col||'#E8765A'}" stroke-width="1.6" stroke-dasharray="5 4"/>`;}
+function seg(x1,y1,x2,y2,col){return `<line x1="${GX(x1).toFixed(1)}" y1="${GY(y1).toFixed(1)}" x2="${GX(x2).toFixed(1)}" y2="${GY(y2).toFixed(1)}" stroke="${col||'#8AA0BE'}" stroke-width="2"/>`;}
+function face(cx,cy,r,happy){
+  const eyeY=cy-r*0.12,exo=r*0.34,ey=r*0.13;
+  const mouth=happy?`M ${cx-r*0.45} ${cy+r*0.22} Q ${cx} ${cy+r*0.72} ${cx+r*0.45} ${cy+r*0.22}`
+                   :`M ${cx-r*0.45} ${cy+r*0.5} Q ${cx} ${cy} ${cx+r*0.45} ${cy+r*0.5}`;
+  return `<g><circle cx="${cx}" cy="${cy}" r="${r}" fill="#FFE8A3" stroke="#E8B84B" stroke-width="2.5"/>
+    <circle cx="${cx-exo}" cy="${eyeY}" r="${ey}" fill="#5A4A2E"/><circle cx="${cx+exo}" cy="${eyeY}" r="${ey}" fill="#5A4A2E"/>
+    <path d="${mouth}" fill="none" stroke="#5A4A2E" stroke-width="3" stroke-linecap="round"/></g>`;
+}
+function DG(inner){return `<svg class="dgm" viewBox="0 0 ${GV.S} ${GV.S}" aria-hidden="true">${axesSVG()}${inner}</svg>`;}
+function dgm(name){
+  switch(name){
+    case "concaveUp":   return DG(CVp(x=>0.4*x*x-3.5)+face(246,62,21,true));
+    case "concaveDown": return DG(CVp(x=>-0.4*x*x+3.5)+face(246,236,21,false));
+    case "axisSym":     return DG(DV(1)+CVp(x=>x*x-2*x-3)+`<text x="${GX(1).toFixed(1)}" y="${(GV.pad+16)}" font-size="16" font-family="Georgia,serif" fill="#B5542F" text-anchor="middle"><tspan font-style="italic">x</tspan> = 1</text>`);
+    case "vertex":      return DG(DV(1)+CVp(x=>x*x-2*x-3)+DOTd(1,-4)+TXp(1,-4,"(1, −4)","#B5542F",8,24));
+    case "circleOrigin":return DG(`<circle cx="${GX(0)}" cy="${GY(0)}" r="${(5*SC).toFixed(1)}" fill="none" stroke="#2F6FB5" stroke-width="3"/>`+
+                            seg(0,0,3,0,"#8AA0BE")+seg(3,0,3,4,"#8AA0BE")+seg(0,0,3,4,"#E8765A")+
+                            `<rect x="${(GX(3)-12).toFixed(1)}" y="${GY(0).toFixed(1)}" width="12" height="12" fill="none" stroke="#8AA0BE" stroke-width="1.5"/>`+
+                            DOTd(3,4)+TXi(1.5,0,"x",null,0,18)+TXi(3,2,"y",null,16,4)+TXi(1.5,2.4,"r","#B5542F",-6,0));
+    case "circleShift": return DG(`<circle cx="${GX(2)}" cy="${GY(1)}" r="${(4*SC).toFixed(1)}" fill="none" stroke="#2F6FB5" stroke-width="3"/>`+
+                            seg(2,1,2+2.4,1,"#8AA0BE")+seg(2+2.4,1,2+2.4,1+3.2,"#8AA0BE")+seg(2,1,2+2.4,1+3.2,"#E8765A")+
+                            DOTd(2,1,"#2F6FB5")+DOTd(4.4,4.2)+
+                            TXp(3.2,1,"x − h",null,0,18)+TXp(4.4,2.6,"y − k",null,22,0)+TXi(3,2.9,"r","#B5542F",-4,0)+TXp(2,1,"(h, k)","#2F6FB5",-16,-8));
+    case "expCross":    return DG(CVp(x=>Math.pow(2,x))+DOTd(0,1)+TXp(0,1,"(0, 1)","#B5542F",24,4));
+    case "expGrowth":   return DG(CVp(x=>Math.pow(2,x))+TXp(-3.6,5,"grows","#3FA06B"));
+    case "expDecay":    return DG(CVp(x=>Math.pow(2,-x))+TXp(3.6,5,"decays","#B5542F"));
+    case "expGrowthPlain": return DG(CVp(x=>Math.pow(2,x)));
+    case "expDecayPlain":  return DG(CVp(x=>Math.pow(2,-x)));
+    case "hyperPos":    return DG(CVp(x=>3/x)+TXp(3.6,4.2,"k > 0","#2F6FB5"));
+    case "hyperNeg":    return DG(CVp(x=>-3/x)+TXp(-3.6,4.2,"k < 0","#2F6FB5"));
+    case "hyperPosPlain": return DG(CVp(x=>3/x));
+    case "hyperNegPlain": return DG(CVp(x=>-3/x));
+    case "asymptote":   return DG(`<line x1="${GV.pad}" y1="${GY(0)}" x2="${GV.S-GV.pad}" y2="${GY(0)}" stroke="#E8765A" stroke-width="2" stroke-dasharray="6 4"/>`+
+                            `<line x1="${GX(0)}" y1="${GV.pad}" x2="${GX(0)}" y2="${GV.S-GV.pad}" stroke="#E8765A" stroke-width="2" stroke-dasharray="6 4"/>`+
+                            CVp(x=>3/x)+TXp(4.9,1.8,"asymptote","#B5542F"));
+    case "cubicPos":    return DG(CVp(x=>0.25*x*x*x));
+    case "cubicNeg":    return DG(CVp(x=>-0.25*x*x*x));
+    case "cubicFactor": return DG(CVp(x=>0.14*x*(x+2)*(x-3))+DOTd(-2,0)+DOTd(0,0)+DOTd(3,0)+
+                            TXp(-2,0,"−2",null,0,18)+TXp(0,0,"0",null,-12,16)+TXp(3,0,"3",null,0,18));
+    default: return "";
+  }
+}
+/* several coloured curves on one grid, for match examples */
+const MCOL=[["#2F6FB5","Blue"],["#E8765A","Orange"],["#3FA06B","Green"]];
+function multiCurve(curves){
+  let s="";
+  curves.forEach((c,i)=>{
+    const col=MCOL[i][0], k=EXPL[c.kind];
+    if(k.circle) s+=`<circle cx="${GX(c.p.h).toFixed(1)}" cy="${GY(c.p.k).toFixed(1)}" r="${(c.p.r*SC).toFixed(1)}" fill="none" stroke="${col}" stroke-width="3"/>`;
+    else s+=`<path d="${curveD(k.f(c.p))}" fill="none" stroke="${col}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>`;
+  });
+  return `<svg class="dgm" viewBox="0 0 ${GV.S} ${GV.S}" aria-hidden="true">${axesSVG()}${s}</svg>`;
+}
+/* inline quick check inside a learn card */
+function inlineCheckHTML(c){
+  let svg = c.curves ? multiCurve(c.curves) : c.diagram ? dgm(c.diagram) : "";
+  let arr=c.options.map((o,i)=>({o,ok:i===c.answer}));
+  for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}
+  let opts=arr.map(a=>`<button class="match-opt" data-ok="${a.ok?1:0}" onclick="inlineAns(this)">${fmt(a.o)}</button>`).join("");
+  return `<div class="ic">${svg}<div class="match-q">${fmt(c.q)}</div><div class="match-opts">${opts}</div><div class="match-note"></div><div class="ic-why" hidden>${fmt(c.why||"")}</div></div>`;
+}
+function inlineAns(btn){
+  const box=btn.closest(".ic"); if(box.dataset.done)return; box.dataset.done="1";
+  const ok=btn.dataset.ok==="1";
+  box.querySelectorAll(".match-opt").forEach(b=>{b.disabled=true; if(b.dataset.ok==="1")b.classList.add("correct");});
+  if(!ok)btn.classList.add("wrong");
+  box.querySelector(".match-note").innerHTML=(ok?"✓ ":"")+box.querySelector(".ic-why").innerHTML;
+}
+
+/* ---- interactive graphing (fast SVG, no lag) ---- */
+const GV={lo:-7,hi:7,S:300,pad:26};
+const SC=(GV.S-2*GV.pad)/(GV.hi-GV.lo);
+function GX(x){return GV.pad+(x-GV.lo)*SC;}
+function GY(y){return GV.pad+(GV.hi-y)*SC;}
+function axesSVG(){
+  let g="";
+  for(let i=GV.lo;i<=GV.hi;i++){
+    g+=`<line x1="${GX(i).toFixed(1)}" y1="${GV.pad}" x2="${GX(i).toFixed(1)}" y2="${GV.S-GV.pad}" stroke="#EDF1F7"/>`;
+    g+=`<line x1="${GV.pad}" y1="${GY(i).toFixed(1)}" x2="${GV.S-GV.pad}" y2="${GY(i).toFixed(1)}" stroke="#EDF1F7"/>`;
+  }
+  g+=`<line x1="${GV.pad}" y1="${GY(0)}" x2="${GV.S-GV.pad}" y2="${GY(0)}" stroke="#AEBBCB" stroke-width="1.4"/>`;
+  g+=`<line x1="${GX(0)}" y1="${GV.pad}" x2="${GX(0)}" y2="${GV.S-GV.pad}" stroke="#AEBBCB" stroke-width="1.4"/>`;
+  return g;
+}
+function curveD(f){
+  let d="",pen=false;const N=260;
+  for(let i=0;i<=N;i++){
+    const x=GV.lo+(GV.hi-GV.lo)*i/N, y=f(x);
+    if(!isFinite(y)||y<GV.lo-3||y>GV.hi+3){pen=false;continue;}
+    d+=(pen?"L":"M")+GX(x).toFixed(1)+" "+GY(y).toFixed(1)+" ";pen=true;
+  }
+  return d;
+}
+function sgn(n){return n>0?"+ "+n:"− "+(-n);}
+function lead(a){return a===1?"":a===-1?"−":(a+"").replace("-","−");}
+function tail(n){return n===0?"":" "+sgn(n);}
+const EXPL={
+  parabola:{
+    params:[
+      {k:"a",min:0.3,max:3,step:0.1,v:1,label:"narrower  ↔  wider"},
+      {k:"c",min:-5,max:5,step:1,v:0,label:"shift down  ↔  up"},
+      {k:"h",min:-4,max:4,step:1,v:0,label:"shift left  ↔  right"}
+    ],
+    f:p=>(x=>p.a*(x-p.h)*(x-p.h)+p.c),
+    eq:p=>{ const a=Math.round(p.a*10)/10, al=a===1?"":a;
+      const base=p.h===0?"x^2":`(x ${p.h>0?"− "+p.h:"+ "+(-p.h)})^2`;
+      const t=p.c===0?"":(p.c>0?" + "+p.c:" − "+(-p.c));
+      return `y = ${al}${base}${t}`; },
+    extra:p=>{ const h=p.h,k=p.c; let s=DV(h);
+      if(h>=GV.lo&&h<=GV.hi&&k>=GV.lo&&k<=GV.hi) s+=`<circle cx="${GX(h).toFixed(1)}" cy="${GY(k).toFixed(1)}" r="4" fill="#E8765A"/>`;
+      return s; }
+  },
+  circle:{ circle:true,
+    params:[
+      {k:"r",min:1,max:5,step:1,v:3,label:"radius"},
+      {k:"h",min:-4,max:4,step:1,v:0,label:"shift left  ↔  right"},
+      {k:"k",min:-4,max:4,step:1,v:0,label:"shift down  ↔  up"}
+    ],
+    eq:p=>{const xs=p.h===0?"x":`(x ${p.h>0?"− "+p.h:"+ "+(-p.h)})`; const ys=p.k===0?"y":`(y ${p.k>0?"− "+p.k:"+ "+(-p.k)})`; return `${xs}^2 + ${ys}^2 = ${p.r*p.r}`;}
+  },
+  hyperbola:{
+    params:[{k:"k",min:-6,max:6,step:1,v:3,label:"k  (size & side)"}],
+    f:p=>(x=>p.k/x),
+    eq:p=>`y = [${p.k}/x]`
+  },
+  exp:{
+    params:[
+      {k:"a",min:2,max:4,step:1,v:2,label:"narrower  ↔  wider"},
+      {k:"c",min:-3,max:3,step:1,v:0,label:"shift down  ↔  up"}
+    ],
+    f:p=>(x=>Math.pow(p.a,x)+p.c),
+    eq:p=>`y = ${p.a}^x${tail(p.c)}`
+  },
+  cubic:{
+    params:[
+      {k:"a",min:0.2,max:2,step:0.2,v:1,label:"narrower  ↔  wider"},
+      {k:"c",min:-4,max:4,step:1,v:0,label:"shift down  ↔  up"}
+    ],
+    f:p=>(x=>p.a*x*x*x+p.c),
+    eq:p=>`y = ${lead(Math.round(p.a*10)/10)}x^3${tail(p.c)}`
+  }
+};
+function buildExplorer(kind){
+  const spec=EXPL[kind]; if(!spec)return;
+  const p={}; spec.params.forEach(s=>p[s.k]=s.v);
+  const shape=spec.circle
+    ? `<circle id="expCurve" fill="none" stroke="#2F6FB5" stroke-width="3"/>`
+    : `<path id="expCurve" fill="none" stroke="#2F6FB5" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>`;
+  el("expSvgWrap").innerHTML=`<svg class="exp-svg" viewBox="0 0 ${GV.S} ${GV.S}" width="300" height="300" aria-hidden="true">${axesSVG()}<g id="expExtra"></g>${shape}</svg>`;
+  const draw=()=>{
+    el("expEq").innerHTML=eqHTML(spec.eq(p));
+    const c=el("expCurve");
+    if(spec.circle){ c.setAttribute("cx",GX(p.h).toFixed(1)); c.setAttribute("cy",GY(p.k).toFixed(1)); c.setAttribute("r",(p.r*SC).toFixed(1)); }
+    else c.setAttribute("d",curveD(spec.f(p)));
+    if(spec.extra) el("expExtra").innerHTML=spec.extra(p);
+  };
+  const sl=el("expSliders"); sl.innerHTML="";
+  spec.params.forEach(s=>{
+    const row=document.createElement("div"); row.className="exp-row";
+    row.innerHTML=`<div class="exp-lab">${s.label||s.k}</div><div class="exp-ctl"><input type="range" min="${s.min}" max="${s.max}" step="${s.step}" value="${s.v}"><span class="val">${s.v}</span></div>`;
+    const inp=row.querySelector("input"),val=row.querySelector(".val");
+    inp.addEventListener("input",()=>{p[s.k]=parseFloat(inp.value);val.textContent=inp.value;draw();});
+    sl.appendChild(row);
+  });
+  draw();
+}
+function staticPlot(spec){
+  const k=EXPL[spec.kind], p=spec.p||{};
+  let shape,extra="";
+  if(k.circle){ shape=`<circle cx="${GX(p.h).toFixed(1)}" cy="${GY(p.k).toFixed(1)}" r="${(p.r*SC).toFixed(1)}" fill="none" stroke="#2F6FB5" stroke-width="3"/>`; }
+  else { shape=`<path d="${curveD(k.f(p))}" fill="none" stroke="#2F6FB5" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>`; if(k.extra) extra=k.extra(p); }
+  return `<svg class="q-plot" viewBox="0 0 ${GV.S} ${GV.S}" width="250" height="250" aria-hidden="true">${axesSVG()}${extra}${shape}</svg>`;
+}
+
+/* ---- scientific calculator ---- */
+let calcExpr="";
+const CALC_KEYS=[
+  ["sin","fn"],["cos","fn"],["tan","fn"],["ln","fn"],["log","fn"],
+  ["(",""],[")",""],["√","fn"],["x²","fn"],["^","fn"],
+  ["7",""],["8",""],["9",""],["÷","op"],["C","op"],
+  ["4",""],["5",""],["6",""],["×","op"],["⌫","op"],
+  ["1",""],["2",""],["3",""],["−","op"],["π","fn"],
+  ["0","",2],[".",""],["=","eq",2]
+];
+function buildCalc(){
+  const g=el("calcGrid"); if(!g)return; g.innerHTML="";
+  CALC_KEYS.forEach(a=>{ const lab=a[0],cls=a[1],span=a[2];
+    const b=document.createElement("button"); b.className="calc-key"+(cls?" "+cls:"");
+    if(span) b.style.gridColumn="span "+span; b.textContent=lab;
+    b.onclick=()=>calcPress(lab); g.appendChild(b); });
+}
+function calcPress(t){
+  if(t==="C") calcExpr="";
+  else if(t==="⌫") calcExpr=calcExpr.slice(0,-1);
+  else if(t==="=") { try{ const r=calcEval(calcExpr); calcExpr=(Math.round(r*1e10)/1e10)+""; }catch(e){ calcExpr="Error"; } }
+  else { if(calcExpr==="Error") calcExpr=""; const map={"x²":"^2","√":"√(","sin":"sin(","cos":"cos(","tan":"tan(","ln":"ln(","log":"log("}; calcExpr+=(map[t]!==undefined?map[t]:t); }
+  el("calcDisp").textContent=calcExpr||"0";
+}
+function calcEval(s){
+  let e=s.replace(/×/g,"*").replace(/÷/g,"/").replace(/−/g,"-").replace(/π/g,"PI").replace(/√/g,"sqrt").replace(/\^/g,"**");
+  if(!/^[-+*/(). 0-9A-Za-z]*$/.test(e)) throw 0;
+  const F=new Function("PI","sqrt","sin","cos","tan","ln","log","return ("+e+")");
+  return F(Math.PI,Math.sqrt,x=>Math.sin(x*Math.PI/180),x=>Math.cos(x*Math.PI/180),x=>Math.tan(x*Math.PI/180),Math.log,x=>Math.log10(x));
+}
+function openCalc(){el("calc").classList.add("is-on");}
+function closeCalc(){el("calc").classList.remove("is-on");}
 /* draw a row of jars, fill height proportional to the amount */
 function jarRow(items){
   const maxKg=Math.max.apply(null,items.map(i=>i.kg));
@@ -894,7 +1649,7 @@ function buildParts(){
     const n=Math.min(L.sessionSize||PER_SESSION,L.questions.length);
     const b=document.createElement("button");
     b.className="topic"; b.onclick=()=>openLesson(L.id);
-    b.innerHTML=`<span class="emoji">${L.emoji}</span>
+    b.innerHTML=`${L.icon?`<span class="p-ic">${icon(L.icon)}</span>`:`<span class="emoji">${L.emoji}</span>`}
       <span><span class="t-name">${L.name}</span>
       <span class="t-sum">${L.summary} · ${n} questions</span></span>
       <span class="t-go">→</span>`;
@@ -918,18 +1673,26 @@ function openLesson(id){
 function renderLearnStep(){
   const items=lesson.learn, x=items[learnStep];
   let html=`<div class="lc-icon">${icon(x.m)}</div>
-    <div class="lc-term">${x.term}</div>
-    <div class="lc-plain">${fmt(x.plain)}</div>`;
+    <div class="lc-term">${x.term}</div>`;
+  if(x.def) html+=`<div class="lc-plain"><b>${fmt(x.def)}</b></div>`;
+  if(x.plain) html+=`<div class="lc-plain">${fmt(x.plain)}</div>`;
+  if(x.graph) html+=`<div class="explorer"><div class="exp-eq" id="expEq"></div><div id="expSvgWrap"></div><div class="exp-sliders" id="expSliders"></div><div class="exp-hint">Drag the sliders and watch it move.</div></div>`;
+  if(x.eq) html+=EQ(x.eq);
+  if(x.diagram) html+=dgm(x.diagram);
+  if(x.pair) html+=`<div class="dgm-pair">`+x.pair.map(d=>`<figure>${dgm(d.d)}<figcaption>${fmt(d.cap)}</figcaption></figure>`).join("")+`</div>`;
   if(x.rich) html+=`<div class="lc-rich">${x.rich}</div>`;
   if(x.formula) html+=`<div class="lc-formula">${fmt(x.formula)}</div>`;
   if(x.example) html+=`<div class="lc-ex"><span>🔎</span><span>${fmt(x.example)}</span></div>`;
+  if(x.checks){ html+=`<p class="lc-ex-h">${x.checksHead||"Your turn"}</p>`; x.checks.forEach(c=>html+=inlineCheckHTML(c)); }
   el("learnCard").innerHTML=html;
+  if(x.graph) buildExplorer(x.graph);
   const dots=el("learnDots"); dots.innerHTML="";
   items.forEach((_,i)=>{const d=document.createElement("span");
     d.className="ld"+(i<learnStep?" done":i===learnStep?" now":""); dots.appendChild(d);});
   const last=learnStep===items.length-1;
+  const hasLQ=lesson.learn.some(c=>c.check);
   el("learnNav").innerHTML=(learnStep>0?`<button class="learn-back2" onclick="learnBack()" aria-label="Back">←</button>`:``)+
-    `<button class="btn btn-plum" onclick="learnNext()">${last?"Quick check →":"Next →"}</button>`;
+    `<button class="btn btn-plum" onclick="learnNext()">${last?(hasLQ?"Quick check →":"Start the 5 →"):"Next →"}</button>`;
 }
 function learnNext(){
   if(learnStep<lesson.learn.length-1){learnStep++;renderLearnStep();window.scrollTo({top:0,behavior:"smooth"});}
@@ -938,9 +1701,13 @@ function learnNext(){
 function learnBack(){ if(learnStep>0){learnStep--;renderLearnStep();} }
 
 /* ---- quick check: one friendly question per word ---- */
-function startLearnQuiz(){ lqStep=0; show("lquiz"); renderLQ(); }
+function startLearnQuiz(){
+  lesson._lq=lesson.learn.filter(c=>c.check);
+  if(!lesson._lq.length){ beginPractice(); return; }
+  lqStep=0; show("lquiz"); renderLQ();
+}
 function renderLQ(){
-  const items=lesson.learn, x=items[lqStep], c=x.check;
+  const items=lesson._lq, x=items[lqStep], c=x.check;
   el("lqTag").textContent="Quick check · "+lesson.name;
   let html=`<div class="lq-icon">${icon(x.m)}</div>
     <div class="lq-q">${fmt(c.q)}</div><div class="lq-opts" id="lqOpts"></div><div class="lq-why" id="lqWhy"></div>`;
@@ -959,17 +1726,17 @@ function renderLQ(){
   el("lqNav").innerHTML="";
 }
 function answerLQ(btn){
-  const x=lesson.learn[lqStep], c=x.check;
+  const x=lesson._lq[lqStep], c=x.check;
   const opts=[...document.querySelectorAll("#lqOpts .lq-opt")];
   opts.forEach(b=>{b.disabled=true; if(b.dataset.correct==="1")b.classList.add("correct");});
   const ok=btn.dataset.correct==="1";
   if(!ok)btn.classList.add("wrong");
   el("lqWhy").innerHTML=`<div class="fb ${ok?'fb-good':'fb-slip'}"><div class="fb-head">${ok?'✓ Yay!':'So close!'}</div><div class="fb-body">${fmt(c.why)}</div></div>`;
-  const last=lqStep===lesson.learn.length-1;
+  const last=lqStep===lesson._lq.length-1;
   el("lqNav").innerHTML=`<button class="btn btn-plum" style="width:100%" onclick="lqNext()">${last?"I'm ready for the 5 →":"Next →"}</button>`;
 }
 function lqNext(){
-  if(lqStep<lesson.learn.length-1){lqStep++;renderLQ();window.scrollTo({top:0,behavior:"smooth"});}
+  if(lqStep<lesson._lq.length-1){lqStep++;renderLQ();window.scrollTo({top:0,behavior:"smooth"});}
   else beginPractice();
 }
 function beginPractice(){
@@ -987,7 +1754,7 @@ function renderQuestion(){
   const q=curQ();
   el("qTopic").textContent=lesson.name;
   el("qAsk").innerHTML=fmt(q.ask);
-  const extraHTML = q.jars ? jarRow(q.jars) : (q.extra||"");
+  const extraHTML = q.jars ? jarRow(q.jars) : q.plot ? staticPlot(q.plot) : q.curves ? multiCurve(q.curves) : q.diagram ? dgm(q.diagram) : (q.extra||"");
   el("qExtra").innerHTML = extraHTML?`<div class="q-extra">${extraHTML}</div>`:"";
   el("feedback").innerHTML="";
   el("steps").className="steps"; el("steps").innerHTML="";
@@ -998,7 +1765,9 @@ function renderQuestion(){
     el("answerRow").style.display="none";
     el("hintLine").style.display="none";
     const oc=el("qOpts"); oc.style.display="grid"; oc.innerHTML="";
-    q.options.forEach(o=>{const b=document.createElement("button");
+    const opts=q.options.slice();
+    for(let i=opts.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[opts[i],opts[j]]=[opts[j],opts[i]];}
+    opts.forEach(o=>{const b=document.createElement("button");
       b.className="q-opt"; b.innerHTML=fmt(o.label); b.dataset.key=o.key;
       b.onclick=()=>submitChoice(o.key,b); oc.appendChild(b);});
   }else{
@@ -1116,7 +1885,7 @@ function padPos(e){const r=pad.getBoundingClientRect();const t=e.touches?e.touch
 function clearPad(){if(ctx)ctx.clearRect(0,0,pad.width,pad.height);}
 
 document.addEventListener("DOMContentLoaded",()=>{
-  buildHome();
+  buildHome(); buildCalc();
   el("answer").addEventListener("keydown",e=>{if(e.key==="Enter")submitAnswer();});
   const start=e=>{if(!ctx)return;drawing=true;const p=padPos(e);ctx.beginPath();ctx.moveTo(p.x,p.y);e.preventDefault();};
   const move=e=>{if(!drawing||!ctx)return;const p=padPos(e);ctx.lineTo(p.x,p.y);ctx.stroke();e.preventDefault();};
