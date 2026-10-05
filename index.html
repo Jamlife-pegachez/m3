@@ -55,8 +55,9 @@ body{background:var(--paper);color:var(--ink);
   line-height:1.04;letter-spacing:-.02em;margin:16px 0 10px}
 .hello em{font-style:italic;color:var(--plum)}
 .sub{color:var(--ink-soft);font-size:17px;max-width:46ch;margin:0}
-.streak{display:inline-flex;align-items:center;gap:8px;margin:20px 0 26px;background:var(--card);
-  border:1px solid var(--line);border-radius:999px;padding:8px 14px;font-weight:700;font-size:14px;box-shadow:var(--shadow)}
+.streak{display:flex;align-items:flex-start;gap:9px;margin:20px 0 26px;background:var(--card);
+  border:1px solid var(--line);border-radius:16px;padding:12px 16px;font-weight:600;font-size:14.5px;
+  line-height:1.5;box-shadow:var(--shadow);max-width:34rem}
 .streak b{color:var(--amber)}
 .pick-label{font-family:'Spline Sans Mono',monospace;font-size:12px;letter-spacing:.14em;
   text-transform:uppercase;color:var(--ink-soft);margin:0 0 14px}
@@ -324,7 +325,7 @@ body{background:var(--paper);color:var(--ink);
   <section id="home" class="screen is-on">
     <h1 class="hello">Let's do <em>just five</em>.</h1>
     <p class="sub">Showing kids, and adults, that they really can do maths, in <em>5-minute bites</em>, so confidence grows in small wins.</p>
-    <div class="streak">🔥 <span><b id="streakNum">0</b>-day streak · one session keeps it alive</span></div>
+    <div class="streak">🌱 <span id="motive"></span></div>
     <p class="pick-label">Pick a topic</p>
     <div id="topicList"></div>
 
@@ -1612,9 +1613,17 @@ function jarRow(items){
 }
 
 /* ---- home ---- */
+/* encouraging lines, one shown at random each time home loads */
+const MOTIVES=[
+  "Maths is a skill, not a talent. A few minutes a day and the concepts start to stick.",
+  "Small steps, done often, build real confidence. Today's five minutes count.",
+  "Five minutes a day beats an hour once a week. That's how maths becomes muscle memory.",
+  "Little and often wins. Each short session lays another brick in the foundation.",
+  "Confidence grows in small wins. Just five minutes today is enough."
+];
 /* ---- home: topics grouped by year ---- */
 function buildHome(){
-  el("streakNum").textContent=getStreak().n;
+  el("motive").textContent=MOTIVES[Math.floor(Math.random()*MOTIVES.length)];
   const wrap=el("topicList"); wrap.innerHTML="";
   const groups=[]; TOPICS.forEach(t=>{ if(!groups.includes(t.group)) groups.push(t.group); });
   groups.forEach(gname=>{
