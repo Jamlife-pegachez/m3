@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>M³ - maths practice</title>
-<meta name="description" content="Short, exam-style maths practice for Year 9. Made by a mum of 3.">
+<title>M³ Maths</title>
+<meta name="description" content="Showing kids, and adults, that they really can do maths, in 5-minute bites, so confidence grows in small wins.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Nunito:wght@400;500;600;700;800&family=Spline+Sans+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -1260,7 +1260,7 @@ const TOPICS = [
     blurb:"Earning, spending, tax & best value",
     note:"throughout: 1 year = 52 weeks = 26 fortnights = 12 months",
     parts: LESSONS },
-  { id:"nonlinear", group:"Year 9 & 10", name:"Non-linear relationships", emoji:"📈",
+  { id:"nonlinear", group:"Year 9 & 10", name:"Non-linear relationships", emoji:"📈", icon:["curves","lilac"],
     blurb:"Parabolas, circles, hyperbolas, exponentials & cubics",
     note:"tip: use the sliders in each Learn card to see the curves move",
     parts: NONLINEAR },
@@ -1310,10 +1310,11 @@ const ICONS={
   vertex:`<path d="M32 62 Q48 26 64 62"/><circle cx="48" cy="44" r="3.6" fill="currentColor"/>`,
   ring:`<circle cx="48" cy="48" r="18"/>`,
   ringxy:`<circle cx="52" cy="44" r="15"/><path d="M37 59 h10 v-10"/><line x1="37" y1="59" x2="47" y2="49"/>`,
-  hyper:`<path d="M34 34 C34 46 46 48 48 48"/><path d="M62 62 C62 50 50 48 48 48"/>`,
+  hyper:`<path d="M40 30 C42 46 50 48 66 49"/><path d="M56 66 C54 50 46 48 30 47"/>`,
+  curves:`<path d="M26 64 Q40 30 54 64"/><path d="M40 66 C54 66 58 44 66 30"/>`,
   plusminus:`<line x1="33" y1="41" x2="49" y2="41"/><line x1="41" y1="33" x2="41" y2="49"/><line x1="33" y1="60" x2="49" y2="60"/>`,
   asymptote:`<line x1="30" y1="62" x2="66" y2="62" stroke-dasharray="4 3"/><line x1="62" y1="30" x2="62" y2="66" stroke-dasharray="4 3"/><path d="M34 34 C34 50 50 58 58 58"/>`,
-  expo:`<path d="M32 62 C50 62 54 36 64 32"/>`,
+  expo:`<path d="M28 66 C52 66 56 56 62 26"/>`,
   grow:`<path d="M32 62 C50 62 54 38 62 30"/><path d="M55 30 H63 V38"/>`,
   decay:`<path d="M34 32 C42 32 46 56 64 62"/>`,
   cubic:`<path d="M32 60 C40 60 42 50 48 48 C54 46 56 36 64 36"/>`
@@ -1624,7 +1625,7 @@ function buildHome(){
       const b=document.createElement(live?"button":"div");
       b.className="topic"+(live?"":" soon");
       if(live) b.onclick=()=>openTopic(t.id);
-      b.innerHTML=`<span class="emoji">${t.emoji}</span>
+      b.innerHTML=`${t.icon?`<span class="p-ic">${icon(t.icon)}</span>`:`<span class="emoji">${t.emoji}</span>`}
         <span><span class="t-name">${t.name}</span>
         <span class="t-sum">${t.blurb}${live?` · ${t.parts.length} parts`:""}</span></span>
         ${live?`<span class="t-go">→</span>`:`<span class="soon-pill">Soon</span>`}`;
