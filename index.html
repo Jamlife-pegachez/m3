@@ -1937,9 +1937,9 @@ let m3Audio;
 function playClap(){
   try{
     m3Audio = m3Audio || new (window.AudioContext||window.webkitAudioContext)();
-    const ctx=m3Audio; if(ctx.state==="suspended") ctx.resume();
-    const burst=(t0)=>{
-      const dur=0.08, n=Math.floor(ctx.sampleRate*dur);
+    const ctx=m3Audio;
+    const burst=()=>{
+      const t0=ctx.currentTime+0.02, dur=0.08, n=Math.floor(ctx.sampleRate*dur);
       const buf=ctx.createBuffer(1,n,ctx.sampleRate), d=buf.getChannelData(0);
       for(let i=0;i<n;i++) d[i]=(Math.random()*2-1)*Math.pow(1-i/n,2.6);
       const src=ctx.createBufferSource(); src.buffer=buf;
@@ -1947,7 +1947,8 @@ function playClap(){
       const g=ctx.createGain(); g.gain.setValueAtTime(0.55,t0); g.gain.exponentialRampToValueAtTime(0.001,t0+dur);
       src.connect(bp); bp.connect(g); g.connect(ctx.destination); src.start(t0);
     };
-    burst(ctx.currentTime);
+    // on the first tap the context starts suspended; wait for it to resume so the clap isn't dropped
+    if(ctx.state==="suspended") ctx.resume().then(burst,burst); else burst();
   }catch(e){}
 }
 function doHiFive(){
