@@ -19,12 +19,12 @@
   --card:#FFFFFF;
   --ink:#29323F;
   --ink-soft:#6B7688;
-  --plum:#6D82CB;        /* M³ brand blue (primary/CTA)  hex 6D82CB */
+  --plum:#609FCC;        /* M³ brand blue (primary/CTA)  hex 609FCC */
   --blue:#7499C4;        /* logo blue                    hex 7499C4 */
   --blue-deep:#4A6583;   /* deep slate blue              hex 4A6583 */
-  --teal:#2F9E86;        /* correct / success (kept)              */
-  --teal-deep:#247a68;
-  --teal-soft:#E4F2EE;
+  --teal:#5A9DAC;        /* correct / success            hex 5A9DAC */
+  --teal-deep:#447E8C;
+  --teal-soft:#E8F1F4;
   --coral:#E8765A;       /* the "common slip" notes (kept)        */
   --coral-soft:#FCEDE8;
   --amber:#F0B23E;
@@ -123,9 +123,17 @@ body{background:var(--paper);color:var(--ink);
 .match-opts{display:grid;gap:8px;margin-top:8px}
 .match-opt{font-family:'Spline Sans Mono',monospace;font-size:15px;padding:10px 12px;border:1.5px solid var(--line);border-radius:12px;background:#fff;cursor:pointer;color:var(--ink);text-align:left}
 .match-opt:hover:not(:disabled){border-color:var(--plum)}
-.match-opt.correct{border-color:#3FA06B;background:#EAF7F0;color:#2E7D50}
+.match-opt.correct{border-color:#5A9DAC;background:#E8F1F4;color:#3F7684}
 .match-opt.wrong{border-color:#E0876F;background:#FBEDE8;color:#B55038}
 .match-note{font-size:13.5px;color:var(--ink-soft);text-align:center;margin-top:8px;min-height:16px}
+.coeffmap{display:flex;justify-content:center;align-items:flex-start;gap:8px;flex-wrap:wrap;margin:14px auto}
+.cm-pre,.cm-op{font-family:'Spline Sans Mono',monospace;font-size:20px;font-weight:600;color:var(--ink);padding-top:2px}
+.cm-col{display:flex;flex-direction:column;align-items:center;gap:6px}
+.cm-t{font-family:'Spline Sans Mono',monospace;font-size:20px;font-weight:700;color:var(--plum)}
+.cm-t i{font-family:Georgia,serif;font-style:italic}
+.cm-badge{width:24px;height:24px;border-radius:50%;background:var(--plum);color:#fff;font-size:14px;display:grid;place-items:center;font-family:Georgia,serif;font-style:italic;font-weight:700}
+.cm-cap{font-family:'Nunito',sans-serif;font-size:11.5px;color:var(--ink-soft);text-align:center;max-width:10ch;line-height:1.25}
+.cm-cap i{font-family:Georgia,serif;font-style:italic}
 /* scientific calculator */
 .calc-toggle{position:fixed;left:18px;bottom:18px;z-index:30;background:var(--plum);color:#fff;border:none;
   border-radius:999px;padding:13px 16px;font-weight:800;font-size:15px;cursor:pointer;font-family:'Nunito',sans-serif;
@@ -827,7 +835,7 @@ const NONLINEAR = [
        checks:[
          { q:"One is shifted up, one left, one is narrower. Which curve is $y = (x + 2)^2$ ?",
            curves:[{kind:"parabola",p:{a:1,h:0,c:2}},{kind:"parabola",p:{a:1,h:-2,c:0}},{kind:"parabola",p:{a:2,h:0,c:0}}],
-           options:["Blue (shifted up)","Orange (shifted left)","Green (narrower)"], answer:1,
+           options:["Blue (shifted up)","Orange (shifted left)","Teal (narrower)"], answer:1,
            why:"(x + 2)² means h = −2, which slides it 2 steps left: the orange curve." }
        ]},
       {m:["parab","peach"], term:"Concave up or down",
@@ -854,7 +862,9 @@ const NONLINEAR = [
        ]},
       {m:["axis","lilac"], term:"Axis of symmetry",
        def:"The axis of symmetry is the vertical line that folds the parabola into two mirror halves.",
-       plain:"You find it with a short formula:",
+       plain:"Every parabola is $y = ax^2 + bx + c$. First, name the three parts:",
+       rich:`<div class="coeffmap"><span class="cm-pre">y =</span><span class="cm-col"><span class="cm-t">a<i>x</i>²</span><span class="cm-badge">a</span><span class="cm-cap">the <i>x</i>² term</span></span><span class="cm-op">+</span><span class="cm-col"><span class="cm-t">b<i>x</i></span><span class="cm-badge">b</span><span class="cm-cap">in front of <i>x</i></span></span><span class="cm-op">+</span><span class="cm-col"><span class="cm-t">c</span><span class="cm-badge">c</span><span class="cm-cap">the number</span></span></div>`,
+       plain2:"Then the axis sits at this line:",
        eq:"x = [-b/2a]",
        diagram:"axisSym",
        example:"The parabola above is $y = x^2 − 2x − 3$: here $a = 1$ and $b = −2$, so $x = −b ÷ 2a = 2 ÷ 2 = 1$, the dashed line.",
@@ -879,9 +889,9 @@ const NONLINEAR = [
     questions:[
       { ask:"Which curve is $y = (x + 2)^2$ ?",
         curves:[{kind:"parabola",p:{a:1,h:0,c:0}},{kind:"parabola",p:{a:1,h:-2,c:0}},{kind:"parabola",p:{a:1,h:0,c:2}}],
-        options:[{label:"Blue",key:"blue"},{label:"Orange",key:"orange"},{label:"Green",key:"green"}],
+        options:[{label:"Blue",key:"blue"},{label:"Orange",key:"orange"},{label:"Teal",key:"green"}],
         answer:"orange", correctNote:"h = −2 slides it 2 steps left.",
-        slips:[{ifTheyType:"green", say:"Green is shifted up, not sideways. (x + 2)² slides left 2, which is the orange curve."}],
+        slips:[{ifTheyType:"green", say:"That one is shifted up, not sideways. (x + 2)² slides left 2, which is the orange curve."}],
         working:["(x + 2)² means h = −2.","A negative h slides the parabola left, to the orange curve."] },
       { ask:"Is $y = −2x^2 + 5x − 1$ concave up or down?",
         options:[{label:"Concave down 🙁",key:"down"},{label:"Concave up 🙂",key:"up"}],
@@ -1359,9 +1369,13 @@ function eqHTML(s){
 }
 function EQ(s){ return '<div class="eqn">'+eqHTML(s)+'</div>'; }
 function fmt(s){
-  return String(s)
-    .replace(/\$([^$]+)\$/g,(m,g)=>'<span class="mi">'+eqHTML(g)+'</span>')
-    .replace(/\^(-?\d+)/g,"<sup>$1</sup>");
+  const math=[];
+  s=String(s).replace(/\$([^$]+)\$/g,(m,g)=>{math.push('<span class="mi">'+eqHTML(g)+'</span>');return "\u0001"+(math.length-1)+"\u0001";});
+  s=s.replace(/\^(-?\d+)/g,"<sup>$1</sup>");
+  s=s.replace(/(?<!\w)(\d+)\/(\d+)(?!\w)/g,'<span class="frac"><span class="num">$1</span><span class="den">$2</span></span>');
+  s=s.replace(/(?<![A-Za-z])([xy])(?![A-Za-z])/g,"<i>$1</i>");
+  s=s.replace(/\u0001(\d+)\u0001/g,(m,i)=>math[+i]);
+  return s;
 }
 /* insert a superscript ² at the cursor in the answer box */
 function insSup(){
@@ -1402,7 +1416,7 @@ function dgm(name){
                             DOTd(2,1,"#2F6FB5")+DOTd(4.4,4.2)+
                             TXp(3.2,1,"x − h",null,0,18)+TXp(4.4,2.6,"y − k",null,22,0)+TXi(3,2.9,"r","#B5542F",-4,0)+TXp(2,1,"(h, k)","#2F6FB5",-16,-8));
     case "expCross":    return DG(CVp(x=>Math.pow(2,x))+DOTd(0,1)+TXp(0,1,"(0, 1)","#B5542F",24,4));
-    case "expGrowth":   return DG(CVp(x=>Math.pow(2,x))+TXp(-3.6,5,"grows","#3FA06B"));
+    case "expGrowth":   return DG(CVp(x=>Math.pow(2,x))+TXp(-3.6,5,"grows","#5A9DAC"));
     case "expDecay":    return DG(CVp(x=>Math.pow(2,-x))+TXp(3.6,5,"decays","#B5542F"));
     case "expGrowthPlain": return DG(CVp(x=>Math.pow(2,x)));
     case "expDecayPlain":  return DG(CVp(x=>Math.pow(2,-x)));
@@ -1423,7 +1437,7 @@ function dgm(name){
   }
 }
 /* several coloured curves on one grid, for match examples */
-const MCOL=[["#2F6FB5","Blue"],["#E8765A","Orange"],["#3FA06B","Green"]];
+const MCOL=[["#2F6FB5","Blue"],["#E8765A","Orange"],["#5A9DAC","Teal"]];
 function multiCurve(curves){
   let s="";
   curves.forEach((c,i)=>{
@@ -1480,7 +1494,7 @@ const EXPL={
   parabola:{
     params:[
       {k:"a",min:0.3,max:3,step:0.1,v:1,label:"narrower  ↔  wider"},
-      {k:"c",min:-5,max:5,step:1,v:0,label:"shift down  ↔  up"},
+      {k:"c",min:-5,max:5,step:1,v:0,label:"shift down  ↕  up"},
       {k:"h",min:-4,max:4,step:1,v:0,label:"shift left  ↔  right"}
     ],
     f:p=>(x=>p.a*(x-p.h)*(x-p.h)+p.c),
@@ -1496,7 +1510,7 @@ const EXPL={
     params:[
       {k:"r",min:1,max:5,step:1,v:3,label:"radius"},
       {k:"h",min:-4,max:4,step:1,v:0,label:"shift left  ↔  right"},
-      {k:"k",min:-4,max:4,step:1,v:0,label:"shift down  ↔  up"}
+      {k:"k",min:-4,max:4,step:1,v:0,label:"shift down  ↕  up"}
     ],
     eq:p=>{const xs=p.h===0?"x":`(x ${p.h>0?"− "+p.h:"+ "+(-p.h)})`; const ys=p.k===0?"y":`(y ${p.k>0?"− "+p.k:"+ "+(-p.k)})`; return `${xs}^2 + ${ys}^2 = ${p.r*p.r}`;}
   },
@@ -1507,19 +1521,25 @@ const EXPL={
   },
   exp:{
     params:[
-      {k:"a",min:2,max:4,step:1,v:2,label:"narrower  ↔  wider"},
-      {k:"c",min:-3,max:3,step:1,v:0,label:"shift down  ↔  up"}
+      {k:"a",min:0.3,max:3,step:0.1,v:2,label:"decay  ↔  growth"},
+      {k:"c",min:-3,max:3,step:1,v:0,label:"shift down  ↕  up"},
+      {k:"h",min:-4,max:4,step:1,v:0,label:"shift left  ↔  right"}
     ],
-    f:p=>(x=>Math.pow(p.a,x)+p.c),
-    eq:p=>`y = ${p.a}^x${tail(p.c)}`
+    f:p=>(x=>Math.pow(p.a,x-p.h)+p.c),
+    eq:p=>{ const a=Math.round(p.a*10)/10;
+      const expo=p.h===0?"x":`(x ${p.h>0?"− "+p.h:"+ "+(-p.h)})`;
+      return `y = ${a}^${expo}${tail(p.c)}`; }
   },
   cubic:{
     params:[
       {k:"a",min:0.2,max:2,step:0.2,v:1,label:"narrower  ↔  wider"},
-      {k:"c",min:-4,max:4,step:1,v:0,label:"shift down  ↔  up"}
+      {k:"c",min:-4,max:4,step:1,v:0,label:"shift down  ↕  up"},
+      {k:"h",min:-4,max:4,step:1,v:0,label:"shift left  ↔  right"}
     ],
-    f:p=>(x=>p.a*x*x*x+p.c),
-    eq:p=>`y = ${lead(Math.round(p.a*10)/10)}x^3${tail(p.c)}`
+    f:p=>(x=>{const d=x-p.h;return p.a*d*d*d+p.c;}),
+    eq:p=>{ const a=Math.round(p.a*10)/10, al=lead(a);
+      const base=p.h===0?"x^3":`(x ${p.h>0?"− "+p.h:"+ "+(-p.h)})^3`;
+      return `y = ${al}${base}${tail(p.c)}`; }
   }
 };
 function buildExplorer(kind){
@@ -1679,7 +1699,7 @@ function openLesson(id){
   if(lesson.learn&&lesson.learn.length){
     el("learnTag").textContent="Meet the words · "+lesson.name;
     el("learnH").textContent=lesson.name;
-    el("learnIntro").innerHTML=`<span class="li-emoji">💙</span><span>New to this? Let's meet the words first, one at a time. No maths yet, promise.</span>`;
+    el("learnIntro").innerHTML=`<span class="li-emoji">💙</span><span>New to this? Let's walk through it one step at a time.</span>`;
     learnStep=0; renderLearnStep();
     show("learn");
   }else{ beginPractice(); }
@@ -1690,11 +1710,12 @@ function renderLearnStep(){
     <div class="lc-term">${x.term}</div>`;
   if(x.def) html+=`<div class="lc-plain"><b>${fmt(x.def)}</b></div>`;
   if(x.plain) html+=`<div class="lc-plain">${fmt(x.plain)}</div>`;
+  if(x.rich) html+=`<div class="lc-rich">${x.rich}</div>`;
+  if(x.plain2) html+=`<div class="lc-plain">${fmt(x.plain2)}</div>`;
   if(x.graph) html+=`<div class="explorer"><div class="exp-eq" id="expEq"></div><div id="expSvgWrap"></div><div class="exp-sliders" id="expSliders"></div><div class="exp-hint">Drag the sliders and watch it move.</div></div>`;
   if(x.eq) html+=EQ(x.eq);
   if(x.diagram) html+=dgm(x.diagram);
   if(x.pair) html+=`<div class="dgm-pair">`+x.pair.map(d=>`<figure>${dgm(d.d)}<figcaption>${fmt(d.cap)}</figcaption></figure>`).join("")+`</div>`;
-  if(x.rich) html+=`<div class="lc-rich">${x.rich}</div>`;
   if(x.formula) html+=`<div class="lc-formula">${fmt(x.formula)}</div>`;
   if(x.example) html+=`<div class="lc-ex"><span>🔎</span><span>${fmt(x.example)}</span></div>`;
   if(x.checks){ html+=`<p class="lc-ex-h">${x.checksHead||"Your turn"}</p>`; x.checks.forEach(c=>html+=inlineCheckHTML(c)); }
