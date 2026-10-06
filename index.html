@@ -132,6 +132,16 @@ body{background:var(--paper);color:var(--ink);
 .match-opt.correct{border-color:#5A9DAC;background:#E8F1F4;color:#3F7684}
 .match-opt.wrong{border-color:#E0876F;background:#FBEDE8;color:#B55038}
 .match-note{font-size:13.5px;color:var(--ink-soft);text-align:center;margin-top:8px;min-height:16px}
+.hifive{margin:4px auto 18px;padding:16px 14px;border:1px solid var(--line);border-radius:18px;background:#EEF4FB;text-align:center;cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent}
+.hifive:active{transform:scale(.99)}
+.hf-hands{position:relative;display:flex;align-items:center;justify-content:center;font-size:50px;line-height:1;height:70px}
+.hf-hand{display:inline-block;transform-origin:center 70%;animation:hfwave 1.3s ease-in-out infinite;transition:transform .17s cubic-bezier(.34,1.56,.64,1)}
+@keyframes hfwave{0%,100%{transform:rotate(-11deg)}50%{transform:rotate(11deg)}}
+.hifive.clap .hf-hand{animation:none;transform:scale(2)}
+.hf-burst{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) scale(0);opacity:0;font-size:32px;pointer-events:none}
+.hifive.clap .hf-burst{animation:hfburst .5s ease-out}
+@keyframes hfburst{0%{transform:translate(-50%,-50%) scale(0);opacity:0}30%{transform:translate(-50%,-50%) scale(1.3);opacity:1}100%{transform:translate(-50%,-50%) scale(2);opacity:0}}
+.hf-label{margin-top:8px;font-weight:700;font-size:14.5px;color:var(--plum)}
 .coeffmap{display:flex;justify-content:center;align-items:flex-start;gap:8px;flex-wrap:wrap;margin:14px auto}
 .cm-pre,.cm-op{font-family:'Spline Sans Mono',monospace;font-size:20px;font-weight:600;color:var(--ink);padding-top:2px}
 .cm-col{display:flex;flex-direction:column;align-items:center;gap:6px}
@@ -416,6 +426,7 @@ body{background:var(--paper);color:var(--ink);
     <div class="res-score" id="resScore"></div>
     <h2 class="res-head" id="resHead"></h2>
     <p class="res-msg" id="resMsg"></p>
+    <div id="resReward"></div>
     <div class="res-recap" id="resRecap"></div>
     <div class="res-actions">
       <button class="btn btn-go" onclick="restartTopic()" style="width:100%">Try these again</button>
@@ -1896,16 +1907,54 @@ function finish(){
   bumpStreak(); show("results");
   el("resScore").innerHTML=`${score}<span>/${order.length}</span>`;
   const pct=score/order.length; let head,msg;
-  if(pct===1){head="Cleaned it up. 🎯";msg="Every one correct. You own this part - try another, or come back tomorrow to keep the streak alive.";}
+  if(pct===1){head="Cleaned it up. 🎯";msg="Every one correct. You own this part - try another, or come back tomorrow for five more.";}
   else if(pct>=0.6){head="Solid round.";msg="Most of these were yours. The ones below are worth a second look before your exam - the working's there for each.";}
   else{head="Good - now you've found the gaps.";msg="That's what practice is for. Read the slips below, then run it again. It sticks faster the second time.";}
   el("resHead").textContent=head; el("resMsg").textContent=msg;
+  el("resReward").innerHTML = (lesson.id==="revision") ? highFiveHTML() : "";
   const recap=el("resRecap"); recap.innerHTML="";
   results.forEach(r=>{
     const d=document.createElement("div"); d.className="recap "+(r.ok?"ok":"no");
     d.innerHTML=`<span class="rk">${r.ok?"✓":"!"}</span><span class="rq">${fmt(r.ask)}</span>`;
     recap.appendChild(d);
   });
+}
+
+/* ---- high five: a little reward for finishing the 10 revision questions ---- */
+function highFiveHTML(){
+  return `<div class="hifive" id="hifive" onclick="doHiFive()" role="button" tabindex="0"
+      onkeydown="if(event.key===' '||event.key==='Enter'){event.preventDefault();doHiFive();}">
+    <div class="hf-hands">
+      <span class="hf-burst" id="hfBurst">✨</span>
+      <span class="hf-hand">✋🏼</span>
+    </div>
+    <div class="hf-label" id="hfLabel">You finished all 10 - tap to high five!</div>
+  </div>`;
+}
+let m3Audio;
+function playClap(){
+  try{
+    m3Audio = m3Audio || new (window.AudioContext||window.webkitAudioContext)();
+    const ctx=m3Audio; if(ctx.state==="suspended") ctx.resume();
+    const burst=(t0)=>{
+      const dur=0.08, n=Math.floor(ctx.sampleRate*dur);
+      const buf=ctx.createBuffer(1,n,ctx.sampleRate), d=buf.getChannelData(0);
+      for(let i=0;i<n;i++) d[i]=(Math.random()*2-1)*Math.pow(1-i/n,2.6);
+      const src=ctx.createBufferSource(); src.buffer=buf;
+      const bp=ctx.createBiquadFilter(); bp.type="bandpass"; bp.frequency.value=1700; bp.Q.value=0.7;
+      const g=ctx.createGain(); g.gain.setValueAtTime(0.55,t0); g.gain.exponentialRampToValueAtTime(0.001,t0+dur);
+      src.connect(bp); bp.connect(g); g.connect(ctx.destination); src.start(t0);
+    };
+    const now=ctx.currentTime; burst(now); burst(now+0.11);
+  }catch(e){}
+}
+function doHiFive(){
+  playClap();
+  const el=document.getElementById("hifive"); if(!el)return;
+  el.classList.remove("clap"); void el.offsetWidth; el.classList.add("clap");
+  const lab=document.getElementById("hfLabel");
+  if(lab) lab.textContent=["High five! 🎉","Nice work! 🙌","Boom - done! 👏","You smashed it! ✨"][Math.floor(Math.random()*4)];
+  setTimeout(()=>el.classList.remove("clap"),520);
 }
 
 /* ---- streak (saved on the student's device when hosted; harmless if blocked) ---- */
