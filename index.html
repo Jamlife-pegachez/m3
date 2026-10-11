@@ -98,6 +98,9 @@ body{background:var(--paper);color:var(--ink);
   box-shadow:0 4px 12px rgba(74,101,131,.25);transition:background .15s}
 .kofi:hover{background:#5f84b5}
 .foot .share{font-size:12.5px;color:var(--ink-soft);margin:15px 0 0}
+.foot .kofi-line{font-size:14.5px;color:var(--ink);font-weight:600;max-width:34ch;margin:0 auto 14px;line-height:1.5}
+.res-kofi{margin:22px auto 4px;padding-top:20px;border-top:1px solid var(--line);text-align:center}
+.res-kofi p{font-size:14.5px;color:var(--ink);font-weight:600;max-width:34ch;margin:0 auto 14px;line-height:1.5}
 /* interactive graph explorer */
 .explorer{margin:8px auto 2px;max-width:320px}
 .exp-eq{font-family:'Spline Sans Mono',monospace;font-size:16px;font-weight:600;color:var(--plum);margin:0 0 8px;min-height:22px}
@@ -359,6 +362,7 @@ body{background:var(--paper);color:var(--ink);
     <!-- KO-FI: your support link. To change it later, edit the href below. -->
     <footer class="foot">
       <p class="made">M³, made by <b>Cheryl Mah</b></p>
+      <p class="kofi-line">Shout me a virtual coffee and tell me what topic you'd love to see next.</p>
       <a class="kofi" href="https://ko-fi.com/pegachez" target="_blank" rel="noopener">☕ Buy me a coffee</a>
       <p class="share">Free to use and share, with credit.</p>
     </footer>
@@ -433,6 +437,10 @@ body{background:var(--paper);color:var(--ink);
     <div class="res-actions">
       <button class="btn btn-go" onclick="restartTopic()" style="width:100%">Try these again</button>
       <button class="btn btn-next" onclick="goParts()">Pick another part</button>
+    </div>
+    <div class="res-kofi">
+      <p>Shout me a virtual coffee and tell me what topic you'd love to see next.</p>
+      <a class="kofi" href="https://ko-fi.com/pegachez" target="_blank" rel="noopener">☕ Buy me a coffee</a>
     </div>
   </section>
 
@@ -1991,6 +1999,16 @@ function clearPad(){if(ctx)ctx.clearRect(0,0,pad.width,pad.height);}
 
 document.addEventListener("DOMContentLoaded",()=>{
   buildHome(); buildCalc();
+  // unlock audio on the very first tap anywhere, so the clap is ready by the time they reach it
+  const unlock=()=>{
+    try{
+      m3Audio = m3Audio || new (window.AudioContext||window.webkitAudioContext)();
+      if(m3Audio.state==="suspended") m3Audio.resume();
+      const b=m3Audio.createBuffer(1,1,22050), s=m3Audio.createBufferSource();
+      s.buffer=b; s.connect(m3Audio.destination); s.start(0);
+    }catch(e){}
+  };
+  ["pointerdown","touchstart","mousedown","keydown"].forEach(ev=>document.addEventListener(ev,unlock,{once:true}));
   el("answer").addEventListener("keydown",e=>{if(e.key==="Enter")submitAnswer();});
   const start=e=>{if(!ctx)return;drawing=true;const p=padPos(e);ctx.beginPath();ctx.moveTo(p.x,p.y);e.preventDefault();};
   const move=e=>{if(!drawing||!ctx)return;const p=padPos(e);ctx.lineTo(p.x,p.y);ctx.stroke();e.preventDefault();};
