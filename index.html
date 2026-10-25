@@ -118,6 +118,8 @@ body{background:var(--paper);color:var(--ink);
 .frac .num{border-bottom:2px solid currentColor;padding:0 5px}
 .frac .den{padding:0 5px}
 .ovl{display:inline-block;border-top:1.6px solid currentColor;padding-top:1px;line-height:1}
+.visit-dot{position:fixed;left:9px;bottom:8px;z-index:15;font-family:'Spline Sans Mono',monospace;font-size:10px;color:var(--ink-soft);opacity:.22;letter-spacing:.03em;user-select:none;cursor:default;transition:opacity .25s}
+.visit-dot:hover{opacity:.55}
 .sqrt{display:inline-flex;align-items:stretch;white-space:nowrap}
 .sqrt::before{content:"\221A";margin-right:-1px;transform:translateY(-1px)}
 .sqrt .sq-b{border-top:1.7px solid currentColor;padding:1px 3px 0 2px}
@@ -462,6 +464,7 @@ body{background:var(--paper);color:var(--ink);
 
 </div>
 
+<span class="visit-dot" id="visitDot" title="visits" hidden></span>
 <button class="work-toggle" onclick="openWork()">✏️ Working pad</button>
 <div class="work" id="work">
   <div class="work-panel">
@@ -2746,6 +2749,25 @@ document.addEventListener("DOMContentLoaded",()=>{
   ["mousemove","touchmove"].forEach(ev=>el("pad").addEventListener(ev,move,{passive:false}));
   ["mouseup","mouseleave","touchend"].forEach(ev=>el("pad").addEventListener(ev,end));
 });
+
+/* ---- quiet visitor tally (hidden faint number, bottom-left) ----
+   Uses the free, no-signup Abacus hit counter. Counts once per browser
+   (localStorage), then only reads on later visits. If the service can't be
+   reached it simply stays hidden, so visitors never see anything broken. */
+(function(){
+  var dot=document.getElementById("visitDot"); if(!dot||!window.fetch) return;
+  var NS="m3-pegachez-2026", KEY="site-visits", BASE="https://abacus.jasoncameron.dev";
+  var counted=false; try{ counted=localStorage.getItem("m3_seen")==="1"; }catch(e){}
+  var url=BASE+(counted?"/get/":"/hit/")+NS+"/"+KEY;
+  fetch(url).then(function(r){return r.ok?r.json():null;}).then(function(d){
+    if(!d) return;
+    var n=(d.value!=null)?d.value:d.count;
+    if(n==null) return;
+    dot.textContent=String(n);
+    dot.hidden=false;
+    if(!counted){ try{ localStorage.setItem("m3_seen","1"); }catch(e){} }
+  }).catch(function(){ /* stay hidden */ });
+})();
 </script>
 </body>
 </html>
