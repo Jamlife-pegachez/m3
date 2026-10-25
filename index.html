@@ -90,6 +90,8 @@ body{background:var(--paper);color:var(--ink);
 .topic.soon .emoji{filter:grayscale(.25);opacity:.85}
 .soon-pill{margin-left:auto;font-family:'Nunito',sans-serif;font-weight:800;font-size:11px;letter-spacing:.04em;
   text-transform:uppercase;color:var(--blue-deep);background:#E3ECF8;border-radius:999px;padding:4px 10px;white-space:nowrap}
+.new-pill{display:inline-block;vertical-align:middle;margin-left:8px;font-family:'Nunito',sans-serif;font-weight:800;font-size:10.5px;
+  letter-spacing:.05em;text-transform:uppercase;color:#fff;background:var(--plum);border-radius:999px;padding:3px 9px;white-space:nowrap}
 .foot{margin:36px 0 0;padding-top:24px;border-top:1px solid var(--line);text-align:center}
 .foot .made{font-size:14px;color:var(--ink-soft);margin:0 0 14px}
 .foot .made b{color:var(--ink);font-weight:800}
@@ -111,10 +113,14 @@ body{background:var(--paper);color:var(--ink);
 .q-plot{display:block;margin:2px auto;background:#fff;border:1px solid var(--line);border-radius:12px;max-width:100%;height:auto}
 .eqn{display:block;text-align:center;font-family:'Spline Sans Mono',monospace;font-size:19px;font-weight:600;color:var(--plum);background:#F2F6FC;border:1px solid #DBE6F5;border-radius:12px;padding:11px 16px;margin:14px auto;width:max-content;max-width:100%;white-space:nowrap;overflow-x:auto}
 .eqn i,.mi i,.q-ask i,.lc-plain i,.exp-eq i,.match-opt i,.match-q i{font-family:Georgia,'Times New Roman',serif;font-style:italic;font-weight:700}
-.mi{font-family:'Spline Sans Mono',monospace;color:var(--plum);font-weight:600;white-space:nowrap}
+.mi{font-family:'Spline Sans Mono',monospace;color:var(--plum);font-weight:600;white-space:normal}
 .frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 2px;line-height:1.05}
 .frac .num{border-bottom:2px solid currentColor;padding:0 5px}
 .frac .den{padding:0 5px}
+.ovl{display:inline-block;border-top:1.6px solid currentColor;padding-top:1px;line-height:1}
+.sqrt{display:inline-flex;align-items:stretch;white-space:nowrap}
+.sqrt::before{content:"\221A";margin-right:-1px;transform:translateY(-1px)}
+.sqrt .sq-b{border-top:1.7px solid currentColor;padding:1px 3px 0 2px}
 .dgm{display:block;margin:10px auto;background:#fff;border:1px solid var(--line);border-radius:14px;max-width:250px;width:100%;height:auto}
 .dgm-pair{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:12px auto}
 .dgm-pair figure{margin:0;max-width:150px}
@@ -155,25 +161,35 @@ body{background:var(--paper);color:var(--ink);
 .cm-badge{width:24px;height:24px;border-radius:50%;background:var(--plum);color:#fff;font-size:14px;display:grid;place-items:center;font-family:Georgia,serif;font-style:italic;font-weight:700}
 .cm-cap{font-family:'Nunito',sans-serif;font-size:11.5px;color:var(--ink-soft);text-align:center;max-width:10ch;line-height:1.25}
 .cm-cap i{font-family:Georgia,serif;font-style:italic}
+/* combined working pad: scratchpad + calculator in one panel */
+.work-toggle{position:fixed;right:18px;bottom:18px;z-index:30;background:var(--plum);color:#fff;border:none;
+  border-radius:999px;padding:13px 18px;font-weight:800;font-size:15px;cursor:pointer;font-family:'Nunito',sans-serif;
+  box-shadow:0 6px 20px rgba(58,69,81,.24);display:inline-flex;gap:8px;align-items:center}
+.work{position:fixed;inset:0;z-index:40;background:rgba(58,69,81,.42);display:none;align-items:flex-end;justify-content:center}
+.work.is-on{display:flex}
+.work-panel{background:var(--card);width:100%;max-width:560px;border-radius:22px 22px 0 0;padding:16px;padding-bottom:calc(16px + env(safe-area-inset-bottom));max-height:92vh;overflow-y:auto;animation:rise .3s ease}
+.work-bar{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.work-tabs{display:flex;gap:6px;background:#EDF2FA;border-radius:999px;padding:4px}
+.work-tab{border:none;background:none;border-radius:999px;padding:7px 14px;font-family:'Nunito',sans-serif;font-weight:800;
+  font-size:14px;color:var(--ink-soft);cursor:pointer;white-space:nowrap}
+.work-tab.is-on{background:var(--card);color:var(--plum);box-shadow:0 1px 3px rgba(58,69,81,.12)}
+.work-actions{margin-left:auto;display:flex;gap:8px}
+#calcView{max-width:380px;margin:0 auto}
 /* scientific calculator */
-.calc-toggle{position:fixed;left:18px;bottom:18px;z-index:30;background:var(--plum);color:#fff;border:none;
-  border-radius:999px;padding:13px 16px;font-weight:800;font-size:15px;cursor:pointer;font-family:'Nunito',sans-serif;
-  box-shadow:0 6px 20px rgba(109,76,125,.28);display:inline-flex;gap:7px;align-items:center}
-.calc{position:fixed;inset:0;z-index:40;background:rgba(58,69,81,.42);display:none;align-items:flex-end;justify-content:center}
-.calc.is-on{display:flex}
-.calc-panel{background:var(--card);width:100%;max-width:360px;border-radius:22px 22px 0 0;padding:16px;animation:rise .3s ease}
-.calc-bar{display:flex;align-items:center;margin-bottom:10px}
-.calc-bar h3{font-family:'Fraunces',serif;font-weight:500;font-size:20px;margin:0}
-.calc-bar .sb-btn{margin-left:auto}
-.calc-disp{width:100%;font-family:'Spline Sans Mono',monospace;font-size:22px;text-align:right;padding:12px 14px;
-  border:1px solid var(--line);border-radius:12px;background:#F7FAFD;min-height:50px;margin-bottom:12px;overflow-x:auto;white-space:nowrap;color:var(--ink)}
-.calc-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:7px}
-.calc-key{padding:13px 0;border:1px solid var(--line);border-radius:12px;background:var(--card);
-  font-family:'Nunito',sans-serif;font-weight:700;font-size:16px;cursor:pointer;color:var(--ink)}
+.calc-disp{width:100%;font-family:'Spline Sans Mono',monospace;font-size:20px;text-align:right;padding:9px 12px;
+  border:1px solid var(--line);border-radius:12px;background:#F7FAFD;min-height:42px;margin-bottom:8px;overflow-x:auto;white-space:nowrap;color:var(--ink)}
+.calc-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.calc-key{padding:9px 0;border:1px solid var(--line);border-radius:11px;background:var(--card);
+  font-family:'Nunito',sans-serif;font-weight:700;font-size:15px;cursor:pointer;color:var(--ink)}
 .calc-key:active{transform:scale(.95)}
 .calc-key.op{background:#EAF0FA;color:var(--plum)}
 .calc-key.fn{background:#F2F6FC;color:var(--blue-deep);font-size:14px}
 .calc-key.eq{background:var(--plum);color:#fff}
+.fr-key{display:inline-flex;flex-direction:column;align-items:center;line-height:.82;font-size:17px}
+.fr-key .fr-den{border-top:2px solid currentColor;padding-top:1px;margin-top:1px}
+.dms-lbl{font-size:19px;font-weight:700;letter-spacing:1px}
+.calc-disp.err{border-color:var(--coral);animation:calcShake .35s ease}
+@keyframes calcShake{0%,100%{transform:translateX(0)}20%{transform:translateX(-5px)}40%{transform:translateX(5px)}60%{transform:translateX(-3px)}80%{transform:translateX(3px)}}
 
 /* shared head */
 .p-head{display:flex;align-items:center;gap:14px;margin:6px 0 20px}
@@ -324,22 +340,21 @@ body{background:var(--paper);color:var(--ink);
 .recap .rq{color:var(--ink);font-weight:600}
 .res-actions{display:grid;gap:10px}
 
-/* scratchpad */
-.scratch-toggle{position:fixed;right:18px;bottom:18px;z-index:30;background:var(--ink);color:var(--paper);
-  border:none;border-radius:999px;padding:13px 18px;font-weight:800;font-size:15px;cursor:pointer;
-  box-shadow:0 6px 20px rgba(58,69,81,.22);display:inline-flex;gap:8px;align-items:center}
-.scratch{position:fixed;inset:0;z-index:40;background:rgba(58,69,81,.42);display:none;align-items:flex-end;justify-content:center}
-.scratch.is-on{display:flex}
-.scratch-panel{background:var(--card);width:100%;max-width:640px;border-radius:22px 22px 0 0;padding:18px;animation:rise .3s ease}
-.scratch-bar{display:flex;align-items:center;gap:12px;margin-bottom:12px}
-.scratch-bar h3{font-family:'Fraunces',serif;font-weight:500;font-size:20px;margin:0}
-.scratch-bar .sb-r{margin-left:auto;display:flex;gap:8px}
+/* scratchpad (inside the working pad) */
 .sb-btn{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:8px 13px;font-weight:700;font-size:14px;cursor:pointer;color:var(--ink)}
 .sb-btn:hover{border-color:#e0d4ca}
-#pad{width:100%;height:46vh;background:#FFFDFB;border:1px dashed #E3D8CF;border-radius:14px;touch-action:none;cursor:crosshair;display:block}
+#pad{width:100%;height:42vh;background:#FFFDFB;border:1px dashed #E3D8CF;border-radius:14px;touch-action:none;cursor:crosshair;display:block}
 
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 @media (max-width:460px){.answer-row .btn-go{width:100%}}
+@media (max-width:430px){
+  .work-panel{padding:13px;padding-bottom:calc(13px + env(safe-area-inset-bottom))}
+  .work-bar{gap:6px;flex-wrap:nowrap}
+  .work-tabs{gap:3px;padding:3px}
+  .work-tab{padding:6px 9px;font-size:12.5px}
+  .work-actions{gap:5px}
+  .sb-btn{padding:7px 9px;font-size:12.5px}
+}
 </style>
 </head>
 <body>
@@ -416,6 +431,7 @@ body{background:var(--paper);color:var(--ink);
       <input id="answer" autocomplete="off" autocapitalize="off" spellcheck="false"
              placeholder="Type your answer…" aria-label="Your answer">
       <button type="button" class="sup-btn" id="supBtn" onclick="insSup()" title="Add a squared ²" aria-label="Insert squared">x²</button>
+      <button type="button" class="sup-btn" id="powBtn" onclick="insPow()" title="Add any power" aria-label="Insert a power">xⁿ</button>
       <button class="btn btn-go" id="goBtn" onclick="submitAnswer()">Check</button>
     </div>
     <div class="q-opts" id="qOpts" style="display:none"></div>
@@ -446,22 +462,24 @@ body{background:var(--paper);color:var(--ink);
 
 </div>
 
-<button class="scratch-toggle" onclick="openScratch()">✏️ Scratchpad</button>
-<div class="scratch" id="scratch">
-  <div class="scratch-panel">
-    <div class="scratch-bar"><h3>Working out</h3>
-      <div class="sb-r"><button class="sb-btn" onclick="clearPad()">Clear</button>
-        <button class="sb-btn" onclick="closeScratch()">Done</button></div></div>
-    <canvas id="pad"></canvas>
-  </div>
-</div>
-
-<button class="calc-toggle" onclick="openCalc()">🧮 Calculator</button>
-<div class="calc" id="calc">
-  <div class="calc-panel">
-    <div class="calc-bar"><h3>Calculator</h3><button class="sb-btn" onclick="closeCalc()">Done</button></div>
-    <div class="calc-disp" id="calcDisp">0</div>
-    <div class="calc-grid" id="calcGrid"></div>
+<button class="work-toggle" onclick="openWork()">✏️ Working pad</button>
+<div class="work" id="work">
+  <div class="work-panel">
+    <div class="work-bar">
+      <div class="work-tabs">
+        <button class="work-tab is-on" id="tabPad" onclick="workTab('pad')">✏️ Scratchpad</button>
+        <button class="work-tab" id="tabCalc" onclick="workTab('calc')">🧮 Calculator</button>
+      </div>
+      <div class="work-actions">
+        <button class="sb-btn" id="padClear" onclick="clearPad()">Clear</button>
+        <button class="sb-btn" onclick="closeWork()">Done</button>
+      </div>
+    </div>
+    <div id="padView"><canvas id="pad"></canvas></div>
+    <div id="calcView" hidden>
+      <div class="calc-disp" id="calcDisp">0</div>
+      <div class="calc-grid" id="calcGrid"></div>
+    </div>
   </div>
 </div>
 
@@ -1294,7 +1312,540 @@ const NONLINEAR = [
 ];
 
 
+/* ============================================================================
+   ★★★  EXAM PRACTICE PAPERS  ★★★  (Year 9 & 10)
+   Mixed-topic papers for exam prep: indices (with pronumerals), right-angled
+   trig (including bearings and angles of depression), area & volume (prisms,
+   cylinders, cones, pyramids), and properties of geometrical figures.
+   Each question carries a `tag` (its topic) shown above the question.
+   Selective-school style: a mix of easier and trickier questions, Paper 3
+   the hardest. Every applied question uses a different name, gender balanced.
+   Formulas are not given in the question; they appear as the first nudge.
+   ============================================================================ */
+const EXAM = [
+
+  { id:"paper1", name:"Paper 1", emoji:"📝", summary:"Mixed warm-up across the topics", sessionSize:10,
+    questions:[
+      { tag:"Indices",
+        ask:"Simplify $3a^4 × 5a^2$.",
+        answer:"15a^6", alsoAccept:["15a⁶"], correctNote:"Multiply the numbers, add the indices.",
+        slips:[{ifTheyType:"15a^8", say:"Add the indices, don't multiply them: 4 + 2 = 6, so 15a^6."},{ifTheyType:"8a^6", say:"Multiply the numbers out front: 3 × 5 = 15, giving 15a^6."}],
+        working:["Numbers: 3 × 5 = 15.","Same base, so add the indices: a^4 × a^2 = a^(4+2) = a^6.","15a^6."],
+        examTip:"Tap the xⁿ button to type a power quickly." },
+      { tag:"Indices",
+        ask:"Simplify $20y^7 ÷ 5y^3$.",
+        answer:"4y^4", alsoAccept:["4y⁴"], correctNote:"Divide the numbers, subtract the indices.",
+        slips:[{ifTheyType:"4y^10", say:"Subtract the indices when dividing: 7 − 3 = 4, so 4y^4."},{ifTheyType:"15y^4", say:"Divide the numbers: 20 ÷ 5 = 4, giving 4y^4."}],
+        working:["Numbers: 20 ÷ 5 = 4.","Same base, so subtract the indices: y^(7-3) = y^4.","4y^4."] },
+      { tag:"Scientific notation",
+        ask:"Write 6 500 000 in scientific notation, in the form $a × 10^n$ (with $1 ≤ a < 10$).",
+        answer:"6.5×10^6", alsoAccept:["6.5x10^6","6.5*10^6","6.5×10⁶","6.5x10⁶","6.5e6"], correctNote:"Put one digit before the point, then count the places.",
+        slips:[
+          {ifTheyType:"65x10^5", say:"The first number must be between 1 and 10. Move the point once more: 6.5 × 10⁶."},
+          {ifTheyType:"6.5x10^7", say:"Count the places after the first digit: 6 500 000 has 6 zeros of shift, so 6.5 × 10⁶."}],
+        working:["Put the point after the first digit: 6.5.","Count how many places the point moved: 6.","6.5 × 10⁶."],
+        examTip:"Big number → positive power. The power is how many places the decimal point shifts." },
+      { tag:"Trigonometry",
+        ask:"Priya builds a ramp that rises at $15°$ and runs $6$ m along the ground. How tall is the top, to 2 dp?",
+        answer:"1.61", correctNote:"The 6 m is next to the angle, the height is opposite it.",
+        slips:[{ifTheyType:"1.55", say:"The 6 m is the adjacent side, so use tan, not sin: 6 × tan15° = 1.61 m."}],
+        working:["Opposite and adjacent are involved, so use tan.","tan15° = height ÷ 6, so height = 6 × tan15° = 6 × 0.2679.","= 1.61 m."],
+        examTip:"Set your calculator to degrees before using tan." },
+      { tag:"Trigonometry",
+        ask:"Standing $20$ m from a tree that is $14$ m tall, Noah measures the angle of elevation to the top. Find it, to the nearest degree.",
+        answer:"35", alsoAccept:["35°"], correctNote:"You have the opposite and adjacent sides.",
+        slips:[{ifTheyType:"55", say:"Opposite over adjacent is 14 ÷ 20, not 20 ÷ 14. That gives 35°."}],
+        working:["Opposite (14) and adjacent (20), so use tan.","tan(angle) = 14 ÷ 20 = 0.7, so angle = tan⁻¹(0.7).","= 35°."],
+        examTip:"To find an angle, use the inverse: tan⁻¹ (often 'shift tan')." },
+      { tag:"Area & volume",
+        ask:"Ethan's drink can has radius $4$ cm and height $10$ cm. Find its volume to the nearest cm³. (use π)",
+        answer:"503", correctNote:"Volume of a cylinder = π r² h.",
+        slips:[{ifTheyType:"502", say:"Keep full accuracy then round: π × 16 × 10 = 502.65, which rounds to 503."},{ifTheyType:"251", say:"Don't halve it. Volume = π × r² × h = π × 16 × 10 = 503 cm³."}],
+        working:["Volume = π × r² × h.","= π × 4² × 10 = π × 160 = 502.65.","≈ 503 cm³."] },
+      { tag:"Area & volume",
+        ask:"A round pizza has radius $15$ cm. Find its area to the nearest cm². (use π)",
+        answer:"707", correctNote:"Area of a circle = π r².",
+        slips:[{ifTheyType:"94", say:"That's the circumference (2πr). Area uses r²: π × 15² = 707 cm²."},{ifTheyType:"225", say:"Multiply by π after squaring: π × 225 = 707 cm²."}],
+        working:["Area = π × r².","= π × 15² = π × 225.","≈ 707 cm²."] },
+      { tag:"Geometry",
+        ask:"Find the sum of the interior angles of a hexagon (6 sides).",
+        answer:"720", correctNote:"Angle sum = (n − 2) × 180°.",
+        slips:[{ifTheyType:"1080", say:"Use (n − 2), not n: (6 − 2) × 180 = 720°."},{ifTheyType:"360", say:"That's the exterior angle sum. Interior sum = (6 − 2) × 180 = 720°."}],
+        working:["Angle sum = (n − 2) × 180°.","= (6 − 2) × 180 = 4 × 180.","= 720°."] },
+      { tag:"Geometry",
+        ask:"Find the missing angle $x$ in the triangle.", diagram:"triAngle1",
+        answer:"67", alsoAccept:["67°"], correctNote:"The three angles of a triangle add to 180°.",
+        slips:[{ifTheyType:"113", say:"All three add to 180°: x = 180 − 65 − 48 = 67°."},{ifTheyType:"77", say:"Subtract both known angles: 180 − 65 − 48 = 67°."}],
+        working:["Angles in a triangle add to 180°.","x = 180 − 65 − 48.","= 67°."] },
+      { tag:"Geometry",
+        ask:"Find the angle $x$ around the point.", diagram:"pointAngles1",
+        answer:"150", alsoAccept:["150°"], correctNote:"Angles around a point add to 360°.",
+        slips:[{ifTheyType:"50", say:"Angles around a point add to 360°, not 180°: 360 − 115 − 95 = 150°."},{ifTheyType:"70", say:"360 − 115 − 95 = 150°."}],
+        working:["Angles around a point add to 360°.","x = 360 − 115 − 95.","= 150°."] }
+    ]
+  },
+
+  { id:"paper2", name:"Paper 2", emoji:"📝", summary:"A step up across the topics", sessionSize:10,
+    questions:[
+      { tag:"Indices",
+        ask:"Simplify $(x^3)^2 × 2x$.",
+        answer:"2x^7", alsoAccept:["2x⁷"], correctNote:"Do the power of a power first, then multiply.",
+        slips:[{ifTheyType:"2x^6", say:"Don't drop the extra x: x^6 × 2x adds the indices, giving 2x^7."},{ifTheyType:"2x^5", say:"Power of a power multiplies the indices: (x^3)^2 = x^(3×2) = x^6, then × x gives 2x^7."}],
+        working:["Power of a power: (x^3)^2 = x^(3×2) = x^6.","Then x^6 × 2x = 2 × x^(6+1).","= 2x^7."] },
+      { tag:"Indices",
+        ask:"Simplify $15y^2 ÷ 3y^6$, writing your answer with a positive index.",
+        answer:"5/y^4", alsoAccept:["5÷y^4","5/y⁴"], correctNote:"Divide the numbers, subtract the indices, then make the index positive.",
+        slips:[{ifTheyType:"5y^4", say:"2 − 6 = −4, so 5y^(-4), which is 5 over y^4."},{ifTheyType:"5y^-4", say:"Almost. A positive index means writing it as a fraction: 5 ÷ y^4."},{ifTheyType:"12/y^4", say:"Divide the numbers: 15 ÷ 3 = 5, giving 5 over y^4."}],
+        working:["Numbers: 15 ÷ 3 = 5.","Indices: y^(2-6) = y^(-4).","Positive index: 5 ÷ y^4."] },
+      { tag:"Scientific notation",
+        ask:"Write $5 × 10^-3$ as an ordinary number.",
+        answer:"0.005", correctNote:"A negative power means a small number: shift the point the other way.",
+        slips:[
+          {ifTheyType:"5000", say:"A negative power makes it small, not big: 5 × 10⁻³ = 0.005."},
+          {ifTheyType:"0.0005", say:"The power is 3, so three places: 0.005."}],
+        working:["10⁻³ = 1 ÷ 1000.","5 ÷ 1000 = 0.005."],
+        examTip:"Negative power → small number. The size of the power is how many places the point moves." },
+      { tag:"Trigonometry",
+        ask:"Leila sails $12$ km due east, then $5$ km due north. How far is she from the start, in km?",
+        answer:"13", correctNote:"A right angle between the legs, so use Pythagoras.",
+        slips:[{ifTheyType:"17", say:"Don't just add them. Use Pythagoras: √(12² + 5²) = √169 = 13 km."}],
+        working:["The two legs meet at a right angle.","distance = √(12² + 5²) = √(144 + 25) = √169.","= 13 km."] },
+      { tag:"Trigonometry",
+        ask:"Omar's kite is on a $25$ m string at $40°$ to the ground. How high is it, to 1 dp?",
+        answer:"16.1", correctNote:"The height is opposite the angle; the string is the hypotenuse.",
+        slips:[{ifTheyType:"19.2", say:"Height is opposite the angle and the string is the hypotenuse, so use sin: 25 × sin40° = 16.1 m."}],
+        working:["Opposite (height) and hypotenuse (string), so use sin.","sin40° = height ÷ 25, so height = 25 × sin40° = 25 × 0.6428.","= 16.1 m."] },
+      { tag:"Area & volume",
+        ask:"Ruby wraps a gift box that is a cube with side $5$ cm. Find its total surface area, in cm².",
+        answer:"150", correctNote:"A cube has 6 equal square faces.",
+        slips:[{ifTheyType:"25", say:"That's one face. A cube has 6 faces: 6 × 25 = 150 cm²."},{ifTheyType:"125", say:"That's the volume (5³). Surface area is 6 × 5² = 150 cm²."}],
+        working:["Surface area = 6 × (side)².","Each face is 5 × 5 = 25 cm², and there are 6.","6 × 25 = 150 cm²."] },
+      { tag:"Area & volume",
+        ask:"Jack's party hat is a cone with radius $3$ cm and height $8$ cm. Find its volume to 1 dp. (use π)",
+        answer:"75.4", correctNote:"A cone is one third of the matching cylinder.",
+        slips:[{ifTheyType:"226.2", say:"A cone is a third of the cylinder: (1 ÷ 3) × π × 9 × 8 = 75.4 cm³."}],
+        working:["Volume of a cone = ⅓ × π × r² × h.","= ⅓ × π × 3² × 8 = ⅓ × π × 72.","= 75.4 cm³."] },
+      { tag:"Geometry",
+        ask:"A pentagon has four angles of $100°, 120°, 95°$ and $130°$. Find the fifth angle.",
+        answer:"95", correctNote:"The five angles add to (5 − 2) × 180 = 540°.",
+        slips:[{ifTheyType:"35", say:"A pentagon's angles add to 540°, not 360°: 540 − 445 = 95°."}],
+        working:["Angle sum = (5 − 2) × 180 = 540°.","Four angles add to 100 + 120 + 95 + 130 = 445°.","540 − 445 = 95°."] },
+      { tag:"Geometry",
+        ask:"Find the missing angle $x$ in the quadrilateral.", diagram:"quadAngle1",
+        answer:"70", alsoAccept:["70°"], correctNote:"The four angles of a quadrilateral add to 360°.",
+        slips:[{ifTheyType:"90", say:"A quadrilateral's angles add to 360°: 360 − 95 − 110 − 85 = 70°."},{ifTheyType:"110", say:"Subtract all three known angles: 360 − 95 − 110 − 85 = 70°."}],
+        working:["Angles in a quadrilateral add to 360°.","x = 360 − 95 − 110 − 85.","= 70°."] },
+      { tag:"Geometry",
+        ask:"The triangle is isosceles (two equal sides marked). Find each base angle $x$.", diagram:"isosTri1",
+        answer:"70", alsoAccept:["70°"], correctNote:"The two base angles are equal.",
+        slips:[{ifTheyType:"140", say:"That's both base angles together. Each one is 140 ÷ 2 = 70°."},{ifTheyType:"40", say:"40° is the top angle. The two equal base angles share the rest: (180 − 40) ÷ 2 = 70°."}],
+        working:["Base angles of an isosceles triangle are equal.","They share 180 − 40 = 140°.","Each = 140 ÷ 2 = 70°."] }
+    ]
+  },
+
+  { id:"paper3", name:"Paper 3", emoji:"📝", summary:"The trickiest set - exam ready", sessionSize:10,
+    questions:[
+      { tag:"Indices",
+        ask:"Simplify $(2a^2)^3 × 3a^0$.",
+        answer:"24a^6", alsoAccept:["24a⁶"], correctNote:"Cube everything inside, and remember a^0 = 1.",
+        slips:[{ifTheyType:"6a^6", say:"Cube the 2 as well: 2^3 = 8, so (2a^2)^3 = 8a^6, then × 3 = 24a^6."},{ifTheyType:"8a^6", say:"3a^0 = 3 × 1 = 3, so 8a^6 × 3 = 24a^6."},{ifTheyType:"24a^5", say:"a^0 = 1, not a, so the index stays 6: 24a^6."}],
+        working:["(2a^2)^3 = 2^3 × a^(2×3) = 8a^6.","3a^0 = 3 × 1 = 3 (anything to the power 0 is 1).","8a^6 × 3 = 24a^6."] },
+      { tag:"Indices",
+        ask:"Simplify $(16x^8)^(1/2) ÷ 2x$.",
+        answer:"2x^3", alsoAccept:["2x³"], correctNote:"Take the square root first, then divide.",
+        slips:[{ifTheyType:"8x^3", say:"√16 = 4, not 8: (16x^8)^½ = 4x^4, then ÷ 2x = 2x^3."},{ifTheyType:"2x^4", say:"Subtract the indices when dividing: 4 − 1 = 3, so 2x^3."}],
+        working:["(16x^8)^(1/2) = √16 × x^(8×½) = 4x^4.","4x^4 ÷ 2x = (4 ÷ 2) × x^(4-1).","= 2x^3."] },
+      { tag:"Significant figures",
+        ask:"Write $0.0048372$ correct to 2 significant figures.",
+        answer:"0.0048", correctNote:"The first significant figure is the first non-zero digit.",
+        slips:[
+          {ifTheyType:"0.005", say:"That's 1 significant figure. Two keeps the 4 and the 8: 0.0048."},
+          {ifTheyType:"0.0048372", say:"Round to 2 significant figures: the first two are 4 and 8, so 0.0048."},
+          {ifTheyType:"0.0049", say:"The next digit is 3, so round down: 0.0048."}],
+        working:["Leading zeros don't count. The first significant figure is 4, the second is 8.","The next digit is 3, so round down.","0.0048."],
+        examTip:"Significant figures start at the first non-zero digit, not at the decimal point." },
+      { tag:"Trigonometry",
+        ask:"From a $45$ m cliff, Hugo sees a boat at an angle of depression of $28°$. How far is the boat from the base, to the nearest metre?",
+        answer:"85", correctNote:"The depression angle equals the angle up from the boat; the cliff is opposite it.",
+        slips:[{ifTheyType:"24", say:"The 45 m is opposite the 28° angle, so distance = 45 ÷ tan28° = 85 m."}],
+        working:["The angle at the boat is also 28° (alternate angles).","Opposite (45) and adjacent (distance), so use tan: tan28° = 45 ÷ distance.","distance = 45 ÷ tan28° = 85 m."],
+        examTip:"Angle of depression down equals the angle of elevation back up." },
+      { tag:"Area & volume",
+        ask:"Amara's gift box is a square-based pyramid, base $6$ cm by $6$ cm and height $10$ cm. Find its volume, in cm³.",
+        answer:"120", correctNote:"A pyramid is one third of the matching prism.",
+        slips:[{ifTheyType:"360", say:"A pyramid is a third of the box: ⅓ × 36 × 10 = 120 cm³."},{ifTheyType:"200", say:"The base area is 6 × 6 = 36, not 20: ⅓ × 36 × 10 = 120 cm³."}],
+        working:["Volume of a pyramid = ⅓ × base area × height.","Base area = 6 × 6 = 36 cm².","⅓ × 36 × 10 = 120 cm³."] },
+      { tag:"Area & volume",
+        ask:"Kai's closed cylinder has radius $5$ cm and height $12$ cm. Find its total surface area to 2 dp. (use π)",
+        answer:"534.07", correctNote:"Two circle ends plus the curved side.",
+        slips:[{ifTheyType:"376.99", say:"Add the two circle ends too: 2π × 25 = 157.08, so 157.08 + 376.99 = 534.07 cm²."}],
+        working:["Surface area = 2 × π × r² + 2 × π × r × h (two ends plus the curved side).","Two ends: 2 × π × 5² = 157.08; curved side: 2 × π × 5 × 12 = 376.99.","Total = 534.07 cm²."] },
+      { tag:"Geometry",
+        ask:"The interior angles of a polygon add to $1440°$. How many sides does it have?",
+        answer:"10", correctNote:"Work backwards from (n − 2) × 180°.",
+        slips:[{ifTheyType:"8", say:"That's (n − 2). Add 2 to get the number of sides: n = 10."},{ifTheyType:"9", say:"1440 ÷ 180 = 8, which is (n − 2), so n = 10 sides."}],
+        working:["(n − 2) × 180 = 1440.","n − 2 = 1440 ÷ 180 = 8.","n = 10 sides."] },
+      { tag:"Geometry",
+        ask:"The angles shown meet at a point. Find $x$.", diagram:"pointAngles2",
+        answer:"70", alsoAccept:["70°"], correctNote:"Collect the x terms, then use 360°.",
+        slips:[
+          {ifTheyType:"210", say:"That's 3x. Angles around a point add to 360°: 150 + 3x = 360, so 3x = 210 and x = 70°."},
+          {ifTheyType:"140", say:"That's 2x. Solve 150 + x + 2x = 360 → 3x = 210 → x = 70°."},
+          {ifTheyType:"105", say:"Collect the x terms: x + 2x = 3x, so 150 + 3x = 360, giving x = 70°."}],
+        working:["Angles around a point add to 360°.","150 + x + 2x = 360, so 150 + 3x = 360.","3x = 210, so x = 70°."] },
+      { tag:"Challenge", last:true,
+        ask:"A yacht sails $8$ km on a bearing of $040°$, then turns and sails $6$ km on a bearing of $130°$. Using the two bearings, work out the angle between the legs, then find the bearing of the finish from the start, to the nearest degree.",
+        diagram:"bearingChal",
+        answer:"077", alsoAccept:["77","077°","77°","N77°E"], correctNote:"The bearings turn through 130 − 40 = 90°, so it is right-angled.",
+        slips:[
+          {ifTheyType:"90", say:"90° is the angle between the legs (130 − 40). Use it to find the angle at the start with cos, then add to 040°: 077°."},
+          {ifTheyType:"53", say:"Use the angle at the START: cos⁻¹(8 ÷ 10) = 37°, so bearing = 40 + 37 = 077°."},
+          {ifTheyType:"37", say:"That 37° is measured from the first leg. Add it to the first bearing: 40 + 37 = 077°."}],
+        working:["The direction turns from 040° to 130°, so the angle between the legs is 130 − 40 = 90°: right-angled.",
+          "The straight line back to the start is the hypotenuse: √(8² + 6²) = √100 = 10 km.",
+          "At the start, cos(angle) = adjacent ÷ hypotenuse = 8 ÷ 10 = 0.8, so angle = cos⁻¹(0.8) = 37°.",
+          "The finish is 37° clockwise of the 040° leg: bearing = 40 + 37 = 077°."],
+        examTip:"Find the turn angle from the two bearings first, then cos = adjacent ÷ hypotenuse gives the angle at the start." },
+      { tag:"Challenge", last:true,
+        ask:"A solid cube of side $10$ cm has a cylindrical hole of radius $3$ cm drilled straight through it. Find the volume of material left, to the nearest cm³. (use π)",
+        answer:"717", correctNote:"Cube volume minus the drilled cylinder.",
+        slips:[
+          {ifTheyType:"283", say:"That's the hole. Subtract it from the cube: 1000 − 282.74 = 717 cm³."},
+          {ifTheyType:"1000", say:"Take away the drilled hole: 1000 − π × 3² × 10 = 717 cm³."},
+          {ifTheyType:"718", say:"Keep full accuracy before rounding: 1000 − 282.743 = 717.26, which rounds to 717 cm³."}],
+        working:["Cube volume = 10³ = 1000 cm³.","Hole (cylinder, depth 10) = π × 3² × 10 = 282.74 cm³.","Left = 1000 − 282.74 = 717 cm³."],
+        examTip:"Composite solids: find each part's volume, then add or subtract." }
+    ]
+  }
+
+];
+
+
+/* ========================================================================
+   COMPLEX NUMBERS  ·  Year 12 · Extension 2
+   Part 1 build: what a complex number is, powers of i, +/−, ×, conjugates,
+   realising the denominator. Stops at The Complex Plane (Soon).
+   ======================================================================== */
+const COMPLEX = [
+
+  /* ===== 1. WHAT IS A COMPLEX NUMBER? ===== */
+  { id:"whatis", name:"What is a complex number?", icon:["iunit","blue"], summary:"When the square root of a negative shows up", sessionSize:5,
+    learn:[
+      {m:["iunit","peach"], term:"When the usual answer runs out",
+       def:"Some equations have no answer among the ordinary (real) numbers.",
+       plain:"Try to solve $x^2 + 1 = 0$. It rearranges to $x^2 = −1$. No real number squares to a negative, so on the real number line there is simply no solution.",
+       example:"A quadratic $ax^2 + bx + c = 0$ is judged by its discriminant $Δ = b^2 − 4ac$. When $Δ < 0$ there are no real solutions. That gap is exactly where complex numbers begin.",
+       checksHead:"Quick check",
+       checks:[{q:"$x^2 = −9$ has…", options:["No real solution","x = 3","x = −81"], answer:0, why:"No real number squares to a negative, so there is no real solution."}]},
+      {m:["iunit","blue"], term:"A brand-new number, i",
+       def:"We invent one new number, i, whose whole job is to be the square root of −1.",
+       plain:"Define $i = √(−1)$, which means $i^2 = −1$. With this single idea, square roots of negatives suddenly make sense.",
+       example:"$√(−9) = √9 × √(−1) = 3i$. So the two solutions of $x^2 = −9$ are $x = 3i$ and $x = −3i$.",
+       checksHead:"Your turn",
+       checks:[{q:"$i^2$ equals…", options:["−1","1","i"], answer:0, why:"That is the whole point of i: i² = −1."}]},
+      {m:["discNeg","mint"], term:"Solving when Δ < 0",
+       def:"When the discriminant is negative, the quadratic formula still works. You just carry the i.",
+       plain:"Solve $x^2 − 2x + 5 = 0$. Here $Δ = (−2)^2 − 4(1)(5) = 4 − 20 = −16$.",
+       plain2:"Into the formula: $x = [2 ± √(−16)/2]$. Since $√(−16) = 4i$, this is $x = [2 ± 4i/2] = 1 ± 2i$.",
+       example:"So the two solutions are $x = 1 + 2i$ and $x = 1 − 2i$: a real part of 1, and an imaginary part of ±2.",
+       checksHead:"Your turn",
+       checks:[{q:"If $Δ = −4$ in the quadratic formula, then $√Δ$ is…", options:["2i","−2","2"], answer:0, why:"√(−4) = √4 × √(−1) = 2i."}]},
+      {m:["note","lilac"], term:"The form z = x + iy",
+       def:"Every complex number can be written as a real part plus an imaginary part.",
+       plain:"We write $z = x + iy$, where $x$ and $y$ are ordinary real numbers.",
+       plain2:"$x$ is the real part, written $Re(z)$.<br>$y$ is the imaginary part, written $Im(z)$ — the number multiplying i, not the whole $iy$.",
+       example:"For $z = 3 + 4i$: the real part is $Re(z) = 3$ and the imaginary part is $Im(z) = 4$.",
+       checksHead:"Your turn",
+       checks:[{q:"For $z = 7 − 5i$, the imaginary part $Im(z)$ is…", options:["−5","5","−5i"], answer:0, why:"Im(z) is the real number multiplying i, including its sign: −5."}]}
+    ],
+    questions:[
+      { ask:"Simplify $√(−25)$. Write your answer using i.",
+        answer:"5i", correctNote:"√(−25) = √25 × √(−1) = 5i.",
+        slips:[
+          {ifTheyType:"25i", say:"Take the square root of 25 first: √25 = 5, so √(−25) = 5i."},
+          {ifTheyType:"-5", say:"The −1 under the root becomes i, it doesn't come out as a minus sign: √(−25) = 5i."}],
+        working:["√(−25) = √25 × √(−1).","= 5 × i = 5i."] },
+      { ask:"Solve $x^2 = −49$. Give the positive solution.",
+        answer:"7i", alsoAccept:["+7i"], correctNote:"x = ±7i, so the positive one is 7i.",
+        slips:[{ifTheyType:"7", say:"√(−49) keeps an i: the solutions are ±7i, not ±7."}],
+        working:["x = ±√(−49) = ±√49 × √(−1).","= ±7i, so the positive solution is 7i."] },
+      { ask:"A quadratic has discriminant $Δ = −16$. How many <b>real</b> solutions does it have?",
+        answer:"0", alsoAccept:["none","zero"], correctNote:"Δ < 0 means no real solutions.",
+        slips:[{ifTheyType:"2", say:"Two solutions do exist, but they are complex, not real. With Δ < 0 the number of REAL solutions is 0."}],
+        working:["Δ < 0 means √Δ is not a real number.","So there are 0 real solutions (the two solutions are complex)."],
+        examTip:"Δ > 0 two real, Δ = 0 one real, Δ < 0 none real (two complex)." },
+      { ask:"For $z = −2 + 9i$, what is the real part $Re(z)$?",
+        answer:"-2", correctNote:"The real part is the term with no i.",
+        slips:[
+          {ifTheyType:"9", say:"That's the imaginary part. The real part is the term without i: −2."},
+          {ifTheyType:"2", say:"Keep the sign: the real part is −2."}],
+        working:["z = x + iy, with x the real part.","Here x = −2."] },
+      { ask:"For $z = 6i$, what is the real part $Re(z)$?",
+        answer:"0", correctNote:"6i = 0 + 6i, so the real part is 0.",
+        slips:[{ifTheyType:"6", say:"6 is the imaginary part. Written in full, 6i = 0 + 6i, so the real part is 0."}],
+        working:["Write it as 0 + 6i.","The real part is 0: this is a purely imaginary number."] }
+    ]
+  },
+
+  /* ===== 2. POWERS OF i ===== */
+  { id:"powers", name:"Powers of i", icon:["wheel","lilac"], summary:"They cycle round: i, −1, −i, 1", sessionSize:5,
+    learn:[
+      {m:["wheel","lilac"], term:"The four powers of i",
+       def:"The powers of i go round in a cycle of four.",
+       plain:"Start at $i$ and keep multiplying by $i$. Each step turns you a quarter-way around the wheel:",
+       diagram:"iWheel",
+       plain2:"$i^1 = i$, then $i^2 = −1$, then $i^3 = −i$, then $i^4 = 1$. Four steps and you're back to the start.",
+       checksHead:"Quick check",
+       checks:[{q:"$i^3$ equals…", options:["−i","i","−1"], answer:0, why:"i³ = i² × i = (−1) × i = −i."}]},
+      {m:["steps","blue"], term:"Any power of i",
+       def:"Because the cycle repeats every four, only the remainder after dividing by 4 matters.",
+       plain:"To simplify $i^n$, divide $n$ by 4 and keep the remainder $r$. Then $i^n = i^r$ (and $i^0 = 1$).",
+       example:"$i^26$: divide 26 by 4 to get 6 remainder 2. So $i^26 = i^2 = −1$.",
+       plain2:"Remainder 0 → 1, remainder 1 → i, remainder 2 → −1, remainder 3 → −i.",
+       checksHead:"Your turn",
+       checks:[{q:"$i^12$ equals…", options:["1","i","−1"], answer:0, why:"12 ÷ 4 = 3 remainder 0, and remainder 0 gives 1."}]}
+    ],
+    questions:[
+      { ask:"Simplify $i^4$.",
+        answer:"1", correctNote:"One full cycle brings you back to 1.",
+        slips:[{ifTheyType:"i", say:"i⁴ is one complete loop of the wheel, landing on 1: i⁴ = (i²)² = (−1)² = 1."}],
+        working:["i⁴ = (i²)² = (−1)² = 1."] },
+      { ask:"Simplify $i^6$.",
+        answer:"-1", correctNote:"6 ÷ 4 = 1 remainder 2 → i² = −1.",
+        slips:[{ifTheyType:"1", say:"Divide the power by 4 and use the remainder: 6 ÷ 4 = 1 r 2, so i⁶ = i² = −1."}],
+        working:["6 ÷ 4 = 1 remainder 2.","i⁶ = i² = −1."] },
+      { ask:"Simplify $i^26$.",
+        answer:"-1", correctNote:"26 ÷ 4 = 6 remainder 2 → i² = −1.",
+        slips:[
+          {ifTheyType:"1", say:"Use the remainder: 26 ÷ 4 = 6 r 2, so i²⁶ = i² = −1, not 1."},
+          {ifTheyType:"i", say:"Remainder 2 (not 1) means i²⁶ = i² = −1."}],
+        working:["26 ÷ 4 = 6 remainder 2.","i²⁶ = i² = −1."],
+        examTip:"Big power of i? Divide by 4, keep the remainder, read it off the wheel." },
+      { ask:"Simplify $i^15$.",
+        answer:"-i", correctNote:"15 ÷ 4 = 3 remainder 3 → i³ = −i.",
+        slips:[{ifTheyType:"i", say:"Remainder 3 gives i³ = −i: 15 ÷ 4 = 3 r 3."}],
+        working:["15 ÷ 4 = 3 remainder 3.","i¹⁵ = i³ = −i."] },
+      { ask:"Simplify $3i^2$.",
+        answer:"-3", correctNote:"i² = −1, so 3i² = 3 × (−1) = −3.",
+        slips:[
+          {ifTheyType:"3", say:"i² = −1, so 3i² = 3 × (−1) = −3."},
+          {ifTheyType:"-3i", say:"i² is a number (−1), not an i term: 3 × (−1) = −3."}],
+        working:["i² = −1.","3i² = 3 × (−1) = −3."] }
+    ]
+  },
+
+  /* ===== 3. ADDING & SUBTRACTING ===== */
+  { id:"addsub", name:"Adding & subtracting", icon:["plusC","mint"], summary:"Collect real with real, i with i", sessionSize:5,
+    learn:[
+      {m:["plusC","mint"], term:"Just like collecting like terms",
+       def:"Treat i like a pronumeral: add the real parts, then add the imaginary parts.",
+       plain:"If $z = a + bi$ and $w = c + di$, then $z + w = (a + c) + (b + d)i$.",
+       example:"$(3 + 2i) + (4 + 5i) = (3 + 4) + (2 + 5)i = 7 + 7i$.",
+       checksHead:"Quick check",
+       checks:[{q:"$(1 + 2i) + (5 + 3i)$ equals…", options:["6 + 5i","6 + 6i","5 + 6i"], answer:0, why:"Reals: 1 + 5 = 6. Imaginary: 2 + 3 = 5. So 6 + 5i."}]},
+      {m:["plusminus","peach"], term:"Subtracting: mind the signs",
+       def:"Subtraction works the same way, but the minus flips both parts of the second number.",
+       plain:"$(a + bi) − (c + di) = (a − c) + (b − d)i$. The minus lands on both $c$ and $d$.",
+       example:"$(6 + 3i) − (2 + 5i) = (6 − 2) + (3 − 5)i = 4 − 2i$.",
+       checksHead:"Your turn",
+       checks:[{q:"$(4 + i) − (1 + 6i)$ equals…", options:["3 − 5i","3 + 7i","5 − 5i"], answer:0, why:"Reals: 4 − 1 = 3. Imaginary: 1 − 6 = −5. So 3 − 5i."}]}
+    ],
+    questions:[
+      { ask:"Work out $(2 + 3i) + (5 + 4i)$.",
+        answer:"7+7i", alsoAccept:["7i+7"], correctNote:"Add reals, add imaginaries.",
+        slips:[{ifTheyType:"14i", say:"Keep real and imaginary apart: reals 2 + 5 = 7, imaginaries 3 + 4 = 7, giving 7 + 7i."}],
+        working:["Reals: 2 + 5 = 7.","Imaginary: 3 + 4 = 7.","Answer: 7 + 7i."] },
+      { ask:"Work out $(8 + 2i) − (3 + 5i)$.",
+        answer:"5-3i", alsoAccept:["-3i+5"], correctNote:"Subtract both parts of the second number.",
+        slips:[
+          {ifTheyType:"5+3i", say:"The minus flips the imaginary part too: 2 − 5 = −3, so 5 − 3i."},
+          {ifTheyType:"11-3i", say:"It's a subtraction: 8 − 3 = 5 (not 8 + 3). Answer 5 − 3i."}],
+        working:["Reals: 8 − 3 = 5.","Imaginary: 2 − 5 = −3.","Answer: 5 − 3i."] },
+      { ask:"Work out $(−1 + 7i) + (4 − 2i)$.",
+        answer:"3+5i", alsoAccept:["5i+3"], correctNote:"Signs matter on the imaginary parts.",
+        slips:[{ifTheyType:"3+9i", say:"Watch the signs: 7 + (−2) = 5, so 3 + 5i."}],
+        working:["Reals: −1 + 4 = 3.","Imaginary: 7 − 2 = 5.","Answer: 3 + 5i."] },
+      { ask:"Subtract $2 + 6i$ from $9 + i$.",
+        answer:"7-5i", alsoAccept:["-5i+7"], correctNote:"'Subtract A from B' means B − A.",
+        slips:[{ifTheyType:"-7+5i", say:"'Subtract 2 + 6i from 9 + i' means (9 + i) − (2 + 6i) = 7 − 5i."}],
+        working:["(9 + i) − (2 + 6i).","Reals: 9 − 2 = 7. Imaginary: 1 − 6 = −5.","Answer: 7 − 5i."],
+        examTip:"'Subtract A from B' always means B − A. Write it in that order before you start." },
+      { ask:"Work out $(3 + 4i) + (3 − 4i)$.",
+        answer:"6", correctNote:"The imaginary parts cancel.",
+        slips:[
+          {ifTheyType:"6+8i", say:"The imaginary parts are +4i and −4i, which cancel to 0. Answer: 6."},
+          {ifTheyType:"0", say:"Only the imaginary parts cancel; the reals add: 3 + 3 = 6."}],
+        working:["Reals: 3 + 3 = 6.","Imaginary: 4 − 4 = 0.","Answer: 6."] }
+    ]
+  },
+
+  /* ===== 4. MULTIPLYING ===== */
+  { id:"multiply", name:"Multiplying", icon:["times","peach"], summary:"Expand, then swap i² for −1", sessionSize:5,
+    learn:[
+      {m:["times","peach"], term:"Expand like two brackets",
+       def:"Multiply complex numbers by expanding, exactly like $(a + b)(c + d)$.",
+       plain:"Multiply every term in the first bracket by every term in the second. You'll get an $i^2$ term, and that's where the magic happens.",
+       example:"$(2 + 3i)(1 + 4i) = 2 + 8i + 3i + 12i^2$. Collect the i terms: $2 + 11i + 12i^2$.",
+       checksHead:"Keep going",
+       checks:[{q:"In that expansion, $12i^2$ becomes…", options:["−12","12","12i"], answer:0, why:"i² = −1, so 12i² = −12."}]},
+      {m:["iunit","blue"], term:"Swap i² for −1",
+       def:"Replace every $i^2$ with −1, then collect the real and imaginary parts.",
+       plain:"From $2 + 11i + 12i^2$, swap $i^2 = −1$: that's $2 + 11i − 12 = −10 + 11i$.",
+       example:"A neat one: $(2 + 3i)(2 − 3i) = 4 − 6i + 6i − 9i^2 = 4 + 9 = 13$. The i terms cancel and the answer is real.",
+       checksHead:"Your turn",
+       checks:[{q:"$(1 + i)(1 + i)$ equals…", options:["2i","1 + i","2"], answer:0, why:"1 + i + i + i² = 1 + 2i − 1 = 2i."}]}
+    ],
+    questions:[
+      { ask:"Expand $3i(2 + 4i)$.",
+        answer:"-12+6i", alsoAccept:["6i-12"], correctNote:"Distribute, then i² = −1.",
+        slips:[
+          {ifTheyType:"6i+12", say:"3i × 4i = 12i² = −12, so the real part is −12: answer −12 + 6i."},
+          {ifTheyType:"6i+12i", say:"3i × 2 = 6i and 3i × 4i = 12i² = −12. Answer: −12 + 6i."}],
+        working:["3i × 2 = 6i.","3i × 4i = 12i² = −12.","Answer: −12 + 6i."] },
+      { ask:"Expand $(2 + i)(3 + 2i)$.",
+        answer:"4+7i", alsoAccept:["7i+4"], correctNote:"Expand, collect, swap i².",
+        slips:[
+          {ifTheyType:"6+7i", say:"Don't forget 2i × i = 2i² = −2, which lowers the real part: 6 − 2 = 4, so 4 + 7i."},
+          {ifTheyType:"8+7i", say:"The i² term is −2 (from 2i × i), so the real part is 6 − 2 = 4: answer 4 + 7i."}],
+        working:["(2 + i)(3 + 2i) = 6 + 4i + 3i + 2i².","= 6 + 7i − 2.","= 4 + 7i."] },
+      { ask:"Expand $(1 + 5i)(2 − i)$.",
+        answer:"7+9i", alsoAccept:["9i+7"], correctNote:"5i × (−i) = −5i² = +5.",
+        slips:[{ifTheyType:"2+9i", say:"5i × (−i) = −5i² = +5, so the real part is 2 + 5 = 7: answer 7 + 9i."}],
+        working:["(1 + 5i)(2 − i) = 2 − i + 10i − 5i².","= 2 + 9i + 5.","= 7 + 9i."] },
+      { ask:"Expand $(4 + 3i)(4 − 3i)$.",
+        answer:"25", correctNote:"A conjugate pair multiplies to a real number.",
+        slips:[
+          {ifTheyType:"7", say:"Use 4² − (3i)² = 16 − 9i² = 16 + 9 = 25."},
+          {ifTheyType:"16", say:"The −9i² becomes +9: 16 + 9 = 25."}],
+        working:["(4 + 3i)(4 − 3i) = 16 − 12i + 12i − 9i².","= 16 − 9i² = 16 + 9.","= 25."],
+        examTip:"(a + bi)(a − bi) = a² + b², always real. You'll lean on this for division." },
+      { ask:"Simplify $(1 + i)^2$.",
+        answer:"2i", correctNote:"Square the bracket, then i² = −1.",
+        slips:[
+          {ifTheyType:"2", say:"1 + 2i + i² = 1 + 2i − 1 = 2i (the reals cancel, not the i terms)."},
+          {ifTheyType:"1+2i", say:"Remember i² = −1: 1 + 2i + i² = 2i."}],
+        working:["(1 + i)² = 1 + 2i + i².","= 1 + 2i − 1.","= 2i."] }
+    ]
+  },
+
+  /* ===== 5. COMPLEX CONJUGATES ===== */
+  { id:"conjugate", name:"Complex conjugates", icon:["conj","lilac"], summary:"Flip the sign of i; sums, differences, products", sessionSize:6,
+    learn:[
+      {m:["conj","lilac"], term:"The conjugate",
+       def:"The conjugate of a complex number flips the sign of its imaginary part.",
+       plain:"If $z = x + iy$, its conjugate is written $<span class='ovl'>z</span> = x − iy$. The bar just means 'conjugate of'.",
+       example:"The conjugate of $3 + 4i$ is $3 − 4i$. The conjugate of $−2 − 5i$ is $−2 + 5i$.",
+       checksHead:"Quick check",
+       checks:[{q:"The conjugate of $7 − 2i$ is…", options:["7 + 2i","−7 + 2i","−7 − 2i"], answer:0, why:"Only the imaginary part flips sign: 7 + 2i."}]},
+      {m:["plusC","mint"], term:"Sum and difference of conjugates",
+       def:"Adding a number to its conjugate kills the i; subtracting kills the real part.",
+       plain:"$z + <span class='ovl'>z</span> = (x + iy) + (x − iy) = 2x$, which is real: twice the real part.",
+       plain2:"$z − <span class='ovl'>z</span> = (x + iy) − (x − iy) = 2iy$, which is purely imaginary.",
+       example:"For $z = 5 + 3i$: $z + <span class='ovl'>z</span> = 10$ and $z − <span class='ovl'>z</span> = 6i$.",
+       checksHead:"Your turn",
+       checks:[{q:"If $z = 4 + 9i$, then $z + <span class='ovl'>z</span>$ equals…", options:["8","18i","8 + 18i"], answer:0, why:"z + z̄ = 2 × real part = 2 × 4 = 8."}]},
+      {m:["times","peach"], term:"Product of conjugates",
+       def:"A number times its conjugate is always a real number.",
+       plain:"$z × <span class='ovl'>z</span> = (x + iy)(x − iy) = x^2 − (iy)^2 = x^2 + y^2$.",
+       example:"For $z = 3 + 4i$: $z × <span class='ovl'>z</span> = 3^2 + 4^2 = 9 + 16 = 25$. Real, and never negative.",
+       plain2:"This is the key to division: multiplying by the conjugate clears i from the bottom.",
+       checksHead:"Your turn",
+       checks:[{q:"If $z = 2 + 5i$, then $z × <span class='ovl'>z</span>$ equals…", options:["29","−21","4 + 25i"], answer:0, why:"x² + y² = 2² + 5² = 4 + 25 = 29."}]}
+    ],
+    questions:[
+      { ask:"Write down the conjugate of $6 + 7i$.",
+        answer:"6-7i", alsoAccept:["-7i+6"], correctNote:"Flip the sign of the i term only.",
+        slips:[
+          {ifTheyType:"-6+7i", say:"Only the imaginary part flips: the conjugate is 6 − 7i."},
+          {ifTheyType:"6+7i", say:"The conjugate flips the sign of the imaginary part: 6 − 7i."}],
+        working:["The conjugate flips the sign of the imaginary part.","6 + 7i → 6 − 7i."] },
+      { ask:"Write down the conjugate of $−3 − 8i$.",
+        answer:"-3+8i", alsoAccept:["8i-3"], correctNote:"Keep the real part, flip the i part.",
+        slips:[{ifTheyType:"3+8i", say:"Leave the real part alone, flip only the imaginary part: −3 + 8i."}],
+        working:["Keep the real part, flip the imaginary part.","−3 − 8i → −3 + 8i."] },
+      { ask:"If $z = 9 + 2i$, find $z + <span class='ovl'>z</span>$.",
+        answer:"18", correctNote:"z + z̄ = 2 × real part.",
+        slips:[
+          {ifTheyType:"4i", say:"z + z̄ doubles the REAL part (the i cancels): 2 × 9 = 18."},
+          {ifTheyType:"9", say:"It's twice the real part: 2 × 9 = 18."}],
+        working:["z + z̄ = 2 × Re(z).","= 2 × 9 = 18."] },
+      { ask:"If $z = 9 + 2i$, find $z − <span class='ovl'>z</span>$. Write it with i.",
+        answer:"4i", correctNote:"z − z̄ = 2 × imaginary part × i.",
+        slips:[
+          {ifTheyType:"18", say:"The reals cancel here; what's left is 2 × 2i = 4i."},
+          {ifTheyType:"0", say:"Only the real parts cancel. z − z̄ = 2iy = 4i."}],
+        working:["z − z̄ = 2iy.","= 2 × 2i = 4i."] },
+      { ask:"If $z = 5 + 2i$, find $z × <span class='ovl'>z</span>$.",
+        answer:"29", correctNote:"z z̄ = x² + y².",
+        slips:[
+          {ifTheyType:"21", say:"It's x² + y² (a sum): 5² + 2² = 25 + 4 = 29."},
+          {ifTheyType:"25+4i", say:"z z̄ is always a real number: 5² + 2² = 29."}],
+        working:["z × z̄ = x² + y².","= 5² + 2² = 25 + 4 = 29."] },
+      { ask:"A complex number $z$ satisfies $z × <span class='ovl'>z</span> = 0$. What is $z$?",
+        answer:"0", correctNote:"Only z = 0 gives x² + y² = 0.",
+        slips:[{ifTheyType:"i", say:"x² + y² = 0 needs both x = 0 and y = 0, so z = 0."}],
+        working:["z z̄ = x² + y² = 0.","Both x and y must be 0, so z = 0."],
+        examTip:"z z̄ = x² + y² = |z|². Real, never negative, and zero only when z = 0." }
+    ]
+  },
+
+  /* ===== 6. REALISING THE DENOMINATOR ===== */
+  { id:"realise", name:"Realising the denominator", icon:["divide","blue"], summary:"Divide by multiplying by the conjugate", sessionSize:5,
+    learn:[
+      {m:["divide","blue"], term:"Clearing i from the bottom",
+       def:"To divide, multiply the top and bottom by the conjugate of the denominator.",
+       plain:"We don't leave i in a denominator. Multiplying top and bottom by the conjugate of the bottom turns it into a real number, because $z × <span class='ovl'>z</span> = x^2 + y^2$.",
+       example:"$[1/2 + i] × [2 − i/2 − i] = [2 − i/5]$, since the bottom becomes $2^2 + 1^2 = 5$.",
+       checksHead:"Quick check",
+       checks:[{q:"To simplify $[3/1 + i]$, multiply top and bottom by…", options:["1 − i","1 + i","i"], answer:0, why:"Use the conjugate of the denominator, which is 1 − i."}]},
+      {m:["steps","mint"], term:"Writing it as x + iy",
+       def:"Once the denominator is real, split the fraction into a real part and an imaginary part.",
+       plain:"Write $[5/1 − 2i]$ in the form $x + iy$. Multiply top and bottom by the conjugate $1 + 2i$:",
+       example:"$[5/1 − 2i] = [5(1 + 2i)/1 + 4] = [5 + 10i/5] = 1 + 2i$, since $(1 − 2i)(1 + 2i) = 1 + 4 = 5$.",
+       checksHead:"Your turn",
+       checks:[{q:"In $[10/3 + i]$, the denominator after realising is…", options:["10","3","3 + i"], answer:0, why:"(3 + i)(3 − i) = 9 + 1 = 10."}]}
+    ],
+    questions:[
+      { ask:"Simplify $[8/1 + i]$ to the form x + iy.",
+        answer:"4-4i", alsoAccept:["-4i+4"], correctNote:"The bottom becomes 1² + 1² = 2.",
+        slips:[
+          {ifTheyType:"8-8i", say:"Divide by the real denominator 2: 8(1 − i)/2 = 4 − 4i."},
+          {ifTheyType:"4+4i", say:"Multiplying by the conjugate 1 − i gives 4 − 4i (watch the sign)."}],
+        working:["Multiply top and bottom by 1 − i.","= 8(1 − i) / (1 + 1) = 8(1 − i)/2.","= 4 − 4i."] },
+      { ask:"Simplify $[1/i]$.",
+        answer:"-i", correctNote:"1/i = i/i² = i/(−1) = −i.",
+        slips:[
+          {ifTheyType:"i", say:"1/i = (1 × i)/(i × i) = i/i² = i/(−1) = −i."},
+          {ifTheyType:"1", say:"1/i = i/i² = i/(−1) = −i."}],
+        working:["1/i = (1 × i)/(i × i).","= i / i² = i / (−1).","= −i."] },
+      { ask:"Simplify $[10/3 + i]$ to the form x + iy.",
+        answer:"3-i", alsoAccept:["-i+3"], correctNote:"The bottom becomes 3² + 1² = 10.",
+        slips:[{ifTheyType:"3+i", say:"Multiply by the conjugate 3 − i: top 10(3 − i), bottom 10, giving 3 − i."}],
+        working:["Multiply top and bottom by 3 − i.","= 10(3 − i) / (9 + 1) = 10(3 − i)/10.","= 3 − i."] },
+      { ask:"Simplify $[2 + i/1 − i]$ to the form x + iy.",
+        answer:"0.5+1.5i", alsoAccept:["1/2+3/2i",".5+1.5i"], correctNote:"Top expands to 1 + 3i; bottom is 2.",
+        slips:[{ifTheyType:"1+3i", say:"Don't forget to divide by the real denominator 2: (1 + 3i)/2 = 0.5 + 1.5i."}],
+        working:["Multiply top and bottom by 1 + i.","Top: (2 + i)(1 + i) = 1 + 3i. Bottom: (1 − i)(1 + i) = 2.","= (1 + 3i)/2 = 0.5 + 1.5i."] },
+      { ask:"In $[6/1 − i]$, what is the denominator after you realise it (make it real)?",
+        answer:"2", correctNote:"(1 − i)(1 + i) = 1 + 1 = 2.",
+        slips:[{ifTheyType:"0", say:"(1 − i)(1 + i) = 1² − i² = 1 + 1 = 2, not 0."}],
+        working:["Multiply by the conjugate 1 + i.","(1 − i)(1 + i) = 1 − i² = 1 + 1 = 2."],
+        examTip:"The realised denominator is always x² + y² from the bottom number. Find it first, then handle the top." }
+    ]
+  },
+
+  /* ===== 7. THE COMPLEX PLANE (coming soon) ===== */
+  { id:"plane", name:"The Complex Plane", icon:["plane","peach"], summary:"Plotting complex numbers on an Argand diagram", soon:true }
+
+];
+
+
+
 const TOPICS = [
+  { id:"exam", group:"Year 9 & 10", name:"Exam practice papers", emoji:"📝", icon:["doc","peach"], badge:"new", unit:"papers",
+    blurb:"Mixed papers: indices, trig, area & volume, geometry",
+    note:"Three papers of 10 questions, mixing indices, scientific notation, trig, area & volume and angle geometry (with diagrams). Paper 3 finishes with two exam-style challenge questions.",
+    parts: EXAM },
   { id:"consumer", group:"Year 9 & 10", name:"Consumer Arithmetic", emoji:"💵",
     blurb:"Earning, spending, tax & best value",
     note:"throughout: 1 year = 52 weeks = 26 fortnights = 12 months",
@@ -1310,6 +1861,10 @@ const TOPICS = [
 
   { id:"adv",  group:"Year 12 · Advanced",    name:"More topics", emoji:"🧮", blurb:"Added as we go" },
   { id:"ext1", group:"Year 12 · Extension 1", name:"More topics", emoji:"🧮", blurb:"Added as we go" },
+  { id:"complex", group:"Year 12 · Extension 2", name:"Complex Numbers", emoji:"🔷", icon:["iunit","blue"], badge:"new",
+    blurb:"From √−1 to conjugates & division",
+    note:"Brand new. Work top to bottom, each part builds on the one before. No background needed, come as you are.",
+    parts: COMPLEX },
   { id:"ext2", group:"Year 12 · Extension 2", name:"More topics", emoji:"🧮", blurb:"Added as we go" }
 ];
 
@@ -1356,7 +1911,15 @@ const ICONS={
   expo:`<path d="M28 66 C52 66 56 56 62 26"/>`,
   grow:`<path d="M32 62 C50 62 54 38 62 30"/><path d="M55 30 H63 V38"/>`,
   decay:`<path d="M34 32 C42 32 46 56 64 62"/>`,
-  cubic:`<path d="M32 60 C40 60 42 50 48 48 C54 46 56 36 64 36"/>`
+  cubic:`<path d="M32 60 C40 60 42 50 48 48 C54 46 56 36 64 36"/>`,
+  iunit:`<line x1="48" y1="42" x2="48" y2="64"/><circle cx="48" cy="34" r="2.6" fill="currentColor"/><line x1="33" y1="64" x2="63" y2="64"/>`,
+  wheel:`<circle cx="48" cy="48" r="17"/><path d="M63 44 a16 16 0 0 1 -6 17"/><path d="M58 62 l3 1 1 -4"/><circle cx="65" cy="48" r="2.4" fill="currentColor"/><circle cx="48" cy="31" r="2.4" fill="currentColor"/><circle cx="31" cy="48" r="2.4" fill="currentColor"/><circle cx="48" cy="65" r="2.4" fill="currentColor"/>`,
+  plusC:`<line x1="36" y1="40" x2="52" y2="40"/><line x1="44" y1="32" x2="44" y2="48"/><line x1="34" y1="60" x2="52" y2="60"/><circle cx="60" cy="52" r="2.4" fill="currentColor"/>`,
+  times:`<line x1="37" y1="37" x2="59" y2="59"/><line x1="59" y1="37" x2="37" y2="59"/>`,
+  conj:`<line x1="34" y1="34" x2="62" y2="34"/><path d="M38 44 L52 64"/><path d="M52 44 L38 64"/>`,
+  divide:`<line x1="33" y1="48" x2="63" y2="48"/><circle cx="48" cy="38" r="3" fill="currentColor"/><circle cx="48" cy="58" r="3" fill="currentColor"/>`,
+  plane:`<line x1="30" y1="60" x2="66" y2="60"/><line x1="40" y1="30" x2="40" y2="66"/><circle cx="56" cy="42" r="3.2" fill="currentColor"/><line x1="40" y1="60" x2="56" y2="42" stroke-dasharray="4 3"/>`,
+  discNeg:`<path d="M34 30 Q48 62 62 30"/><line x1="28" y1="68" x2="68" y2="68"/>`
 };
 function icon(spec){
   const name=(spec&&spec[0])||"calendar", t=(spec&&spec[1])||"pink";
@@ -1369,7 +1932,7 @@ function icon(spec){
 /* compare answers: ignore case/space/$/commas; also match by numeric value */
 function norm(s){
   return String(s).toLowerCase().trim()
-    .replace(/[⁰¹²³⁴⁵⁶⁷⁸⁹]/g,d=>"^"+"⁰¹²³⁴⁵⁶⁷⁸⁹".indexOf(d))
+    .replace(/[⁻⁰¹²³⁴⁵⁶⁷⁸⁹]+/g,run=>"^"+run.replace(/⁻/g,"-").split("").map(c=>c==="-"?"-":"⁰¹²³⁴⁵⁶⁷⁸⁹".indexOf(c)).join(""))
     .replace(/−/g,"-").replace(/[$,]/g,"").replace(/\s+/g,"");
 }
 function numVal(s){
@@ -1380,7 +1943,10 @@ function numVal(s){
 function same(a,b){
   if(norm(a)===norm(b))return true;
   const x=numVal(a),y=numVal(b);
-  return x!==null&&y!==null&&Math.abs(x-y)<0.005;
+  if(x===null||y===null)return false;
+  // small absolute window for everyday numbers; relative window so small decimals (0.005 vs 0.0048) stay distinct
+  const tol=Math.abs(y)>=1?0.005:Math.abs(y)*1e-3+1e-9;
+  return Math.abs(x-y)<tol;
 }
 /* ---- equation typesetting: italic variables, superscripts, nice fractions ---- */
 function italicVars(s){
@@ -1390,9 +1956,16 @@ function italicVars(s){
       : part.replace(/[A-Za-z]+/g, run => FN.test(run) ? run : "<i>"+run+"</i>")
   ).join("");
 }
+/* draw a proper square-root sign with a bar (vinculum) across the top of the radicand */
+function radical(s){
+  s=s.replace(/√\(([^()]*)\)/g,'<span class="sqrt"><span class="sq-b">$1</span></span>');
+  s=s.replace(/√(\d+(?:\.\d+)?|[A-Za-zΔ])/g,'<span class="sqrt"><span class="sq-b">$1</span></span>');
+  return s;
+}
 function eqHTML(s){
   s=String(s).replace(/\^\(([^)]+)\)/g,"<sup>$1</sup>").replace(/\^(-?[0-9a-zA-Z]+)/g,"<sup>$1</sup>");
   s=s.replace(/\[([^\]\/]+)\/([^\]]+)\]/g,'<span class="frac"><span class="num">$1</span><span class="den">$2</span></span>');
+  s=radical(s);
   return italicVars(s);
 }
 function EQ(s){ return '<div class="eqn">'+eqHTML(s)+'</div>'; }
@@ -1408,7 +1981,8 @@ function fmt(s){
   s=s.replace(new RegExp("("+TERM+")\\s*÷\\s*("+TERM+")","g"),(m,n,d)=>stash(fracBox(n,d)));
   s=s.replace(/(?<!\w)(\d+)\/(\d+)(?!\w)/g,(m,n,d)=>stash(fracBox(n,d)));
   s=s.replace(/\^(-?\d+)/g,"<sup>$1</sup>");
-  s=s.replace(/(?<![A-Za-z])([xy])(?![A-Za-z])/g,"<i>$1</i>");
+  s=radical(s);
+  s=s.replace(/(?<![A-Za-z])([ixyz])(?![A-Za-z])/g,"<i>$1</i>");
   s=s.replace(/\u0001(\d+)\u0001/g,(m,i)=>math[+i]);
   return s;
 }
@@ -1418,6 +1992,23 @@ function insSup(){
   const s=i.selectionStart||0,e=i.selectionEnd||0,v=i.value;
   i.value=v.slice(0,s)+"²"+v.slice(e); i.focus();
   i.selectionStart=i.selectionEnd=s+1;
+}
+/* insert a ^ so the student can type any power, e.g. a^6; typed digits turn superscript live */
+function insPow(){
+  const i=el("answer"); if(!i)return;
+  const s=i.selectionStart||0,e=i.selectionEnd||0,v=i.value;
+  i.value=v.slice(0,s)+"^"+v.slice(e); i.focus();
+  i.selectionStart=i.selectionEnd=s+1;
+}
+/* as the student types after ^, show the power as a real superscript (a^6 → a⁶) */
+const SUPMAP={"-":"⁻","0":"⁰","1":"¹","2":"²","3":"³","4":"⁴","5":"⁵","6":"⁶","7":"⁷","8":"⁸","9":"⁹"};
+function superify(){
+  const i=el("answer"); if(!i)return;
+  const v=i.value;
+  let nv=v.replace(/\^(-?\d+)/g,(m,g)=>g.split("").map(c=>SUPMAP[c]||c).join(""));
+  let prev; do{ prev=nv; nv=nv.replace(/([⁰¹²³⁴⁵⁶⁷⁸⁹⁻])(\d)/g,(m,a,d)=>a+SUPMAP[d]); }while(nv!==prev);
+  if(nv!==v){ const atEnd=i.selectionStart>=v.length; i.value=nv;
+    const pos=atEnd?nv.length:Math.min(i.selectionStart,nv.length); i.selectionStart=i.selectionEnd=pos; }
 }
 
 /* ---- concept diagrams (small, static SVG) ---- */
@@ -1470,6 +2061,80 @@ function dgm(name){
                             TXp(-2,0,"−2",null,0,18)+TXp(0,0,"0",null,-12,16)+TXp(3,0,"3",null,0,18));
     case "cubicRoots2": return DG(CVp(x=>0.12*x*(x+3)*(x-2))+DOTd(-3,0)+DOTd(0,0)+DOTd(2,0)+
                             TXp(-3,0,"−3",null,0,18)+TXp(0,0,"0",null,-12,16)+TXp(2,0,"2",null,0,18));
+    case "iWheel": return `<svg class="dgm" viewBox="0 0 300 300" aria-hidden="true">
+      <defs><marker id="iarw" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="7.5" markerHeight="7.5" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#5B96CE"/></marker></defs>
+      <circle cx="150" cy="150" r="95" fill="#F7FAFE" stroke="#DBE6F5" stroke-width="2"/>
+      <path d="M228 150 A78 78 0 0 0 150 72" fill="none" stroke="#5B96CE" stroke-width="2.6" marker-end="url(#iarw)"/>
+      <path d="M150 72 A78 78 0 0 0 72 150" fill="none" stroke="#5B96CE" stroke-width="2.6" marker-end="url(#iarw)"/>
+      <path d="M72 150 A78 78 0 0 0 150 228" fill="none" stroke="#5B96CE" stroke-width="2.6" marker-end="url(#iarw)"/>
+      <path d="M150 228 A78 78 0 0 0 228 150" fill="none" stroke="#5B96CE" stroke-width="2.6" marker-end="url(#iarw)"/>
+      <text x="189" y="115" font-size="13" font-family="Georgia,serif" font-style="italic" fill="#5B96CE" text-anchor="middle">× i</text>
+      <text x="111" y="115" font-size="13" font-family="Georgia,serif" font-style="italic" fill="#5B96CE" text-anchor="middle">× i</text>
+      <text x="111" y="193" font-size="13" font-family="Georgia,serif" font-style="italic" fill="#5B96CE" text-anchor="middle">× i</text>
+      <text x="189" y="193" font-size="13" font-family="Georgia,serif" font-style="italic" fill="#5B96CE" text-anchor="middle">× i</text>
+      <circle cx="245" cy="150" r="5.5" fill="#E8765A"/><circle cx="150" cy="55" r="5.5" fill="#5B96CE"/><circle cx="55" cy="150" r="5.5" fill="#5A9DAC"/><circle cx="150" cy="245" r="5.5" fill="#6D82CB"/>
+      <text x="273" y="155" font-size="21" font-family="Georgia,serif" font-style="italic" fill="#3A4551" text-anchor="middle">1</text>
+      <text x="273" y="172" font-size="12" font-family="Nunito,sans-serif" fill="#8AA0BE" text-anchor="middle">i⁴</text>
+      <text x="150" y="41" font-size="21" font-family="Georgia,serif" font-style="italic" fill="#3A4551" text-anchor="middle">i</text>
+      <text x="150" y="24" font-size="12" font-family="Nunito,sans-serif" fill="#8AA0BE" text-anchor="middle">i¹</text>
+      <text x="25" y="155" font-size="21" font-family="Georgia,serif" font-style="italic" fill="#3A4551" text-anchor="middle">−1</text>
+      <text x="25" y="172" font-size="12" font-family="Nunito,sans-serif" fill="#8AA0BE" text-anchor="middle">i²</text>
+      <text x="150" y="268" font-size="21" font-family="Georgia,serif" font-style="italic" fill="#3A4551" text-anchor="middle">−i</text>
+      <text x="150" y="285" font-size="12" font-family="Nunito,sans-serif" fill="#8AA0BE" text-anchor="middle">i³</text>
+      </svg>`;
+    case "triAngle1": return `<svg class="dgm" viewBox="0 0 300 300" aria-hidden="true">
+      <polygon points="45,235 255,235 165,70" fill="#F2F8FD" stroke="#5B96CE" stroke-width="2.5" stroke-linejoin="round"/>
+      <text x="74" y="223" font-size="16" font-family="Nunito,sans-serif" font-weight="700" fill="#3F7684">65°</text>
+      <text x="212" y="223" font-size="16" font-family="Nunito,sans-serif" font-weight="700" fill="#3F7684">48°</text>
+      <text x="165" y="108" font-size="19" font-family="Georgia,serif" font-style="italic" fill="#B5542F" text-anchor="middle">x°</text>
+      </svg>`;
+    case "quadAngle1": return `<svg class="dgm" viewBox="0 0 300 300" aria-hidden="true">
+      <polygon points="55,80 245,62 260,228 62,238" fill="#F2F8FD" stroke="#5B96CE" stroke-width="2.5" stroke-linejoin="round"/>
+      <text x="82" y="100" font-size="15" font-family="Nunito,sans-serif" font-weight="700" fill="#3F7684">95°</text>
+      <text x="206" y="90" font-size="15" font-family="Nunito,sans-serif" font-weight="700" fill="#3F7684">110°</text>
+      <text x="222" y="212" font-size="15" font-family="Nunito,sans-serif" font-weight="700" fill="#3F7684">85°</text>
+      <text x="86" y="220" font-size="19" font-family="Georgia,serif" font-style="italic" fill="#B5542F" text-anchor="middle">x°</text>
+      </svg>`;
+    case "isosTri1": return `<svg class="dgm" viewBox="0 0 300 300" aria-hidden="true">
+      <polygon points="150,65 60,235 240,235" fill="#F2F8FD" stroke="#5B96CE" stroke-width="2.5" stroke-linejoin="round"/>
+      <line x1="99.7" y1="147.2" x2="110.3" y2="152.8" stroke="#5B96CE" stroke-width="2.4"/>
+      <line x1="200.3" y1="147.2" x2="189.7" y2="152.8" stroke="#5B96CE" stroke-width="2.4"/>
+      <text x="150" y="108" font-size="16" font-family="Nunito,sans-serif" font-weight="700" fill="#3F7684" text-anchor="middle">40°</text>
+      <text x="92" y="223" font-size="18" font-family="Georgia,serif" font-style="italic" fill="#B5542F" text-anchor="middle">x°</text>
+      <text x="208" y="223" font-size="18" font-family="Georgia,serif" font-style="italic" fill="#B5542F" text-anchor="middle">x°</text>
+      </svg>`;
+    case "pointAngles1": return `<svg class="dgm" viewBox="0 0 300 300" aria-hidden="true">
+      <line x1="150" y1="160" x2="150" y2="60" stroke="#5B96CE" stroke-width="2.5"/>
+      <line x1="150" y1="160" x2="58" y2="212" stroke="#5B96CE" stroke-width="2.5"/>
+      <line x1="150" y1="160" x2="252" y2="214" stroke="#5B96CE" stroke-width="2.5"/>
+      <circle cx="150" cy="160" r="4" fill="#3A4551"/>
+      <text x="92" y="150" font-size="15" font-family="Nunito,sans-serif" font-weight="700" fill="#3F7684" text-anchor="middle">115°</text>
+      <text x="150" y="238" font-size="15" font-family="Nunito,sans-serif" font-weight="700" fill="#3F7684" text-anchor="middle">95°</text>
+      <text x="214" y="152" font-size="19" font-family="Georgia,serif" font-style="italic" fill="#B5542F" text-anchor="middle">x°</text>
+      </svg>`;
+    case "pointAngles2": return `<svg class="dgm" viewBox="0 0 300 300" aria-hidden="true">
+      <line x1="150" y1="155" x2="150" y2="55" stroke="#5B96CE" stroke-width="2.5"/>
+      <line x1="150" y1="155" x2="255" y2="135" stroke="#5B96CE" stroke-width="2.5"/>
+      <line x1="150" y1="155" x2="60" y2="222" stroke="#5B96CE" stroke-width="2.5"/>
+      <circle cx="150" cy="155" r="4" fill="#3A4551"/>
+      <text x="206" y="104" font-size="18" font-family="Georgia,serif" font-style="italic" fill="#B5542F" text-anchor="middle">x°</text>
+      <text x="178" y="222" font-size="18" font-family="Georgia,serif" font-style="italic" fill="#B5542F" text-anchor="middle">2x°</text>
+      <text x="92" y="142" font-size="15" font-family="Nunito,sans-serif" font-weight="700" fill="#3F7684" text-anchor="middle">150°</text>
+      </svg>`;
+    case "bearingChal": return `<svg class="dgm" viewBox="0 0 300 300" aria-hidden="true">
+      <line x1="80" y1="210" x2="164" y2="110" stroke="#5B96CE" stroke-width="2.6"/>
+      <line x1="164" y1="110" x2="241" y2="174" stroke="#5A9DAC" stroke-width="2.6"/>
+      <line x1="80" y1="210" x2="241" y2="174" stroke="#B5542F" stroke-width="1.8" stroke-dasharray="6 4"/>
+      <line x1="80" y1="210" x2="80" y2="120" stroke="#8AA0BE" stroke-width="1.6"/>
+      <path d="M80 120 l-4 9 l4 -3 l4 3 z" fill="#8AA0BE"/>
+      <line x1="164" y1="110" x2="164" y2="55" stroke="#8AA0BE" stroke-width="1.2" stroke-dasharray="4 3"/>
+      <circle cx="80" cy="210" r="4" fill="#3A4551"/><circle cx="241" cy="174" r="4" fill="#3A4551"/>
+      <text x="70" y="116" font-size="13" font-family="Nunito,sans-serif" font-weight="700" fill="#51607A" text-anchor="middle">N</text>
+      <text x="66" y="228" font-size="13" font-family="Nunito,sans-serif" font-weight="700" fill="#3A4551" text-anchor="middle">Start</text>
+      <text x="255" y="178" font-size="13" font-family="Nunito,sans-serif" font-weight="700" fill="#3A4551" text-anchor="middle">End</text>
+      <text x="104" y="150" font-size="12.5" font-family="Nunito,sans-serif" font-weight="700" fill="#3F7684">8 km</text>
+      <text x="206" y="134" font-size="12.5" font-family="Nunito,sans-serif" font-weight="700" fill="#3F7684">6 km</text>
+      </svg>`;
     default: return "";
   }
 }
@@ -1612,37 +2277,83 @@ function staticPlot(spec){
 }
 
 /* ---- scientific calculator ---- */
-let calcExpr="";
+let calcExpr="", m3Ans=0, calcJustEval=false;
+const FRAC_ICON='<span class="fr-key"><span>&#9643;</span><span class="fr-den">&#9643;</span></span>';
+/* [label(HTML), class, span, key]  — key defaults to label */
 const CALC_KEYS=[
-  ["sin","fn"],["cos","fn"],["tan","fn"],["ln","fn"],["log","fn"],
-  ["(",""],[")",""],["√","fn"],["x²","fn"],["π","fn"],
-  ["7",""],["8",""],["9",""],["÷","op"],["C","op"],
-  ["4",""],["5",""],["6",""],["×","op"],["⌫","op"],
-  ["1",""],["2",""],["3",""],["−","op"],["+","op"],
-  ["0","",2],[".",""],["^","fn"],["=","eq"]
+  ["sin","fn"],["cos","fn"],["tan","fn"],["ln","fn"],["e","fn"],
+  ["sin⁻¹","fn"],["cos⁻¹","fn"],["tan⁻¹","fn"],["log","fn"],["π","fn"],
+  ["(","fn"],[")","fn"],["√","fn"],["^","fn"],[FRAC_ICON,"fn",null,"a/b"],
+  ["7",""],["8",""],["9",""],["DEL","eq"],["AC","eq"],
+  ["4",""],["5",""],["6",""],["×","op"],["÷","op"],
+  ["1",""],["2",""],["3",""],["+","op"],["−","op"],
+  ["0",""],[".",""],['<span class="dms-lbl">°&#8242;&#8243;</span>',"fn",null,"DMS"],["Ans","op"],["=","eq"]
 ];
 function buildCalc(){
   const g=el("calcGrid"); if(!g)return; g.innerHTML="";
-  CALC_KEYS.forEach(a=>{ const lab=a[0],cls=a[1],span=a[2];
+  CALC_KEYS.forEach(a=>{ const lab=a[0],cls=a[1],span=a[2],key=(a[3]!==undefined?a[3]:a[0]);
     const b=document.createElement("button"); b.className="calc-key"+(cls?" "+cls:"");
-    if(span) b.style.gridColumn="span "+span; b.textContent=lab;
-    b.onclick=()=>calcPress(lab); g.appendChild(b); });
+    if(span) b.style.gridColumn="span "+span; b.innerHTML=lab;
+    b.onclick=()=>calcPress(key); g.appendChild(b); });
+}
+function flashCalcErr(){ const d=el("calcDisp"); if(!d)return; d.classList.remove("err"); void d.offsetWidth; d.classList.add("err"); }
+function calcDMS(){
+  let r; try{ r=calcEval(calcExpr); }catch(e){ return false; }
+  const neg=r<0; r=Math.abs(r);
+  let d=Math.floor(r), mf=(r-d)*60, m=Math.floor(mf), s=Math.round((mf-m)*60);
+  if(s===60){s=0;m++;} if(m===60){m=0;d++;}
+  m3Ans=(neg?-1:1)*r;
+  calcExpr=(neg?"-":"")+d+"°"+m+"'"+s+'"';
+  return true;
 }
 function calcPress(t){
-  if(t==="C") calcExpr="";
-  else if(t==="⌫") calcExpr=calcExpr.slice(0,-1);
-  else if(t==="=") { try{ const r=calcEval(calcExpr); calcExpr=(Math.round(r*1e10)/1e10)+""; }catch(e){ calcExpr="Error"; } }
-  else { if(calcExpr==="Error") calcExpr=""; const map={"x²":"^2","√":"√(","sin":"sin(","cos":"cos(","tan":"tan(","ln":"ln(","log":"log("}; calcExpr+=(map[t]!==undefined?map[t]:t); }
+  if(t==="AC"){ calcExpr=""; calcJustEval=false; }
+  else if(t==="DEL"){ calcExpr=calcExpr.slice(0,-1); calcJustEval=false; }
+  else if(t==="DMS"){ if(!calcDMS()){ flashCalcErr(); return; } calcJustEval=true; }
+  else if(t==="="){ try{ const r=calcEval(calcExpr); m3Ans=r; calcExpr=(Math.round(r*1e10)/1e10)+""; calcJustEval=true; }catch(e){ flashCalcErr(); return; } }
+  else {
+    /* after =, operators continue from the answer; a number or function starts fresh */
+    if(calcJustEval){ if(["×","÷","+","−","^",")"].indexOf(t)===-1) calcExpr=""; calcJustEval=false; }
+    const map={"√":"√(","a/b":"/","sin":"sin(","cos":"cos(","tan":"tan(","sin⁻¹":"asin(","cos⁻¹":"acos(","tan⁻¹":"atan(","ln":"ln(","log":"log("};
+    calcExpr+=(map[t]!==undefined?map[t]:t);
+  }
   el("calcDisp").textContent=calcExpr||"0";
 }
-function calcEval(s){
-  let e=s.replace(/×/g,"*").replace(/÷/g,"/").replace(/−/g,"-").replace(/π/g,"PI").replace(/√/g,"sqrt").replace(/\^/g,"**");
-  if(!/^[-+*/(). 0-9A-Za-z]*$/.test(e)) throw 0;
-  const F=new Function("PI","sqrt","sin","cos","tan","ln","log","return ("+e+")");
-  return F(Math.PI,Math.sqrt,x=>Math.sin(x*Math.PI/180),x=>Math.cos(x*Math.PI/180),x=>Math.tan(x*Math.PI/180),Math.log,x=>Math.log10(x));
+/* insert implicit × in clear cases: 6tan(15) → 6×tan(15), 2(3) → 2×(3), )( → )×( */
+function implicitMul(e){
+  e=String(e);
+  // a value (number, ), π, e) immediately before  (  √  π  Ans  or a function name
+  e=e.replace(/([0-9)πe])(\(|√|π|Ans|sin|cos|tan|asin|acos|atan|ln|log|e)/g,"$1×$2");
+  // ) π e or Ans immediately before a number
+  e=e.replace(/(Ans|[)πe])([0-9.])/g,"$1×$2");
+  return e;
 }
-function openCalc(){el("calc").classList.add("is-on");}
-function closeCalc(){el("calc").classList.remove("is-on");}
+function calcEval(s){
+  let expr=implicitMul(String(s)).replace(/Ans/g,"("+m3Ans+")").replace(/×/g,"*").replace(/÷/g,"/").replace(/−/g,"-")
+    .replace(/π/g,"PI").replace(/√/g,"sqrt").replace(/\^/g,"**").replace(/\be\b/g,"E");
+  // auto-close any brackets the student didn't close; too many closers is an error
+  const open=(expr.match(/\(/g)||[]).length, close=(expr.match(/\)/g)||[]).length;
+  if(close>open) throw 0;
+  expr+=")".repeat(open-close);
+  if(!/^[-+*/(). 0-9A-Za-z]*$/.test(expr)) throw 0;
+  const F=new Function("PI","E","sqrt","sin","cos","tan","asin","acos","atan","ln","log","return ("+expr+")");
+  return F(Math.PI,Math.E,Math.sqrt,
+    x=>Math.sin(x*Math.PI/180),x=>Math.cos(x*Math.PI/180),x=>Math.tan(x*Math.PI/180),
+    x=>Math.asin(x)*180/Math.PI,x=>Math.acos(x)*180/Math.PI,x=>Math.atan(x)*180/Math.PI,
+    Math.log,x=>Math.log10(x));
+}
+/* combined working pad: scratchpad + calculator */
+function openWork(){ el("work").classList.add("is-on"); workTab("pad"); }
+function closeWork(){ el("work").classList.remove("is-on"); }
+function workTab(t){
+  const pad = t==="pad";
+  el("tabPad").classList.toggle("is-on",pad);
+  el("tabCalc").classList.toggle("is-on",!pad);
+  el("padView").hidden=!pad;
+  el("calcView").hidden=pad;
+  el("padClear").style.display=pad?"":"none";
+  if(pad) setupPad();
+}
 /* draw a row of jars, fill height proportional to the amount */
 function jarRow(items){
   const maxKg=Math.max.apply(null,items.map(i=>i.kg));
@@ -1692,8 +2403,8 @@ function buildHome(){
       b.className="topic"+(live?"":" soon");
       if(live) b.onclick=()=>openTopic(t.id);
       b.innerHTML=`${t.icon?`<span class="p-ic">${icon(t.icon)}</span>`:`<span class="emoji">${t.emoji}</span>`}
-        <span><span class="t-name">${t.name}</span>
-        <span class="t-sum">${t.blurb}${live?` · ${t.parts.length} parts`:""}</span></span>
+        <span><span class="t-name">${t.name}${live&&t.badge==="new"?`<span class="new-pill">New</span>`:""}</span>
+        <span class="t-sum">${t.blurb}${live?` · ${t.parts.length} ${t.unit||"parts"}`:""}</span></span>
         ${live?`<span class="t-go">→</span>`:`<span class="soon-pill">Soon</span>`}`;
       g.appendChild(b);
     });
@@ -1717,6 +2428,16 @@ function buildParts(){
   el("topicName").textContent=topic.name;
   const list=el("partList"); list.innerHTML="";
   lessons.forEach(L=>{
+    if(L.soon){
+      const d=document.createElement("div");
+      d.className="topic soon";
+      d.innerHTML=`${L.icon?`<span class="p-ic">${icon(L.icon)}</span>`:`<span class="emoji">${L.emoji}</span>`}
+        <span><span class="t-name">${L.name}</span>
+        <span class="t-sum">${L.summary}</span></span>
+        <span class="soon-pill">Soon</span>`;
+      list.appendChild(d);
+      return;
+    }
     const n=Math.min(L.sessionSize||PER_SESSION,L.questions.length);
     const b=document.createElement("button");
     b.className="topic"; b.onclick=()=>openLesson(L.id);
@@ -1812,9 +2533,11 @@ function lqNext(){
   else beginPractice();
 }
 function beginPractice(){
-  order=[...lesson.questions.keys()];
-  for(let i=order.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[order[i],order[j]]=[order[j],order[i]];}
-  order=order.slice(0,lesson.sessionSize||PER_SESSION);
+  const normal=[], pinned=[];
+  lesson.questions.forEach((q,i)=>{ (q.last?pinned:normal).push(i); });
+  for(let i=normal.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[normal[i],normal[j]]=[normal[j],normal[i]];}
+  const take=Math.max(0,(lesson.sessionSize||PER_SESSION)-pinned.length);
+  order=normal.slice(0,take).concat(pinned);   // pinned questions always come last
   qi=0;score=0;results=[];
   show("practice"); renderQuestion();
 }
@@ -1824,7 +2547,7 @@ function curQ(){return lesson.questions[order[qi]];}
 function renderQuestion(){
   answered=false; hintShown=false;
   const q=curQ();
-  el("qTopic").textContent=lesson.name;
+  el("qTopic").textContent=q.tag||lesson.name;
   el("qAsk").innerHTML=fmt(q.ask);
   const extraHTML = q.jars ? jarRow(q.jars) : q.plot ? staticPlot(q.plot) : q.curves ? multiCurve(q.curves) : q.diagram ? dgm(q.diagram) : (q.extra||"");
   el("qExtra").innerHTML = extraHTML?`<div class="q-extra">${extraHTML}</div>`:"";
@@ -1987,8 +2710,6 @@ function bumpStreak(){
 
 /* ---- scratchpad ---- */
 let pad,ctx,drawing=false;
-function openScratch(){el("scratch").classList.add("is-on");setupPad();}
-function closeScratch(){el("scratch").classList.remove("is-on");}
 function setupPad(){
   pad=el("pad"); const r=pad.getBoundingClientRect();
   if(pad.width!==Math.round(r.width)){pad.width=r.width;pad.height=r.height;}
@@ -2009,7 +2730,15 @@ document.addEventListener("DOMContentLoaded",()=>{
     }catch(e){}
   };
   ["pointerdown","touchstart","mousedown","keydown"].forEach(ev=>document.addEventListener(ev,unlock,{once:true}));
-  el("answer").addEventListener("keydown",e=>{if(e.key==="Enter")submitAnswer();});
+  el("answer").addEventListener("input",superify);
+  /* Enter: first press checks the answer; press Enter again to move to the next question */
+  document.addEventListener("keydown",e=>{
+    if(e.key!=="Enter")return;
+    if(!el("practice").classList.contains("is-on"))return;
+    if(el("work").classList.contains("is-on"))return;
+    if(!answered){ submitAnswer(); }
+    else if(el("nextBtn").style.display!=="none"){ e.preventDefault(); nextQuestion(); }
+  });
   const start=e=>{if(!ctx)return;drawing=true;const p=padPos(e);ctx.beginPath();ctx.moveTo(p.x,p.y);e.preventDefault();};
   const move=e=>{if(!drawing||!ctx)return;const p=padPos(e);ctx.lineTo(p.x,p.y);ctx.stroke();e.preventDefault();};
   const end=()=>{drawing=false;};
