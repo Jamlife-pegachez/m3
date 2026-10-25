@@ -118,8 +118,16 @@ body{background:var(--paper);color:var(--ink);
 .frac .num{border-bottom:2px solid currentColor;padding:0 5px}
 .frac .den{padding:0 5px}
 .ovl{display:inline-block;border-top:1.6px solid currentColor;padding-top:1px;line-height:1}
-.visit-dot{position:fixed;left:9px;bottom:8px;z-index:15;font-family:'Spline Sans Mono',monospace;font-size:10px;color:var(--ink-soft);opacity:.22;letter-spacing:.03em;user-select:none;cursor:default;transition:opacity .25s}
-.visit-dot:hover{opacity:.55}
+.pin-wrap{position:fixed;top:12px;right:13px;z-index:35}
+.pin-btn{width:38px;height:38px;border-radius:50%;background:var(--card);border:1px solid var(--line);box-shadow:0 2px 9px rgba(58,69,81,.14);cursor:pointer;display:grid;place-items:center;color:var(--plum);padding:0}
+.pin-btn:hover{background:#F2F6FC}
+.pin-btn:active{transform:scale(.94)}
+.pin-pop{position:absolute;top:46px;right:0;width:208px;background:var(--card);border:1px solid var(--line);border-radius:13px;box-shadow:0 8px 24px rgba(58,69,81,.18);padding:12px 13px;opacity:0;visibility:hidden;transform:translateY(-5px);transition:opacity .18s ease,transform .18s ease,visibility .18s;pointer-events:none}
+.pin-wrap:hover .pin-pop,.pin-wrap:focus-within .pin-pop,.pin-pop.show{opacity:1;visibility:visible;transform:translateY(0);pointer-events:auto}
+.pin-hint{font-size:12.5px;color:var(--ink-soft);line-height:1.5;margin-bottom:9px}
+.pin-hint b{color:var(--ink);font-weight:800;white-space:nowrap}
+.pin-count{min-height:22px}
+.visit-num{display:inline-block;background:#EEF3FB;color:var(--blue);font-weight:800;font-size:12px;border-radius:6px;padding:3px 9px;letter-spacing:.02em}
 .sqrt{display:inline-flex;align-items:stretch;white-space:nowrap}
 .sqrt::before{content:"\221A";margin-right:-1px;transform:translateY(-1px)}
 .sqrt .sq-b{border-top:1.7px solid currentColor;padding:1px 3px 0 2px}
@@ -464,7 +472,15 @@ body{background:var(--paper);color:var(--ink);
 
 </div>
 
-<span class="visit-dot" id="visitDot" title="visits" hidden></span>
+<div class="pin-wrap" id="pinWrap">
+  <button class="pin-btn" id="pinBtn" aria-label="Add to favourites" title="Add to favourites">
+    <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-6-5.2-6-10a6 6 0 0 1 12 0c0 4.8-6 10-6 10z"/><circle cx="12" cy="11" r="2"/></svg>
+  </button>
+  <div class="pin-pop" id="pinPop">
+    <div class="pin-hint">Add to favourites: press <b id="bmKey">Ctrl + D</b></div>
+    <div class="pin-count"><span class="visit-num" id="visitNum">250 visits</span></div>
+  </div>
+</div>
 <button class="work-toggle" onclick="openWork()">✏️ Working pad</button>
 <div class="work" id="work">
   <div class="work-panel">
@@ -2750,23 +2766,32 @@ document.addEventListener("DOMContentLoaded",()=>{
   ["mouseup","mouseleave","touchend"].forEach(ev=>el("pad").addEventListener(ev,end));
 });
 
-/* ---- quiet visitor tally (hidden faint number, bottom-left) ----
-   Uses the free, no-signup Abacus hit counter. Counts once per browser
-   (localStorage), then only reads on later visits. If the service can't be
-   reached it simply stays hidden, so visitors never see anything broken. */
+/* ---- favourites pin + visit count ----
+   The pin shows the bookmark shortcut (browsers can't bookmark for you).
+   The visit count rides on an image badge (visitorbadge.io): an <img> request
+   isn't blocked by CORS/sandbox rules the way a fetch() is, so it loads on every
+   visit (counting it) and shows the running total when the pin is hovered. */
 (function(){
-  var dot=document.getElementById("visitDot"); if(!dot||!window.fetch) return;
-  var NS="m3-pegachez-2026", KEY="site-visits", BASE="https://abacus.jasoncameron.dev";
-  var counted=false; try{ counted=localStorage.getItem("m3_seen")==="1"; }catch(e){}
-  var url=BASE+(counted?"/get/":"/hit/")+NS+"/"+KEY;
-  fetch(url).then(function(r){return r.ok?r.json():null;}).then(function(d){
-    if(!d) return;
-    var n=(d.value!=null)?d.value:d.count;
-    if(n==null) return;
-    dot.textContent=String(n);
-    dot.hidden=false;
-    if(!counted){ try{ localStorage.setItem("m3_seen","1"); }catch(e){} }
-  }).catch(function(){ /* stay hidden */ });
+  var pin=document.getElementById("pinBtn"), pop=document.getElementById("pinPop"),
+      wrap=document.getElementById("pinWrap"), key=document.getElementById("bmKey");
+  if(!pin||!pop) return;
+  if(key){ var mac=/Mac|iPhone|iPad|iPod/.test(navigator.platform||navigator.userAgent||""); key.textContent=mac?"⌘ D":"Ctrl + D"; }
+  pin.addEventListener("click",function(e){
+    e.stopPropagation(); pop.classList.toggle("show");
+    try{ if(window.external&&window.external.AddFavorite) window.external.AddFavorite(location.href,document.title); }catch(_){}
+  });
+  document.addEventListener("click",function(e){ if(wrap&&!wrap.contains(e.target)) pop.classList.remove("show"); });
+
+  /* live visit count = real hits + a 250 starting baseline (via the free Abacus counter) */
+  var vn=document.getElementById("visitNum");
+  if(vn&&window.fetch){
+    var BASE="https://abacus.jasoncameron.dev", NS="m3-pegachez-2026", KEY="visits-v2", OFFSET=250;
+    fetch(BASE+"/hit/"+NS+"/"+KEY).then(function(r){return r.ok?r.json():null;}).then(function(d){
+      var n=d&&(d.value!=null?d.value:d.count);
+      if(n==null) return;
+      vn.textContent=(n+OFFSET)+" visits";
+    }).catch(function(){});
+  }
 })();
 </script>
 </body>
