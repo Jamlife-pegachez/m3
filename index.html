@@ -418,7 +418,7 @@ body{background:var(--paper);color:var(--ink);
     <div class="learn-card" id="learnCard"></div>
     <div class="learn-dots" id="learnDots"></div>
     <div class="learn-nav" id="learnNav"></div>
-    <button class="skip-intro" onclick="beginPractice()">Skip the intro, just practise →</button>
+    <button class="skip-intro" onclick="beginPractice()">Skip the intro, just practice →</button>
   </section>
 
   <!-- ================= QUICK CHECK ================= -->
@@ -2885,7 +2885,7 @@ function finish(){
   else if(pct>=0.6){head="Solid round.";msg="Most of these were yours. The ones below are worth a second look before your exam - the working's there for each.";}
   else{head="Good - now you've found the gaps.";msg="That's what practice is for. Read the slips below, then run it again. It sticks faster the second time.";}
   el("resHead").textContent=head; el("resMsg").textContent=msg;
-  el("resReward").innerHTML = (lesson.id==="revision") ? highFiveHTML() : "";
+  el("resReward").innerHTML = highFiveHTML();
   const recap=el("resRecap"); recap.innerHTML="";
   results.forEach(r=>{
     const d=document.createElement("div"); d.className="recap "+(r.ok?"ok":"no");
@@ -2902,7 +2902,7 @@ function highFiveHTML(){
       <span class="hf-burst" id="hfBurst">✨</span>
       <span class="hf-hand">✋🏼</span>
     </div>
-    <div class="hf-label" id="hfLabel">You finished all 10 - tap to high five!</div>
+    <div class="hf-label" id="hfLabel">You finished all ${order.length} - tap to high five!</div>
   </div>`;
 }
 let m3Audio;
