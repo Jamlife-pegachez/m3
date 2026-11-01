@@ -131,6 +131,13 @@ body{background:var(--paper);color:var(--ink);
 .sqrt{display:inline-flex;align-items:stretch;white-space:nowrap}
 .sqrt::before{content:"\221A";margin-right:-1px;transform:translateY(-1px)}
 .sqrt .sq-b{border-top:1.7px solid currentColor;padding:1px 3px 0 2px}
+.brg-sent{font-size:16px;line-height:2;text-align:center;margin:8px 0 2px;color:var(--ink)}
+.brg-from{background:#FFE7A3;color:#8a5a00;font-weight:800;border-radius:6px;padding:1px 8px}
+.brg-stand{font-weight:800;color:var(--plum);border-bottom:2.5px solid var(--plum);white-space:nowrap}
+.brg-tag{display:inline-block;font-size:12px;font-weight:800;color:#C65A3C;margin-left:3px;white-space:nowrap}
+.brg-steps{list-style:none;margin:10px 0 2px;padding:0;counter-reset:bs}
+.brg-steps li{counter-increment:bs;position:relative;padding:7px 8px 7px 40px;margin-bottom:7px;background:#F4F8FD;border:1px solid #E1EAF6;border-radius:12px;font-size:14.5px;line-height:1.5;color:var(--ink)}
+.brg-steps li::before{content:counter(bs);position:absolute;left:9px;top:50%;transform:translateY(-50%);width:23px;height:23px;background:var(--plum);color:#fff;border-radius:50%;display:grid;place-items:center;font-size:13px;font-weight:800;font-family:'Nunito',sans-serif}
 .dgm{display:block;margin:10px auto;background:#fff;border:1px solid var(--line);border-radius:14px;max-width:250px;width:100%;height:auto}
 .dgm-pair{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:12px auto}
 .dgm-pair figure{margin:0;max-width:150px}
@@ -1859,12 +1866,157 @@ const COMPLEX = [
 ];
 
 
+/* ========================================================================
+   STILL CONFUSED WITH BEARINGS?  ·  Year 9 & 10
+   The FROM-word trick, reading the angle from North clockwise, back bearings,
+   then right-angle trig application.
+   ======================================================================== */
+const BEARINGS = [
+
+  /* ===== 1. WHICH ANGLE IS IT? ===== */
+  { id:"whichangle", name:"Which angle is it?", icon:["compass","blue"], summary:"The FROM trick, North, and clockwise", sessionSize:6,
+    learn:[
+      {m:["compass","blue"], term:"What a bearing is",
+       def:"A bearing is a direction, measured as an angle from North.",
+       plain:"You always start pointing <b>North</b>, then turn <b>clockwise</b> (the way a clock's hands move) until you face the target. The answer is written with three digits, like 072°. Drag the arrow and watch the number.",
+       compass:{v:72},
+       checksHead:"Quick check",
+       checks:[{q:"A bearing is measured…", options:["From North, turning clockwise","From East, turning clockwise","From North, turning anticlockwise"], answer:0, why:"Always from North, and always clockwise."}]},
+      {m:["search","peach"], term:"The magic word: FROM",
+       def:"The word 'from' tells you where to stand.",
+       plain:"Read the question and find the word <b>from</b>. You stand at the place <b>straight after</b> it. That is where your pen goes.",
+       rich:`<div class="brg-sent">the bearing of the <b>ship</b> <span class="brg-from">from</span> the <span class="brg-stand">lighthouse<span class="brg-tag">← stand here</span></span></div>`,
+       diagram:"brgFrom",
+       checksHead:"Your turn",
+       checks:[{q:"'The bearing of the <b>ship</b> from the <b>lighthouse</b>.' Where do you stand?", options:["At the lighthouse","At the ship","Halfway between"], answer:0, why:"You stand at the place straight after 'from': the lighthouse."}]},
+      {m:["steps","mint"], term:"Pen on the word, then sketch",
+       def:"Four steps, every single time.",
+       rich:`<ol class="brg-steps"><li>Find the word <b>from</b> and underline it.</li><li>Put your pen on the place <b>straight after</b> ‘from’. That is where you stand.</li><li>Draw a <b>North</b> line going up from that spot.</li><li>Sweep <b>clockwise</b> from North to the other place. That angle is the bearing.</li></ol>`,
+       checksHead:"Your turn",
+       checks:[{q:"Once you're standing at the 'from' place, which way do you sweep?", options:["From North, clockwise","From the other place, backwards","From East, clockwise"], answer:0, why:"North first, then clockwise."}]},
+      {m:["tag","lilac"], term:"From here to there",
+       def:"'From X to Y' works the same way: you stand at X.",
+       plain:"Don't let 'to' trip you up. The <b>from</b> word still wins, so your pen goes on the first place.",
+       rich:`<div class="brg-sent">the bearing <span class="brg-from">from</span> the <span class="brg-stand">camp<span class="brg-tag">← stand here</span></span> to the summit</div>`,
+       checksHead:"Your turn",
+       checks:[{q:"'The bearing from the <b>camp</b> to the summit.' Where do you stand?", options:["At the camp","At the summit"], answer:0, why:"'From the camp' means you stand at the camp."}]},
+      {m:["compassN","pink"], term:"Flip it: the back bearing",
+       def:"Swap which place you stand at, and the bearing turns 180°.",
+       plain:"The bearing of B from A and the bearing of A from B are exactly a half-turn apart. So the two answers differ by 180°.",
+       diagram:"brgBack",
+       example:"If the bearing of B from A is 060°, then the bearing of A from B is $060 + 180 = 240°$.",
+       checksHead:"Your turn",
+       checks:[{q:"The bearing of B from A is 070°. The bearing of A from B is…", options:["250°","070°","110°"], answer:0, why:"Flip it by 180°: 70 + 180 = 250°."}]}
+    ],
+    questions:[
+      { tag:"Which angle?",
+        ask:"'<b>From</b> the harbour, find the bearing of the yacht.' Where do you put your pen?",
+        options:[{label:"At the harbour",key:"harbour"},{label:"At the yacht",key:"yacht"}],
+        answer:"harbour", correctNote:"'From the harbour' is your standpoint, even when 'from' comes first.",
+        slips:[{ifTheyType:"yacht", say:"The yacht is what you look towards. 'From the harbour' means you stand at the harbour."}],
+        working:["Find the word 'from': 'from the harbour'.","So you stand at the harbour."] },
+      { tag:"Which angle?",
+        ask:"What is the bearing of the ship from the lighthouse?", diagram:"brgFrom",
+        options:[{label:"060°",key:"a"},{label:"240°",key:"b"},{label:"120°",key:"c"}],
+        answer:"a", correctNote:"Read from North, clockwise, at the lighthouse.",
+        slips:[{ifTheyType:"b", say:"240° is the other way round. From the lighthouse it's 060°."}],
+        working:["Stand at the lighthouse (the 'from' place).","From its North line, sweep clockwise to the ship: 060°."] },
+      { tag:"Which angle?",
+        ask:"What is the bearing of a point due <b>South-West</b>?",
+        answer:"225", alsoAccept:["225°"], correctNote:"South-West sits halfway between South (180°) and West (270°).",
+        slips:[{ifTheyType:"45", say:"045° is North-East. South-West is the opposite: 225°."},{ifTheyType:"135", say:"135° is South-East. South-West is 225°."}],
+        working:["South is 180° and West is 270°.","Halfway between is 225°."] },
+      { tag:"Which angle?",
+        ask:"The bearing of B from A is 072°. What is the bearing of A from B?",
+        answer:"252", alsoAccept:["252°"], correctNote:"Under 180°, so add 180°.",
+        slips:[{ifTheyType:"72", say:"Swapping which place you stand at turns you 180°: 72 + 180 = 252°."}],
+        working:["Standing at the other place turns you 180° around.","72 + 180 = 252°."] },
+      { tag:"Which angle?",
+        ask:"'The <b>lighthouse</b> is on a bearing of 310° from the <b>ship</b>.' Where do you stand?",
+        options:[{label:"At the ship",key:"ship"},{label:"At the lighthouse",key:"light"}],
+        answer:"ship", correctNote:"'From the ship' is your standpoint, even though the lighthouse is named first.",
+        slips:[{ifTheyType:"light", say:"Don't let the word order fool you. 'From the ship' means you stand at the ship."}],
+        working:["Find 'from': 'from the ship'.","Stand at the ship, looking towards the lighthouse."] },
+      { tag:"Which angle?",
+        ask:"The bearing of a plane from the tower is 205°. What is the bearing of the tower from the plane?",
+        answer:"025", alsoAccept:["25°","025°"], correctNote:"Over 180°, so subtract 180°.",
+        slips:[{ifTheyType:"385", say:"Bearings stay under 360°. 205 is over 180, so subtract: 205 − 180 = 025°."},{ifTheyType:"205", say:"Flip by 180°: 205 − 180 = 025°."}],
+        working:["205° is more than 180°, so subtract 180°.","205 − 180 = 025°."] }
+    ]
+  },
+
+  /* ===== 2. BEARINGS IN ACTION ===== */
+  { id:"bearingaction", name:"Bearings in action", icon:["compassN","peach"], summary:"Back bearings & right-angle trig", sessionSize:6,
+    learn:[
+      {m:["doc","blue"], term:"Always three figures",
+       def:"Write every bearing with three digits.",
+       plain:"Small angles still get leading zeros: 7° is written 007°, and 72° is written 072°. A full circle is 360°, so bearings run from 000° to 360°.",
+       checksHead:"Quick check",
+       checks:[{q:"Which bearing is written correctly?", options:["007°","7°","00007°"], answer:0, why:"Three figures, so 007°."}]},
+      {m:["compassN","peach"], term:"Back bearings: swap with 180",
+       def:"To swap which place you stand at, turn 180°.",
+       plain:"If the bearing is <b>less than 180°</b>, add 180°. If it is <b>180° or more</b>, subtract 180°. That keeps the answer between 000° and 360°.",
+       diagram:"brgBack",
+       example:"Bearing of B from A is 060°, so the bearing of A from B is $060 + 180 = 240°$.",
+       checksHead:"Your turn",
+       checks:[{q:"The bearing of Q from P is 300°. The bearing of P from Q is…", options:["120°","480°","150°"], answer:0, why:"300 is over 180, so subtract: 300 − 180 = 120°."}]},
+      {m:["compass","mint"], term:"Bearings with a right angle",
+       def:"When a path makes a right angle, it's just SOH CAH TOA.",
+       plain:"Label the triangle from the angle $θ$: the <b>Opposite</b> side is across from it, the <b>Adjacent</b> is beside it, and the <b>Hypotenuse</b> is the longest side.",
+       diagram:"sohcahtoa",
+       plain2:"Then pick the ratio with the two sides you know. <b>SOH CAH TOA:</b> $sin θ = [O/H]$, $cos θ = [A/H]$, $tan θ = [O/A]$.",
+       example:"A boat is 8 km East and 6 km North of port. For the angle from North, the opposite side is 8 and the adjacent is 6, so use <b>tan</b>: $tan θ = [8/6]$, giving $θ = tan⁻¹([8/6]) = 53°$. The true bearing is 053°, always written with three digits.",
+       checksHead:"Your turn",
+       checks:[{q:"You know the <b>opposite</b> and <b>adjacent</b> sides. Which ratio do you use?", options:["tan","sin","cos"], answer:0, why:"TOA: tan uses the Opposite and Adjacent sides."}]}
+    ],
+    questions:[
+      { tag:"Bearings in action",
+        ask:"The bearing of a buoy from a boat is 064°. Find the bearing of the boat from the buoy.",
+        answer:"244", alsoAccept:["244°"], correctNote:"Under 180°, so add 180°.",
+        slips:[{ifTheyType:"64", say:"Swapping 'from' flips by 180°: 64 + 180 = 244°."}],
+        working:["064° is less than 180°, so add 180°.","64 + 180 = 244°."] },
+      { tag:"Bearings in action",
+        ask:"The bearing of town Y from town X is 247°. Find the bearing of X from Y.",
+        answer:"067", alsoAccept:["67°","067°"], correctNote:"Over 180°, so subtract 180°.",
+        slips:[{ifTheyType:"427", say:"Bearings stay under 360°. Subtract instead: 247 − 180 = 067°."},{ifTheyType:"247", say:"Flip by 180°: 247 − 180 = 067°."}],
+        working:["247° is more than 180°, so subtract 180°.","247 − 180 = 067°."] },
+      { tag:"Bearings in action",
+        ask:"From port, a ship sails 9 km East and 12 km North. Find the bearing of the ship from the port, to the nearest degree.",
+        answer:"037", alsoAccept:["37°","037°"], correctNote:"tan θ = opposite ÷ adjacent = East ÷ North.",
+        slips:[{ifTheyType:"53", say:"Measure from North: the 9 km East is opposite, the 12 km North is adjacent, so tan⁻¹(9 ÷ 12) = 37°, giving 037°."}],
+        working:["The ship is 9 km East (opposite) and 12 km North (adjacent): a right angle.","tan θ = 9 ÷ 12, so θ = tan⁻¹(0.75) = 37°.","True bearing = 037°."],
+        examTip:"Angle from North: opposite is the East or West side, adjacent is the North or South side." },
+      { tag:"Bearings in action",
+        ask:"A lighthouse is 15 km North and 8 km West of a boat. Find the bearing of the lighthouse from the boat, to the nearest degree.",
+        answer:"332", alsoAccept:["332°"], correctNote:"It is West of North, so the bearing is 360° minus the triangle angle.",
+        slips:[{ifTheyType:"28", say:"That's the angle West of North. West of North means 360 − 28 = 332°."},{ifTheyType:"208", say:"The lighthouse is North-West, not South. Bearing = 360 − 28 = 332°."}],
+        working:["The lighthouse is North and West, so it lies in the North-West.","Angle from North = tan⁻¹(8 ÷ 15) = 28°.","West of North, so bearing = 360 − 28 = 332°."],
+        examTip:"West of North bearings are 360° minus the triangle angle." },
+      { tag:"Bearings in action",
+        ask:"The ship is on a bearing of 037° from the port. What is the bearing of the port from the ship?",
+        answer:"217", alsoAccept:["217°"], correctNote:"Flip 037° by 180°.",
+        slips:[{ifTheyType:"37", say:"Add 180° to swap the standpoint: 37 + 180 = 217°."}],
+        working:["037° is less than 180°, so add 180°.","37 + 180 = 217°."] },
+      { tag:"Bearings in action",
+        ask:"A plane is flying on a bearing of 305°. Through how many degrees must it turn <b>clockwise</b> to fly due East (090°)?",
+        answer:"145", alsoAccept:["145°"], correctNote:"Clockwise from 305° round past North to 090°.",
+        slips:[{ifTheyType:"215", say:"That's the anticlockwise turn. Clockwise: 55° up to North, then 90° more to East = 145°."},{ifTheyType:"55", say:"That only reaches North. Keep going 90° more to East: 55 + 90 = 145°."}],
+        working:["From 305° clockwise to North (360°) is 55°.","Then North round to East (090°) is another 90°.","Total = 55 + 90 = 145°."] }
+    ]
+  }
+
+];
+
 
 const TOPICS = [
   { id:"exam", group:"Year 9 & 10", name:"Exam practice papers", emoji:"📝", icon:["doc","peach"], badge:"new", unit:"papers",
     blurb:"Mixed papers: indices, trig, area & volume, geometry",
     note:"Three papers of 10 questions, mixing indices, scientific notation, trig, area & volume and angle geometry (with diagrams). Paper 3 finishes with two exam-style challenge questions.",
     parts: EXAM },
+  { id:"bearings", group:"Year 9 & 10", name:"Still confused with Bearings?", emoji:"🧭", icon:["compass","blue"], badge:"new",
+    blurb:"The FROM trick, so bearings finally click",
+    note:"The whole secret: find the word 'from', put your pen there, draw North, and sweep clockwise. Start with 'Which angle is it?'",
+    parts: BEARINGS },
   { id:"consumer", group:"Year 9 & 10", name:"Consumer Arithmetic", emoji:"💵",
     blurb:"Earning, spending, tax & best value",
     note:"throughout: 1 year = 52 weeks = 26 fortnights = 12 months",
@@ -1938,7 +2090,9 @@ const ICONS={
   conj:`<line x1="34" y1="34" x2="62" y2="34"/><path d="M38 44 L52 64"/><path d="M52 44 L38 64"/>`,
   divide:`<line x1="33" y1="48" x2="63" y2="48"/><circle cx="48" cy="38" r="3" fill="currentColor"/><circle cx="48" cy="58" r="3" fill="currentColor"/>`,
   plane:`<line x1="30" y1="60" x2="66" y2="60"/><line x1="40" y1="30" x2="40" y2="66"/><circle cx="56" cy="42" r="3.2" fill="currentColor"/><line x1="40" y1="60" x2="56" y2="42" stroke-dasharray="4 3"/>`,
-  discNeg:`<path d="M34 30 Q48 62 62 30"/><line x1="28" y1="68" x2="68" y2="68"/>`
+  discNeg:`<path d="M34 30 Q48 62 62 30"/><line x1="28" y1="68" x2="68" y2="68"/>`,
+  compass:`<circle cx="48" cy="48" r="18"/><path d="M48 36 L54 50 L48 46 L42 50 Z" fill="currentColor" stroke="none"/><path d="M48 60 L42 46 L48 50 L54 46 Z"/>`,
+  compassN:`<circle cx="48" cy="48" r="18"/><line x1="48" y1="30" x2="48" y2="48"/><circle cx="48" cy="30" r="2.6" fill="currentColor"/><line x1="48" y1="48" x2="59" y2="59"/>`
 };
 function icon(spec){
   const name=(spec&&spec[0])||"calendar", t=(spec&&spec[1])||"pink";
@@ -1997,7 +2151,7 @@ function fmt(s){
   const stash=html=>{math.push(html);return "\u0001"+(math.length-1)+"\u0001";};
   s=String(s).replace(/\$([^$]+)\$/g,(m,g)=>stash('<span class="mi">'+eqHTML(g)+'</span>'));
   const TERM="(?:[−-]?\\([^)]*\\)|[−-]?\\d+[a-zA-Z]?|[−-]?[a-zA-Z]\\d*|[−-]?[a-zA-Z])";
-  s=s.replace(new RegExp("("+TERM+")\\s*÷\\s*("+TERM+")","g"),(m,n,d)=>stash(fracBox(n,d)));
+  s=s.replace(new RegExp("(?<![A-Za-z0-9])(?<!\\d )("+TERM+")\\s*÷\\s*("+TERM+")(?![A-Za-z0-9])","g"),(m,n,d)=>stash(fracBox(n,d)));
   s=s.replace(/(?<!\w)(\d+)\/(\d+)(?!\w)/g,(m,n,d)=>stash(fracBox(n,d)));
   s=s.replace(/\^(-?\d+)/g,"<sup>$1</sup>");
   s=radical(s);
@@ -2139,6 +2293,41 @@ function dgm(name){
       <text x="206" y="104" font-size="18" font-family="Georgia,serif" font-style="italic" fill="#B5542F" text-anchor="middle">x°</text>
       <text x="178" y="222" font-size="18" font-family="Georgia,serif" font-style="italic" fill="#B5542F" text-anchor="middle">2x°</text>
       <text x="92" y="142" font-size="15" font-family="Nunito,sans-serif" font-weight="700" fill="#3F7684" text-anchor="middle">150°</text>
+      </svg>`;
+    case "brgFrom": return `<svg class="dgm" viewBox="0 0 300 300" aria-hidden="true">
+      <defs><marker id="bfHead" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#2F6FB5"/></marker></defs>
+      <line x1="85" y1="215" x2="85" y2="105" stroke="#AEBBCB" stroke-width="2"/>
+      <text x="85" y="97" text-anchor="middle" font-family="Nunito,sans-serif" font-weight="800" font-size="14" fill="#3F7684">N</text>
+      <path d="M85 177 A 38 38 0 0 1 117.9 196" fill="none" stroke="#E8765A" stroke-width="3"/>
+      <text x="122" y="176" font-family="Spline Sans Mono,monospace" font-weight="700" font-size="15" fill="#B5542F">060°</text>
+      <line x1="85" y1="215" x2="201.9" y2="147.5" stroke="#2F6FB5" stroke-width="3" marker-end="url(#bfHead)"/>
+      <circle cx="85" cy="215" r="5" fill="#3A4551"/><circle cx="201.9" cy="147.5" r="5" fill="#2F6FB5"/>
+      <text x="85" y="235" text-anchor="middle" font-family="Nunito,sans-serif" font-weight="800" font-size="13" fill="#3A4551">Lighthouse</text>
+      <text x="85" y="251" text-anchor="middle" font-family="Nunito,sans-serif" font-weight="700" font-size="11.5" fill="#C65A3C">(stand here)</text>
+      <text x="212" y="142" text-anchor="middle" font-family="Nunito,sans-serif" font-weight="800" font-size="13" fill="#2F6FB5">Ship</text>
+      </svg>`;
+    case "brgBack": return `<svg class="dgm" viewBox="0 0 300 300" aria-hidden="true">
+      <defs><marker id="bbA" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#2F6FB5"/></marker></defs>
+      <line x1="85" y1="215" x2="202" y2="148" stroke="#8AA0BE" stroke-width="2.4" marker-start="url(#bbA)" marker-end="url(#bbA)"/>
+      <line x1="85" y1="215" x2="85" y2="112" stroke="#AEBBCB" stroke-width="2"/>
+      <text x="85" y="104" text-anchor="middle" font-family="Nunito,sans-serif" font-weight="800" font-size="13" fill="#3F7684">N</text>
+      <path d="M85 183 A 32 32 0 0 1 112.7 199" fill="none" stroke="#E8765A" stroke-width="2.6"/>
+      <text x="118" y="182" font-family="Spline Sans Mono,monospace" font-weight="700" font-size="13.5" fill="#B5542F">060°</text>
+      <line x1="202" y1="148" x2="202" y2="52" stroke="#AEBBCB" stroke-width="2"/>
+      <text x="202" y="44" text-anchor="middle" font-family="Nunito,sans-serif" font-weight="800" font-size="13" fill="#3F7684">N</text>
+      <text x="196" y="96" text-anchor="end" font-family="Spline Sans Mono,monospace" font-weight="700" font-size="13.5" fill="#3F7684">240°</text>
+      <circle cx="85" cy="215" r="5" fill="#3A4551"/><circle cx="202" cy="148" r="5" fill="#3A4551"/>
+      <text x="70" y="221" text-anchor="middle" font-family="Georgia,serif" font-style="italic" font-size="16" fill="#3A4551">A</text>
+      <text x="217" y="150" text-anchor="middle" font-family="Georgia,serif" font-style="italic" font-size="16" fill="#3A4551">B</text>
+      </svg>`;
+    case "sohcahtoa": return `<svg class="dgm" viewBox="0 0 300 300" aria-hidden="true">
+      <polygon points="56,215 210,215 210,82" fill="#F2F8FD" stroke="#5B96CE" stroke-width="2.5" stroke-linejoin="round"/>
+      <rect x="190" y="195" width="20" height="20" fill="none" stroke="#5B96CE" stroke-width="1.6"/>
+      <path d="M 92 215 A 36 36 0 0 0 83.3 191.4" fill="none" stroke="#E8765A" stroke-width="2.6"/>
+      <text x="99" y="206" font-family="Georgia,serif" font-style="italic" font-size="17" fill="#B5542F">θ</text>
+      <text x="133" y="236" text-anchor="middle" font-family="Nunito,sans-serif" font-weight="700" font-size="13" fill="#3F7684">Adjacent</text>
+      <text x="218" y="152" font-family="Nunito,sans-serif" font-weight="700" font-size="13" fill="#3F7684">Opposite</text>
+      <text x="126" y="139" text-anchor="middle" font-family="Nunito,sans-serif" font-weight="700" font-size="13" fill="#3F7684" transform="rotate(-41 126 139)">Hypotenuse</text>
       </svg>`;
     case "bearingChal": return `<svg class="dgm" viewBox="0 0 300 300" aria-hidden="true">
       <line x1="80" y1="210" x2="164" y2="110" stroke="#5B96CE" stroke-width="2.6"/>
@@ -2286,6 +2475,37 @@ function buildExplorer(kind){
     sl.appendChild(row);
   });
   draw();
+}
+/* ---- interactive compass: drag to turn the arrow, read the bearing ---- */
+function pad3(n){ n=((Math.round(n)%360)+360)%360; return ("00"+n).slice(-3); }
+function buildCompass(){
+  const wrap=el("compassWrap"); if(!wrap) return;
+  const C=130, R=96, r2=46;
+  wrap.innerHTML=`<svg class="exp-svg" viewBox="0 0 260 260" width="260" height="260" aria-hidden="true">
+    <defs><marker id="brgHead" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#2F6FB5"/></marker></defs>
+    <circle cx="130" cy="130" r="96" fill="#F7FAFE" stroke="#DBE6F5" stroke-width="2"/>
+    <line x1="130" y1="34" x2="130" y2="226" stroke="#E6ECF4" stroke-width="1.2"/>
+    <line x1="34" y1="130" x2="226" y2="130" stroke="#E6ECF4" stroke-width="1.2"/>
+    <line x1="130" y1="130" x2="130" y2="34" stroke="#AEBBCB" stroke-width="2"/>
+    <text x="130" y="26" text-anchor="middle" font-family="Nunito,sans-serif" font-weight="800" font-size="15" fill="#3F7684">N</text>
+    <text x="238" y="135" text-anchor="middle" font-family="Nunito,sans-serif" font-weight="700" font-size="13" fill="#9AADC2">E</text>
+    <text x="130" y="250" text-anchor="middle" font-family="Nunito,sans-serif" font-weight="700" font-size="13" fill="#9AADC2">S</text>
+    <text x="22" y="135" text-anchor="middle" font-family="Nunito,sans-serif" font-weight="700" font-size="13" fill="#9AADC2">W</text>
+    <path id="brgArc" fill="none" stroke="#E8765A" stroke-width="3.5"/>
+    <line id="brgArm" x1="130" y1="130" x2="130" y2="34" stroke="#2F6FB5" stroke-width="3.6" stroke-linecap="round" marker-end="url(#brgHead)"/>
+    <circle cx="130" cy="130" r="4.5" fill="#3A4551"/>
+    <text id="brgNum" x="130" y="150" text-anchor="middle" font-family="Spline Sans Mono,monospace" font-weight="700" font-size="16" fill="#B5542F">072</text>
+  </svg>`;
+  const sl=el("brgSlider"), lab=el("brgLab"), arm=el("brgArm"), arc=el("brgArc"), num=el("brgNum");
+  function draw(){
+    const b=parseInt(sl.value,10)||0, rad=b*Math.PI/180;
+    const ex=C+R*Math.sin(rad), ey=C-R*Math.cos(rad);
+    arm.setAttribute("x2",ex.toFixed(1)); arm.setAttribute("y2",ey.toFixed(1));
+    const ax=C+r2*Math.sin(rad), ay=C-r2*Math.cos(rad);
+    arc.setAttribute("d", b<=0?"":("M 130 "+(C-r2)+" A "+r2+" "+r2+" 0 "+(b>180?1:0)+" 1 "+ax.toFixed(1)+" "+ay.toFixed(1)));
+    const p=pad3(b); num.textContent=p; if(lab) lab.textContent=p+"°";
+  }
+  sl.addEventListener("input",draw); draw();
 }
 function staticPlot(spec){
   const k=EXPL[spec.kind], p=spec.p||{};
@@ -2490,6 +2710,7 @@ function renderLearnStep(){
   if(x.rich) html+=`<div class="lc-rich">${x.rich}</div>`;
   if(x.plain2) html+=`<div class="lc-plain">${fmt(x.plain2)}</div>`;
   if(x.graph) html+=`<div class="explorer"><div class="exp-eq" id="expEq"></div><div id="expSvgWrap"></div><div class="exp-sliders" id="expSliders"></div><div class="exp-hint">Drag the sliders and watch it move.</div></div>`;
+  if(x.compass) html+=`<div class="explorer"><div id="compassWrap"></div><div class="exp-sliders"><div class="exp-row"><div class="exp-lab">turn the arrow</div><div class="exp-ctl"><input type="range" id="brgSlider" min="0" max="360" step="1" value="${(x.compass&&x.compass.v)||72}"><span class="val" id="brgLab">—</span></div></div></div><div class="exp-hint">Start at North, turn clockwise. Every bearing is written with three digits.</div></div>`;
   if(x.eq) html+=EQ(x.eq);
   if(x.diagram) html+=dgm(x.diagram);
   if(x.pair) html+=`<div class="dgm-pair">`+x.pair.map(d=>`<figure>${dgm(d.d)}<figcaption>${fmt(d.cap)}</figcaption></figure>`).join("")+`</div>`;
@@ -2498,6 +2719,7 @@ function renderLearnStep(){
   if(x.checks){ html+=`<p class="lc-ex-h">${x.checksHead||"Your turn"}</p>`; x.checks.forEach(c=>html+=inlineCheckHTML(c)); }
   el("learnCard").innerHTML=html;
   if(x.graph) buildExplorer(x.graph);
+  if(x.compass) buildCompass();
   const dots=el("learnDots"); dots.innerHTML="";
   items.forEach((_,i)=>{const d=document.createElement("span");
     d.className="ld"+(i<learnStep?" done":i===learnStep?" now":""); dots.appendChild(d);});
